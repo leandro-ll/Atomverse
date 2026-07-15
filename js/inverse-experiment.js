@@ -8,11 +8,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const goal = this.dataset.goal;
             const outputDiv = document.getElementById('inv-output');
             
+            // PENGAMAN: Jika elemen tidak ditemukan, berhenti di sini
             if (!outputDiv) {
-                console.error('Element inv-output tidak ditemukan!');
+                console.error('❌ ERROR: Element inv-output TIDAK DITEMUKAN di HTML!');
                 return;
             }
             
+            // Tampilkan loading
             outputDiv.innerHTML = `
                 <div class="flex items-center gap-3 p-4">
                     <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-[var(--primary)]"></div>
@@ -24,9 +26,20 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
             
             try {
-                const apiUrl = typeof API_CONFIG !== 'undefined' 
-                    ? `${API_CONFIG.BASE_URL}${API_CONFIG.INVERSE}` 
-                    : 'https://atomverse-backend-production.up.railway.app/api/inverse-experiment';
+                // Ambil URL dari config, atau gunakan fallback jika config belum terbaca
+                const baseUrl = (typeof API_CONFIG !== 'undefined' && API_CONFIG.BASE_URL) 
+                    ? API_CONFIG.BASE_URL 
+                    : 'https://atomverse-backend-production.up.railway.app';
+                    
+                const endpoint = (typeof API_CONFIG !== 'undefined' && API_CONFIG.INVERSE) 
+                    ? API_CONFIG.INVERSE 
+                    : '/api/inverse-experiment';
+
+                // Gabungkan URL dengan benar (tanpa double slash)
+                const cleanBaseUrl = baseUrl.replace(/\/+$/, ''); // Hapus slash di akhir jika ada
+                const apiUrl = `${cleanBaseUrl}${endpoint}`;
+
+                console.log('📤 Mengirim request ke:', apiUrl);
 
                 const response = await fetch(apiUrl, {
                     method: 'POST',
@@ -36,11 +49,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 if (!response.ok) {
                     const errorText = await response.text();
-                    throw new Error(`Server error: ${response.status}`);
+                    throw new Error(`Server error: ${response.status} - ${errorText}`);
                 }
                 
                 const data = await response.json();
+                console.log('✅ Data diterima:', data);
                 
+                // Tampilkan hasil
                 outputDiv.innerHTML = `
                     <div class="space-y-4">
                         <div class="flex items-center justify-between">
@@ -60,8 +75,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 `;
                 
             } catch (error) {
-                console.error('Fetch error:', error);
-                outputDiv.innerHTML = `<div class="p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">Error: Gagal terhubung ke backend. Cek console (F12).</div>`;
+                console.error('❌ Fetch error:', error);
+                outputDiv.innerHTML = `
+                    <div class="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg text-red-700 dark:text-red-400">
+                        <div class="font-bold">Error:</div>
+                        <div class="text-sm">${error.message}</div>
+                        <div class="text-xs mt-2">Pastikan backend Railway berjalan dan API Key sudah diisi.</div>
+                    </div>
+                `;
             }
         });
     });
