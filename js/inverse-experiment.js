@@ -17,11 +17,11 @@ document.querySelectorAll('.inv-btn').forEach(btn => {
         `;
 
         try {
-            const response = await fetch('http://127.0.0.1:8000/api/inverse-experiment', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ goal: goal })
-            });
+            const response = await fetch(`${API_CONFIG.BASE_URL}${API_CONFIG.INVERSE}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ goal: goal, constraints: {} })
+        });
 
             if (!response.ok) throw new Error("AI Engine Error");
             const data = await response.json();
