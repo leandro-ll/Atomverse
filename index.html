@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATOMVERSE AI - Virtual Chemistry Lab</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Poppins:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+        <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Marked.js for Markdown parsing (Bold, Lists, etc.) -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    
+    <!-- KaTeX for beautiful Math/Chemistry equations -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Poppins:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="h-screen overflow-hidden flex flex-col">
+
+    <header class="h-16 surface border-b flex items-center justify-between px-6 shrink-0 z-20">
+        <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-lg flex items-center justify-center font-bold text-white text-lg font-heading" style="background-color: var(--primary);">A</div>
+            <h1 class="text-xl font-bold tracking-tight font-heading">ATOMVERSE <span class="text-sm font-medium ml-1 opacity-80 font-body">AI Lab</span></h1>
+        </div>
+        <nav class="flex gap-6 h-full">
+            <button class="tab-btn active h-full flex items-center px-2 text-sm font-medium border-b-2 border-transparent transition-colors" data-tab="lab">Lab Reaksi</button>
+            <button class="tab-btn h-full flex items-center px-2 text-sm font-medium border-b-2 border-transparent text-muted-custom transition-colors" data-tab="inverse">Eksperimen Invers</button>
+            <button class="tab-btn h-full flex items-center px-2 text-sm font-medium border-b-2 border-transparent text-muted-custom transition-colors" data-tab="env">Literasi Lingkungan</button>
+        </nav>
+        <div class="flex items-center gap-4">
+            <button id="theme-toggle" class="theme-toggle p-2 rounded-full surface-alt border border-[var(--border-color)] text-[var(--text-main)]">
+                <svg id="icon-sun" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                <svg id="icon-moon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+            </button>
+            <div class="w-9 h-9 rounded-full surface-alt border border-[var(--border-color)] flex items-center justify-center text-sm font-bold font-heading">LL</div>
+        </div>
+    </header>
+
+    <main class="flex-1 overflow-hidden relative">
+        
+        <div id="tab-lab" class="tab-content absolute inset-0 flex">
+            <aside class="w-80 surface border-r flex flex-col overflow-y-auto shrink-0 z-10">
+                <div class="p-6 space-y-6">
+                    <div>
+                        <h2 class="text-sm font-bold uppercase tracking-wider mb-3 font-heading" style="color: var(--primary);">Larutan A</h2>
+                        <select id="select-a" class="w-full rounded-lg p-2.5 text-sm mb-4 outline-none border focus:ring-2 focus:ring-[var(--primary)]">
+                            <option value="AgNO3">AgNO (Perak Nitrat)</option>
+                            <option value="Pb(NO3)2">Pb(NO₃)₂ (Timbal(II) Nitrat)</option>
+                            <option value="BaCl2">BaCl₂ (Barium Klorida)</option>
+                            <option value="NaCl">NaCl (Natrium Klorida)</option>
+                            <option value="KI">KI (Kalium Iodida)</option>
+                            <option value="Na2SO4">Na₂SO₄ (Natrium Sulfat)</option>
+                            <option value="HCl">HCl (Asam Klorida)</option>
+                            <option value="NaOH">NaOH (Natrium Hidroksida)</option>
+                        </select>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="flex justify-between text-xs font-medium text-muted-custom mb-1.5 font-body">
+                                    <span>Molaritas</span>
+                                    <span id="m-a-val" class="mono font-bold" style="color: var(--primary);">1.0 M</span>
+                                </label>
+                                <input type="range" min="1" max="20" value="10" id="m-a-slider" class="w-full h-2 rounded-lg appearance-none cursor-pointer">
+                            </div>
+                            <div>
+                                <label class="flex justify-between text-xs font-medium text-muted-custom mb-1.5 font-body">
+                                    <span>Volume</span>
+                                    <span id="v-a-val" class="mono font-bold" style="color: var(--primary);">50 mL</span>
+                                </label>
+                                <input type="range" min="10" max="100" value="50" id="v-a-slider" class="w-full h-2 rounded-lg appearance-none cursor-pointer">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border-t border-[var(--border-color)] pt-5">
+                        <h2 class="text-sm font-bold uppercase tracking-wider mb-3 font-heading" style="color: var(--secondary);">Larutan B</h2>
+                        <select id="select-b" class="w-full rounded-lg p-2.5 text-sm mb-4 outline-none border focus:ring-2 focus:ring-[var(--secondary)]">
+                            <option value="NaCl">NaCl (Natrium Klorida)</option>
+                            <option value="KI">KI (Kalium Iodida)</option>
+                            <option value="Na2SO4">Na₂SO₄ (Natrium Sulfat)</option>
+                            <option value="AgNO3">AgNO₃ (Perak Nitrat)</option>
+                            <option value="Pb(NO3)2">Pb(NO₃)₂ (Timbal(II) Nitrat)</option>
+                            <option value="BaCl2">BaCl₂ (Barium Klorida)</option>
+                            <option value="HCl">HCl (Asam Klorida)</option>
+                            <option value="NaOH">NaOH (Natrium Hidroksida)</option>
+                        </select>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="flex justify-between text-xs font-medium text-muted-custom mb-1.5 font-body">
+                                    <span>Molaritas</span>
+                                    <span id="m-b-val" class="mono font-bold" style="color: var(--secondary);">1.0 M</span>
+                                </label>
+                                <input type="range" min="1" max="20" value="10" id="m-b-slider" class="w-full h-2 rounded-lg appearance-none cursor-pointer">
+                            </div>
+                            <div>
+                                <label class="flex justify-between text-xs font-medium text-muted-custom mb-1.5 font-body">
+                                    <span>Volume</span>
+                                    <span id="v-b-val" class="mono font-bold" style="color: var(--secondary);">50 mL</span>
+                                </label>
+                                <input type="range" min="10" max="100" value="50" id="v-b-slider" class="w-full h-2 rounded-lg appearance-none cursor-pointer">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border-t border-[var(--border-color)] pt-5">
+                        <h2 class="text-sm font-bold uppercase tracking-wider mb-3 font-heading" style="color: var(--danger);">Lingkungan</h2>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="flex justify-between text-xs font-medium text-muted-custom mb-1.5 font-body">
+                                    <span>Suhu</span>
+                                    <span id="temp-val" class="mono font-bold" style="color: var(--danger);">25 °C</span>
+                                </label>
+                                <input type="range" min="0" max="100" value="25" id="temp-slider" class="w-full h-2 rounded-lg appearance-none cursor-pointer">
+                            </div>
+                            <div>
+                                <label class="flex justify-between text-xs font-medium text-muted-custom mb-1.5 font-body">
+                                    <span>Tekanan</span>
+                                    <span id="press-val" class="mono font-bold text-muted-custom">1 atm</span>
+                                </label>
+                                <select id="press-select" class="w-full rounded-lg p-2 text-xs outline-none border">
+                                    <option value="1">Normal (1 atm)</option>
+                                    <option value="high">Tinggi</option>
+                                    <option value="low">Rendah</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-5 border-t border-[var(--border-color)] space-y-3">
+                        <button id="btn-reset" class="w-full py-2.5 text-xs font-bold rounded-lg btn-secondary">Atur Ulang (Reset)</button>
+                        <button id="btn-run" class="w-full py-3 text-sm font-bold rounded-lg btn-primary flex items-center justify-center gap-2">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/></svg>
+                            Jalankan Simulasi
+                        </button>
+                    </div>
+                </div>
+            </aside>
+
+            <section class="flex-1 flex flex-col relative">
+                <div class="h-14 surface-alt border-b flex items-center px-6 justify-between shrink-0">
+                    <div class="flex gap-2 surface p-1 rounded-lg border border-[var(--border-color)]">
+                        <button id="btn-macro" class="view-btn active px-4 py-1.5 text-xs font-medium rounded-md transition-colors">Makroskopik</button>
+                        <button id="btn-submicro" class="view-btn px-4 py-1.5 text-xs font-medium text-muted-custom rounded-md transition-colors">Submikroskopik</button>
+                    </div>
+                    <div id="sim-status" class="text-xs font-bold mono text-muted-custom">Status: Siap</div>
+                </div>
+
+                <div class="flex-1 flex items-center justify-center p-8 relative overflow-hidden sim-area">
+                    <div id="macro-view" class="relative z-10 w-full h-full max-w-3xl flex items-center justify-center">
+                        <svg viewBox="0 0 700 450" class="w-full h-full">
+                            <g id="beaker-b" transform="translate(420, 180)">
+                                <path d="M10 20 L10 180 Q10 210 40 210 L160 210 Q190 210 190 180 L190 20" fill="none" stroke="var(--beaker-stroke)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path id="liquid-b" d="M15 80 L15 178 Q15 205 40 205 L160 205 Q185 205 185 178 L185 80 Z" fill="#bae6fd" opacity="0.85"/>
+                                <text x="100" y="250" fill="var(--text-muted)" font-size="16" font-family="Montserrat" text-anchor="middle" font-weight="bold">Larutan B</text>
+                            </g>
+
+                            <g id="beaker-a-group">
+                                <path d="M10 20 L10 180 Q10 210 40 210 L160 210 Q190 210 190 180 L190 20" fill="none" stroke="var(--beaker-stroke)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path id="liquid-a" d="M15 80 L15 178 Q15 205 40 205 L160 205 Q185 205 185 178 L185 80 Z" fill="#e9d5ff" opacity="0.85"/>
+                                <text x="100" y="250" fill="var(--text-muted)" font-size="16" font-family="Montserrat" text-anchor="middle" font-weight="bold">Larutan A</text>
+                            </g>
+
+                            <path id="liquid-stream" d="M 430 180 Q 450 220 470 200" fill="none" stroke-width="10" stroke-linecap="round" opacity="0"/>
+
+                            <g id="beaker-mixed" transform="translate(230, 150)" opacity="0">
+                                <path d="M10 20 L10 220 Q10 260 50 260 L190 260 Q230 260 230 220 L230 20" fill="none" stroke="var(--beaker-stroke)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path id="liquid-mixed-bottom" d="M15 140 L15 218 Q15 255 50 255 L190 255 Q225 255 225 218 L225 140 Z" fill="#bae6fd" opacity="0.85"/>
+                                <path id="liquid-mixed-top" d="M15 20 L15 140 L225 140 L225 20 Z" fill="#e9d5ff" opacity="0.85"/>
+                                <line id="liquid-boundary" x1="15" y1="140" x2="225" y2="140" stroke="rgba(0,0,0,0.15)" stroke-width="2" opacity="0"/>
+                                
+                                <text id="layer-name-top" class="layer-name-text" x="120" y="80" fill="#18181b" font-size="14" font-family="Montserrat" text-anchor="middle" font-weight="bold" opacity="0">-</text>
+                                <text id="layer-name-bottom" class="layer-name-text" x="120" y="200" fill="#18181b" font-size="14" font-family="Montserrat" text-anchor="middle" font-weight="bold" opacity="0">-</text>
+                                
+                                <g id="precipitate-dots"></g>
+                                <text x="120" y="300" fill="var(--text-muted)" font-size="18" font-family="Montserrat" text-anchor="middle" font-weight="bold">Campuran Reaksi</text>
+                            </g>
+                        </svg>
+
+                        <div id="equation-container" class="equation-box hidden">
+                            <div class="text-[10px] font-bold uppercase tracking-wider mb-1.5 font-heading" style="color: var(--secondary);">Persamaan Reaksi</div>
+                            <div id="equation-text" class="mono text-xs leading-relaxed" style="color: var(--text-main);">-</div>
+                        </div>
+                    </div>
+
+                    <div id="submicro-view" class="relative z-10 hidden w-full h-full max-w-4xl max-h-[550px]">
+                        <canvas id="submicro-canvas" class="w-full h-full"></canvas>
+                        <div id="particle-legend" class="absolute bottom-4 left-4 surface p-3 rounded-lg border border-[var(--border-color)] text-xs flex flex-wrap gap-3 max-w-xs font-body"></div>
+                        <div class="absolute top-4 right-4 surface p-3 rounded-lg border border-[var(--border-color)] text-xs font-body">
+                            <span class="text-muted-custom">Energi Kinetik:</span>
+                            <span id="kinetic-indicator" class="font-bold ml-1 font-heading" style="color: var(--secondary);">Sedang</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- RESIZE HANDLE -->
+            <div id="resize-handle" class="w-1 hover:bg-[var(--primary)] cursor-col-resize transition-colors z-20 shrink-0"></div>
+
+            <!-- RIGHT PANEL (Updated with min/max width) -->
+            <aside id="right-panel" class="w-80 min-w-[280px] max-w-[600px] surface border-l flex flex-col overflow-hidden shrink-0 z-10">
+                <div class="p-5 border-b border-[var(--border-color)] shrink-0">
+                    <h2 class="text-xs font-bold uppercase tracking-wider mb-3 font-heading" style="color: var(--secondary);">Hasil Analisis</h2>
+                    <div class="grid grid-cols-2 gap-3 text-xs font-body">
+                        <div class="surface-alt p-3 rounded-lg border border-[var(--border-color)]">
+                            <span class="text-muted-custom block mb-1">Warna</span>
+                            <span id="res-color" class="font-bold font-heading">Bening</span>
+                        </div>
+                        <div class="surface-alt p-3 rounded-lg border border-[var(--border-color)]">
+                            <span class="text-muted-custom block mb-1">Endapan</span>
+                            <span id="res-ppt" class="font-bold font-heading">-</span>
+                        </div>
+                        <div class="surface-alt p-3 rounded-lg border border-[var(--border-color)]">
+                            <span class="text-muted-custom block mb-1">pH Akhir</span>
+                            <span id="res-ph" class="font-bold font-heading">-</span>
+                        </div>
+                        <div class="surface-alt p-3 rounded-lg border border-[var(--border-color)]">
+                            <span class="text-muted-custom block mb-1">Energi</span>
+                            <span id="res-energy" class="font-bold font-heading">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex-1 flex flex-col p-5 overflow-hidden">
+                    <h2 class="text-xs font-bold uppercase tracking-wider mb-3 font-heading" style="color: var(--success);">AI Adaptive Tutor</h2>
+                    <div id="chat-window" class="flex-1 overflow-y-auto space-y-3 mb-3 pr-1 font-body">
+                        <div class="flex gap-2 items-start">
+                            <div class="w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold text-white shrink-0 font-heading" style="background-color: var(--success);">AI</div>
+                            <div class="chat-bubble-ai p-3 text-xs max-w-[85%] leading-relaxed">
+                                Pilih Larutan A dan B, lalu klik <b>Jalankan Simulasi</b> untuk melihat animasi penuangan dan reaksi partikel secara real-time!
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex gap-2 shrink-0">
+                        <input type="text" id="chat-input" placeholder="Tanya AI tentang reaksimu..." class="flex-1 rounded-lg p-2.5 text-xs outline-none border focus:ring-2 focus:ring-[var(--primary)]">
+                        <button id="btn-send" class="px-4 rounded-lg text-xs font-bold text-white transition-colors font-heading" style="background-color: var(--success);">Kirim</button>
+                    </div>
+                </div>
+            </aside>
+        </div>
+<<!-- Ganti seluruh bagian Modul 02 di index.html dengan ini -->
+<div id="tab-inverse" class="tab-content absolute inset-0 hidden p-6 overflow-y-auto bg-[var(--bg-main)]">
+    <div class="max-w-6xl mx-auto">
+        <h2 class="text-2xl font-bold mb-2 font-heading" style="color: var(--primary);">Sistem memecahkan <i>inverse experimentation problem</i>: menentukan konfigurasi berdasarkan target hasil.</h2>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- INPUT TUJUAN -->
+            <div class="lg:col-span-1 surface border border-[var(--border-color)] rounded-xl p-5">
+                <h3 class="text-sm font-bold uppercase tracking-wider mb-4 font-heading" style="color: var(--secondary);">1. Input: Tujuan Eksperimen</h3>
+                <div class="space-y-3">
+                    <button class="inv-btn w-full text-left p-3 rounded-lg border border-[var(--border-color)] hover:border-[var(--primary)] hover:bg-[var(--bg-surface-alt)] transition-all text-sm font-body" data-goal="Membentuk endapan spesifik berwarna putih">
+                        🧪 Endapan Putih Spesifik
+                    </button>
+                    <button class="inv-btn w-full text-left p-3 rounded-lg border border-[var(--border-color)] hover:border-[var(--primary)] hover:bg-[var(--bg-surface-alt)] transition-all text-sm font-body" data-data-goal="Membentuk endapan spesifik berwarna kuning">
+                        🧪 Endapan Kuning Spesifik
+                    </button>
+                    <button class="inv-btn w-full text-left p-3 rounded-lg border border-[var(--border-color)] hover:border-[var(--primary)] hover:bg-[var(--bg-surface-alt)] transition-all text-sm font-body" data-goal="Memperoleh pH netral (7)">
+                        ⚖️ Memperoleh pH Netral (± 7)
+                    </button>
+                </div>
+            </div>
+
+            <!-- OUTPUT REKOMENDASI (PASTIKAN ID INI ADA: inv-output) -->
+            <div class="lg:col-span-2 surface border border-[var(--border-color)] rounded-xl p-5">
+                <h3 class="text-sm font-bold uppercase tracking-wider mb-4 font-heading" style="color: var(--secondary);">3. Output: Rekomendasi Konfigurasi</h3>
+                
+                <!-- INI ELEMEN YANG DICARI JAVASCRIPT -->
+                <div id="inv-output" class="text-muted-custom text-sm italic p-4 bg-[var(--bg-surface-alt)] rounded-lg">
+                    Pilih tujuan eksperimen di sebelah kiri untuk memulai analisis AI...
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+        <!-- Modul 03 · Environmental Molecular Literacy -->
+<!-- Modul 03: Environmental Literacy -->
+<div id="tab-env" class="tab-content absolute inset-0 hidden overflow-y-auto">
+    <div class="p-10 max-w-6xl mx-auto">
+        <h2 class="text-3xl font-bold mb-2 font-heading" style="color: var(--primary);">
+            Modul 03 · Environmental Molecular Literacy
+        </h2>
+        <p class="text-muted-custom mb-8 text-lg font-body">
+            Dari Struktur Molekul ke Dampak Lingkungan. Tekan sebuah kartu material untuk melihat penjelasan ikatan molekulnya secara lebih rinci.
+        </p>
+        
+        <!-- Grid Container untuk Kartu-kartu -->
+        <div id="env-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Kartu akan di-generate oleh JavaScript -->
+        </div>
+    </div>
+</div>
+
+<!-- Modal untuk Detail Ikatan -->
+<div id="bond-detail-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="surface border border-[var(--border-color)] rounded-2xl max-w-2xl w-full max-h-[80vh] overflow-y-auto">
+        <div class="p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 id="modal-title" class="text-2xl font-bold font-heading" style="color: var(--primary);"></h3>
+                <button onclick="closeBondModal()" class="text-muted-custom hover:text-[var(--text-main)] text-2xl">&times;</button>
+            </div>
+            <div id="modal-content" class="space-y-4"></div>
+            <div class="mt-6 pt-4 border-t border-[var(--border-color)]">
+                <button onclick="closeBondModal()" class="px-6 py-2 rounded-lg btn-secondary text-sm font-bold">Tutup</button>
+            </div>
+        </div>
+    </div>
+</div>
+    </main>
+
+    <!-- JavaScript Files -->
+    <script src="js/chemistry-engine.js"></script>
+    <script src="js/visualization.js"></script>
+    <script src="js/ai-tutor.js"></script>
+    <script src="js/inverse-experiment.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

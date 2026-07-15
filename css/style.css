@@ -1,0 +1,282 @@
+:root {
+    --bg-main: #fafafa;
+    --bg-surface: #ffffff;
+    --bg-surface-alt: #f4f4f5;
+    --text-main: #18181b;
+    --text-muted: #71717a;
+    --border-color: #e4e4e7;
+    --primary: #0d9488;
+    --secondary: #f59e0b;
+    --success: #10b981;
+    --danger: #ef4444;
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    --sim-bg: #ceced1;
+    --sim-grid: rgba(0, 0, 0, 0.621);
+    --beaker-stroke: #52525b;
+    --slider-color: #a1a1aa;
+}
+
+[data-theme="dark"] {
+    --bg-main: #09090b;
+    --bg-surface: #18181b;
+    --bg-surface-alt: #27272a;
+    --text-main: #fafafa;
+    --text-muted: #a1a1aa;
+    --border-color: #3f3f46;
+    --primary: #14b8a6;
+    --secondary: #fbbf24;
+    --success: #34d399;
+    --danger: #f87171;
+    --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+    --sim-bg: #27272a;
+    --sim-grid: rgba(255, 255, 255, 0.04);
+    --beaker-stroke: #a1a1aa;
+    --slider-color: #71717a;
+}
+
+body { 
+    font-family: 'Poppins', sans-serif; 
+    background-color: var(--bg-main); 
+    color: var(--text-main);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+h1, h2, h3, h4, .font-heading, .tab-btn, .view-btn, .btn-primary, .btn-secondary {
+    font-family: 'Montserrat', sans-serif;
+}
+
+.mono { font-family: 'JetBrains Mono', monospace; }
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-main); }
+::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 3px; }
+
+.surface { background-color: var(--bg-surface); border-color: var(--border-color); box-shadow: var(--shadow); }
+.surface-alt { background-color: var(--bg-surface-alt); border-color: var(--border-color); }
+.text-muted-custom { color: var(--text-muted); }
+
+.btn-primary {
+    background-color: var(--primary);
+    color: white;
+    font-weight: 700;
+    transition: all 0.3s ease;
+}
+.btn-primary:hover { opacity: 0.9; transform: translateY(-2px); }
+
+.btn-secondary { background-color: var(--bg-surface-alt); color: var(--text-main); border: 1px solid var(--border-color); transition: all 0.2s; font-weight: 600; }
+.btn-secondary:hover { background-color: var(--border-color); }
+
+.tab-btn.active { color: var(--primary); border-bottom: 2px solid var(--primary); font-weight: 700; }
+.view-btn.active { background-color: var(--bg-surface-alt); color: var(--primary); border-color: var(--primary); font-weight: 600; }
+
+input[type="range"] { accent-color: var(--slider-color); }
+
+select, input[type="text"] {
+    background-color: var(--bg-surface-alt);
+    color: var(--text-main);
+    border-color: var(--border-color);
+    font-family: 'Poppins', sans-serif;
+}
+
+.chat-bubble-user { background-color: var(--primary); color: white; border-radius: 12px 12px 0 12px; }
+.chat-bubble-ai { background-color: var(--bg-surface-alt); border: 1px solid var(--border-color); color: var(--text-main); border-radius: 12px 12px 12px 0; }
+
+.sim-area {
+    background-color: var(--sim-bg) !important;
+    background-image: linear-gradient(var(--sim-grid) 1px, transparent 1px), linear-gradient(90deg, var(--sim-grid) 1px, transparent 1px);
+    background-size: 40px 40px;
+    transition: background-color 0.3s ease, background-image 0.3s ease;
+}
+
+#submicro-canvas { 
+    background-color: var(--sim-bg);
+    border-radius: 12px; 
+    border: 1px solid var(--border-color);
+    transition: background-color 0.3s ease;
+}
+
+@keyframes pourBeakerA {
+    0% { transform: translate(130px, 180px) rotate(0deg); opacity: 1; }
+    15% { transform: translate(130px, 180px) rotate(0deg); opacity: 1; }
+    35% { transform: translate(380px, 100px) rotate(0deg); opacity: 1; }
+    45% { transform: translate(380px, 100px) rotate(0deg); opacity: 1; }
+    55% { transform: translate(380px, 100px) rotate(80deg); opacity: 1; }
+    75% { transform: translate(380px, 100px) rotate(80deg); opacity: 1; }
+    85% { transform: translate(380px, 100px) rotate(80deg); opacity: 0; }
+    100% { transform: translate(380px, 100px) rotate(80deg); opacity: 0; }
+}
+.pouring { animation: pourBeakerA 4s forwards; }
+
+@keyframes drainLiquid {
+    0% { opacity: 0.85; }
+    50% { opacity: 0.85; }
+    70% { opacity: 0.2; }
+    85% { opacity: 0; }
+    100% { opacity: 0; }
+}
+.draining { animation: drainLiquid 4s forwards; }
+
+@keyframes pourStream {
+    0% { opacity: 0; } 50% { opacity: 0; } 55% { opacity: 0.9; } 75% { opacity: 0.9; } 80% { opacity: 0; } 100% { opacity: 0; }
+}
+.flowing { animation: pourStream 4s forwards; }
+
+@keyframes mixedAppear {
+    0% { opacity: 0; transform: scale(0.8); }
+    80% { opacity: 0; transform: scale(0.8); }
+    100% { opacity: 1; transform: scale(1); }
+}
+.mixed-appear { animation: mixedAppear 4s forwards; }
+
+@keyframes fadeOutBeakerB {
+    0% { opacity: 1; } 80% { opacity: 1; } 100% { opacity: 0; }
+}
+.fading { animation: fadeOutBeakerB 4s forwards; }
+
+.env-card { transition: all 0.3s ease; }
+.env-card:hover { transform: translateY(-5px); border-color: var(--primary); box-shadow: var(--shadow); }
+
+.theme-toggle { transition: transform 0.3s ease; }
+.theme-toggle:hover { transform: rotate(15deg); }
+
+.equation-box {
+    position: absolute;
+    right: 32%;
+    top: 65%;
+    transform: translateY(-50%);
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 12px 16px;
+    box-shadow: var(--shadow);
+    max-width: 260px;
+    min-width: 220px;
+    z-index: 20;
+}
+
+.layer-name-text {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+}
+.layer-name-text.visible {
+    opacity: 1;
+}
+/* Markdown Styling inside Chat */
+.markdown-content strong {
+    font-weight: 700;
+    color: var(--primary);
+}
+.markdown-content em {
+    font-style: italic;
+    color: var(--text-muted);
+}
+.markdown-content ul, .markdown-content ol {
+    padding-left: 1.2rem;
+    margin: 0.5rem 0;
+}
+.markdown-content li {
+    margin-bottom: 0.25rem;
+}
+.markdown-content p {
+    margin-bottom: 0.5rem;
+}
+.markdown-content p:last-child {
+    margin-bottom: 0;
+}
+/* KaTeX Math Styling override for chat bubbles */
+.markdown-content .katex {
+    font-size: 1.1em;
+}
+
+/* KaTeX Display Styling */
+.katex-display {
+    margin: 0.5em 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.katex {
+    font-size: 1.1em;
+    font-weight: normal;
+}
+
+/* Fix for inline math in chat bubbles */
+.markdown-content .katex {
+    display: inline-block;
+    white-space: nowrap;
+}
+
+.markdown-content .katex-display {
+    display: block;
+    margin: 0.5em 0;
+}
+
+/* Environmental card hover effect */
+.env-card {
+    transition: all 0.3s ease;
+}
+
+.env-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary);
+    box-shadow: var(--shadow);
+}
+
+/* Modal animation */
+#bond-detail-modal {
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+#bond-detail-modal > div {
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from { 
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to { 
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.env-card {
+    transition: all 0.3s ease;
+}
+
+.env-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+#bond-detail-modal {
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+#bond-detail-modal > div {
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from { 
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to { 
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
