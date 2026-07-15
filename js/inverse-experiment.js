@@ -3,107 +3,111 @@
 document.querySelectorAll('.inv-btn').forEach(btn => {
     btn.addEventListener('click', async function() {
         const goal = this.dataset.goal;
-        const outputDiv = document.getElementById('inverse-output');
+        const outputDiv = document.getElementById('inv-output');
         
-        // Show Loading State (Box 2: Proses Sistem)
+        // PENGAMAN: Cek apakah elemen ditemukan
+        if (!outputDiv) {
+            console.error('❌ ERROR: Element dengan id "inv-output" TIDAK DITEMUKAN!');
+            return;
+        }
+        
+        console.log('✅ Element inv-output ditemukan');
+        console.log('📤 Mengirim request untuk goal:', goal);
+        
+        // Tampilkan loading
         outputDiv.innerHTML = `
-            <div class="flex items-center gap-3 p-4 bg-[var(--bg-surface-alt)] rounded-lg">
-                <div class="animate-spin rounded-full h-5 w-5 border-b-2 border-[var(--primary)]"></div>
+            <div class="flex items-center gap-3 p-4">
+                <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-[var(--primary)]"></div>
                 <div>
-                    <div class="font-bold text-sm">Menganalisis Tujuan...</div>
-                    <div class="text-xs text-muted-custom">Pencarian Pola & Solusi di Knowledge Base</div>
+                    <div class="font-bold">AI sedang menganalisis...</div>
+                    <div class="text-xs text-muted-custom">Mencari konfigurasi optimal dari knowledge base</div>
                 </div>
             </div>
         `;
-
+        
         try {
-            const response = await fetch(`${API_CONFIG.BASE_URL}${API_CONFIG.INVERSE}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ goal: goal, constraints: {} })
-        });
+            // PASTIKAN URL INI MENGGUNAKAN URL RAILWAY KAMU
+            const apiUrl = typeof API_CONFIG !== 'undefined' 
+                ? `${API_CONFIG.BASE_URL}${API_CONFIG.INVERSE}` 
+                : 'https://atomverse-backend-production.up.railway.app/api/inverse-experiment'; // Ganti dengan URL Railway kamu jika API_CONFIG belum ada
 
-            if (!response.ok) throw new Error("AI Engine Error");
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ goal: goal, constraints: {} })
+            });
+            
+            console.log('📥 Response status:', response.status);
+            
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`Server error: ${response.status} - ${errorText}`);
+            }
+            
             const data = await response.json();
-
-            // Render Box 3: Output UI
+            console.log('✅ Data diterima:', data);
+            
+            // Tampilkan hasil
+            displayInverseResult(data, outputDiv);
+            
+        } catch (error) {
+            console.error('❌ Fetch error:', error);
             outputDiv.innerHTML = `
-                <div class="space-y-4">
-                    <div class="flex items-center justify-between">
-                        <h4 class="font-bold text-lg font-heading" style="color: var(--primary);">${data.recommended_reaction}</h4>
-                        <span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700">Confidence: ${data.confidence_score}%</span>
-                    </div>
-
-                    <!-- Configuration Table -->
-                    <div class="overflow-hidden rounded-lg border border-[var(--border-color)]">
-                        <table class="w-full text-sm text-left">
-                            <thead class="bg-[var(--bg-surface-alt)] text-xs uppercase text-muted-custom">
-                                <tr>
-                                    <th class="px-4 py-2">Variabel</th>
-                                    <th class="px-4 py-2">Nilai Rekomendasi</th>
-                                    <th class="px-4 py-2">Satuan</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-[var(--border-color)]">
-                                <tr><td class="px-4 py-2 font-medium">Konsentrasi ${data.configuration.reactant_a}</td><td class="px-4 py-2 font-mono">${data.configuration.conc_a}</td><td class="px-4 py-2">${data.configuration.unit_conc}</td></tr>
-                                <tr><td class="px-4 py-2 font-medium">Volume ${data.configuration.reactant_a}</td><td class="px-4 py-2 font-mono">${data.configuration.vol_a}</td><td class="px-4 py-2">${data.configuration.unit_vol}</td></tr>
-                                <tr><td class="px-4 py-2 font-medium">Konsentrasi ${data.configuration.reactant_b}</td><td class="px-4 py-2 font-mono">${data.configuration.conc_b}</td><td class="px-4 py-2">${data.configuration.unit_conc}</td></tr>
-                                <tr><td class="px-4 py-2 font-medium">Volume ${data.configuration.reactant_b}</td><td class="px-4 py-2 font-mono">${data.configuration.vol_b}</td><td class="px-4 py-2">${data.configuration.unit_vol}</td></tr>
-                                <tr><td class="px-4 py-2 font-medium">Suhu</td><td class="px-4 py-2 font-mono">${data.configuration.temp}</td><td class="px-4 py-2">${data.configuration.unit_temp}</td></tr>
-                                <tr><td class="px-4 py-2 font-medium">Tekanan</td><td class="px-4 py-2 font-mono">${data.configuration.pressure}</td><td class="px-4 py-2">${data.configuration.unit_press}</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <!-- Prediksi Outcome -->
-                    <div class="p-4 rounded-lg bg-[var(--primary)]/10 border border-[var(--primary)]/30">
-                        <h5 class="font-bold text-sm mb-2" style="color: var(--primary);">🔮 Prediksi Outcome</h5>
-                        <ul class="text-xs space-y-1 list-disc list-inside">
-                            <li><b>Warna:</b> ${data.predicted_outcome.color}</li>
-                            <li><b>Endapan:</b> ${data.predicted_outcome.precipitate || '-'}</li>
-                            <li><b>Gas:</b> ${data.predicted_outcome.gas || '-'}</li>
-                            <li><b>pH Akhir:</b> ${data.predicted_outcome.ph_final}</li>
-                            <li><b>Laju Reaksi:</b> ${data.predicted_outcome.rate}</li>
-                        </ul>
-                    </div>
-
-                    <button onclick="applyInverseRecommendation(${JSON.stringify(data.configuration).replace(/"/g, '&quot;')})" class="w-full py-2 rounded-lg btn-primary text-sm">
-                        ▶ Terapkan ke Lab & Jalankan Simulasi
-                    </button>
+                <div class="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg text-red-700 dark:text-red-400">
+                    <div class="font-bold">Error:</div>
+                    <div class="text-sm">${error.message}</div>
+                    <div class="text-xs mt-2">Pastikan backend Railway berjalan atau URL sudah benar.</div>
                 </div>
             `;
-
-        } catch (error) {
-            outputDiv.innerHTML = `<div class="text-red-500 text-sm">Error: ${error.message}</div>`;
         }
     });
 });
 
-// Function to auto-fill the Lab Reaksi tab
-function applyInverseRecommendation(config) {
-    // Switch to Lab tab
-    document.querySelector('[data-tab="lab"]').click();
-    
-    // Set values (You will need to map your select options correctly)
-    document.getElementById('select-a').value = config.reactant_a;
-    document.getElementById('select-b').value = config.reactant_b;
-    
-    // Note: You'll need to adjust slider logic here based on your min/max values
-    // For example, if slider is 1-20 representing 0.1 - 2.0 M
-    document.getElementById('m-a-slider').value = config.conc_a * 10; 
-    document.getElementById('m-b-slider').value = config.conc_b * 10;
-    document.getElementById('v-a-slider').value = config.vol_a;
-    document.getElementById('v-b-slider').value = config.vol_b;
-    document.getElementById('temp-slider').value = config.temp;
-    
-    // Update text displays
-    document.getElementById('m-a-val').textContent = config.conc_a.toFixed(1) + ' M';
-    document.getElementById('m-b-val').textContent = config.conc_b.toFixed(1) + ' M';
-    document.getElementById('v-a-val').textContent = config.vol_a + ' mL';
-    document.getElementById('v-b-val').textContent = config.vol_b + ' mL';
-    document.getElementById('temp-val').textContent = config.temp + ' °C';
-    
-    // Trigger visual update
-    if(typeof updateMacroColors === 'function') updateMacroColors();
-    if(typeof generateParticles === 'function') generateParticles();
+// Fungsi untuk menampilkan hasil
+function displayInverseResult(data, container) {
+    container.innerHTML = `
+        <div class="space-y-4">
+            <div class="flex items-center justify-between">
+                <h4 class="font-bold text-lg font-heading" style="color: var(--primary);">${data.recommended_reaction}</h4>
+                <span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400">
+                    Confidence: ${data.confidence_score}%
+                </span>
+            </div>
+            
+            <div class="p-4 rounded-lg bg-[var(--bg-surface-alt)] border border-[var(--border-color)]">
+                <h5 class="font-bold text-sm mb-2 font-heading">Konfigurasi Optimal:</h5>
+                <div class="grid grid-cols-2 gap-3 text-sm">
+                    <div>
+                        <span class="text-muted-custom block text-xs">Reaktan A</span>
+                        <div class="font-mono font-semibold">${data.configuration.reactant_a} ${data.configuration.conc_a}M, ${data.configuration.vol_a}mL</div>
+                    </div>
+                    <div>
+                        <span class="text-muted-custom block text-xs">Reaktan B</span>
+                        <div class="font-mono font-semibold">${data.configuration.reactant_b} ${data.configuration.conc_b}M, ${data.configuration.vol_b}mL</div>
+                    </div>
+                    <div>
+                        <span class="text-muted-custom block text-xs">Suhu</span>
+                        <div class="font-mono font-semibold">${data.configuration.temp}°C</div>
+                    </div>
+                    <div>
+                        <span class="text-muted-custom block text-xs">Tekanan</span>
+                        <div class="font-mono font-semibold">${data.configuration.pressure} atm</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="p-4 rounded-lg bg-[var(--primary)]/10 border border-[var(--primary)]/30">
+                <h5 class="font-bold text-sm mb-2 font-heading" style="color: var(--primary);">🔮 Prediksi Outcome:</h5>
+                <ul class="text-xs space-y-1 list-disc list-inside">
+                    <li><b>Warna:</b> ${data.predicted_outcome.color || '-'}</li>
+                    <li><b>Endapan:</b> ${data.predicted_outcome.precipitate || '-'}</li>
+                    <li><b>pH Akhir:</b> ${data.predicted_outcome.ph_final || '-'}</li>
+                </ul>
+            </div>
+            
+            <div class="text-xs text-muted-custom italic leading-relaxed">
+                ${data.explanation || ''}
+            </div>
+        </div>
+    `;
 }
