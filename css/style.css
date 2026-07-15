@@ -1,7 +1,7 @@
 :root {
     --bg-main: #fafafa;
-    --bg-surface: #ffffff;
-    --bg-surface-alt: #f4f4f5;
+    --bg-surface: #e3e1e1;
+    --bg-surface-alt: #dedee1;
     --text-main: #18181b;
     --text-muted: #71717a;
     --border-color: #e4e4e7;
@@ -11,8 +11,8 @@
     --danger: #ef4444;
     --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
     --sim-bg: #ceced1;
-    --sim-grid: rgba(0, 0, 0, 0.621);
-    --beaker-stroke: #52525b;
+    --sim-grid: rgba(0, 0, 0, 0.182);
+    --beaker-stroke: #5c5c61;
     --slider-color: #a1a1aa;
 }
 
