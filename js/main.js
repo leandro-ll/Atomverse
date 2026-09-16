@@ -20,6 +20,7 @@ var els = {
     status: document.getElementById('sim-status'),
     resColor: document.getElementById('res-color'), resPpt: document.getElementById('res-ppt'),
     resPh: document.getElementById('res-ph'), resEnergy: document.getElementById('res-energy'),
+    resConcentrations: document.getElementById('res-concentrations'),
     macroView: document.getElementById('macro-view'), submicroView: document.getElementById('submicro-view'),
     btnMacro: document.getElementById('btn-macro'), btnSubmicro: document.getElementById('btn-submicro'),
     canvas: document.getElementById('submicro-canvas'), legend: document.getElementById('particle-legend'),
@@ -144,6 +145,18 @@ function runSimulation() {
         els.resPpt.textContent = res.ppt || "-"; els.resPpt.style.color = res.pptColor || 'var(--text-main)';
         els.resPh.textContent = res.ph; els.resEnergy.textContent = res.energy;
         
+        // Calculate and display product concentrations
+        const concentrations = calculateProductConcentrations();
+        if (concentrations && Object.keys(concentrations).length > 0) {
+            let concHTML = '';
+            for (const [product, data] of Object.entries(concentrations)) {
+                concHTML += `<div class="flex justify-between"><span>${data.name}:</span><span class="font-bold">${data.concentration.toFixed(3)} M</span></div>`;
+            }
+            els.resConcentrations.innerHTML = concHTML;
+        } else {
+            els.resConcentrations.innerHTML = '<span class="text-muted-custom italic">Tidak ada reaksi / Tidak dihitung</span>';
+        }
+        
         if(res.energy === 'Eksoterm (Panas)') els.resEnergy.style.color = "var(--danger)";
         else els.resEnergy.style.color = "var(--text-main)";
 
@@ -169,6 +182,7 @@ function resetState() {
     els.resColor.textContent = "Bening"; els.resPpt.textContent = "-"; els.resPh.textContent = "-";
     els.resEnergy.textContent = "-";
     els.resEnergy.style.color = "var(--text-main)";
+    els.resConcentrations.innerHTML = '<span class="text-muted-custom italic">Belum dihitung</span>';
     updateMacroColors(); generateParticles();
 }
 

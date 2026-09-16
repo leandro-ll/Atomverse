@@ -36,13 +36,13 @@ const reactionRules = [
 
 const reactionEquations = {
     'AgNO3-NaCl': 'AgNO₃(aq) + NaCl(aq) → AgCl(s) + NaNO₃(aq)',
-    'NaCl-AgNO3': 'AgNO(aq) + NaCl(aq) → AgCl(s) + NaNO₃(aq)',
-    'AgNO3-KI': 'AgNO(aq) + KI(aq) → AgI(s) + KNO₃(aq)',
+    'NaCl-AgNO3': 'AgNO₃(aq) + NaCl(aq) → AgCl(s) + NaNO₃(aq)',
+    'AgNO3-KI': 'AgNO₃(aq) + KI(aq) → AgI(s) + KNO₃(aq)',
     'KI-AgNO3': 'AgNO₃(aq) + KI(aq) → AgI(s) + KNO₃(aq)',
     'Pb(NO3)2-NaCl': 'Pb(NO₃)₂(aq) + 2NaCl(aq) → PbCl₂(s) + 2NaNO₃(aq)',
     'NaCl-Pb(NO3)2': 'Pb(NO₃)₂(aq) + 2NaCl(aq) → PbCl₂(s) + 2NaNO₃(aq)',
     'Pb(NO3)2-KI': 'Pb(NO₃)₂(aq) + 2KI(aq) → PbI₂(s) + 2KNO₃(aq)',
-    'KI-Pb(NO3)2': 'Pb(NO)₂(aq) + 2KI(aq) → PbI₂(s) + 2KNO₃(aq)',
+    'KI-Pb(NO3)2': 'Pb(NO₃)₂(aq) + 2KI(aq) → PbI₂(s) + 2KNO₃(aq)',
     'BaCl2-Na2SO4': 'BaCl₂(aq) + Na₂SO₄(aq) → BaSO₄(s) + 2NaCl(aq)',
     'Na2SO4-BaCl2': 'BaCl₂(aq) + Na₂SO₄(aq) → BaSO₄(s) + 2NaCl(aq)',
     'HCl-NaOH': 'HCl(aq) + NaOH(aq) → NaCl(aq) + H₂O(l) + Energi',
@@ -84,4 +84,160 @@ function getReactionResult() {
         }
     }
     return result;
+}
+
+// Calculate product concentrations based on stoichiometry
+function calculateProductConcentrations() {
+    // Volume total campuran (mL)
+    const totalVolume = state.vA + state.vB;
+    
+    // Hitung mol awal reaktan
+    const molA = state.mA * (state.vA / 1000); // konversi mL ke L
+    const molB = state.mB * (state.vB / 1000);
+    
+    // Tentukan reaksi yang terjadi
+    const ionsA = reagentIons[state.reagentA];
+    const ionsB = reagentIons[state.reagentB];
+    
+    let products = {};
+    let limitingReagent = null;
+    let reactionOccurred = false;
+    
+    // Cek apakah ada reaksi
+    for(let iA of ionsA) {
+        for(let iB of ionsB) {
+            let rule = reactionRules.find(r => (r.cation === iA.t && r.anion === iB.t) || (r.cation === iB.t && r.anion === iA.t));
+            if(rule) {
+                reactionOccurred = true;
+                
+                if(rule.ppt === 'H2O') {
+                    // Reaksi netralisasi HCl + NaOH -> NaCl + H2O
+                    // Rasio 1:1
+                    let molProduct = Math.min(molA, molB);
+                    limitingReagent = molA < molB ? state.reagentA : state.reagentB;
+                    
+                    // Hitung konsentrasi produk (NaCl atau garam lainnya)
+                    let spectatorIon1, spectatorIon2;
+                    
+                    // Tentukan ion spektator berdasarkan reaktan
+                    if(state.reagentA === 'HCl') {
+                        spectatorIon1 = 'Cl-';
+                        spectatorIon2 = 'Na+';
+                    } else if(state.reagentA === 'NaOH') {
+                        spectatorIon1 = 'Na+';
+                        spectatorIon2 = 'Cl-';
+                    }
+                    
+                    products['H2O'] = {
+                        name: 'H2O',
+                        concentration: molProduct / (totalVolume / 1000),
+                        type: 'liquid'
+                    };
+                    
+                    // Produk garam (misal NaCl)
+                    const saltName = 'NaCl';
+                    products[saltName] = {
+                        name: 'NaCl (aq)',
+                        concentration: molProduct / (totalVolume / 1000),
+                        type: 'aqueous'
+                    };
+                    
+                } else {
+                    // Reaksi pengendapan: AgNO3 + NaCl -> AgCl(s) + NaNO3(aq)
+                    // Rasio 1:1 untuk kebanyakan reaksi kita
+                    
+                    // Tentukan pereaksi pembatas
+                    limitingReagent = molA < molB ? state.reagentA : state.reagentB;
+                    const excessReagent = molA < molB ? state.reagentB : state.reagentA;
+                    
+                    // Mol endapan yang terbentuk = mol pereaksi pembatas
+                    const molPrecipitate = Math.min(molA, molB);
+                    
+                    // Nama endapan
+                    const pptFormula = rule.ppt;
+                    products[pptFormula] = {
+                        name: rule.name + ' (s)',
+                        concentration: molPrecipitate / (totalVolume / 1000),
+                        type: 'precipitate'
+                    };
+                    
+                    // Hitung garam terlarut (produk sampingan)
+                    // Misal: AgNO3 + NaCl -> AgCl(s) + NaNO3(aq)
+                    // Ion spektator membentuk garam terlarut
+                    let saltFormula, saltName;
+                    
+                    if(state.reagentA === 'AgNO3' && state.reagentB === 'NaCl') {
+                        saltFormula = 'NaNO3';
+                        saltName = 'NaNO3';
+                    } else if(state.reagentA === 'NaCl' && state.reagentB === 'AgNO3') {
+                        saltFormula = 'NaNO3';
+                        saltName = 'NaNO3';
+                    } else if(state.reagentA === 'Pb(NO3)2' && state.reagentB === 'KI') {
+                        saltFormula = 'KNO3';
+                        saltName = 'KNO3';
+                    } else if(state.reagentA === 'KI' && state.reagentB === 'Pb(NO3)2') {
+                        saltFormula = 'KNO3';
+                        saltName = 'KNO3';
+                    } else if(state.reagentA === 'BaCl2' && state.reagentB === 'Na2SO4') {
+                        saltFormula = 'NaCl';
+                        saltName = 'NaCl';
+                    } else if(state.reagentA === 'Na2SO4' && state.reagentB === 'BaCl2') {
+                        saltFormula = 'NaCl';
+                        saltName = 'NaCl';
+                    } else if(state.reagentA === 'AgNO3' && state.reagentB === 'KI') {
+                        saltFormula = 'KNO3';
+                        saltName = 'KNO3';
+                    } else if(state.reagentA === 'KI' && state.reagentB === 'AgNO3') {
+                        saltFormula = 'KNO3';
+                        saltName = 'KNO3';
+                    } else if(state.reagentA === 'Pb(NO3)2' && state.reagentB === 'NaCl') {
+                        saltFormula = 'NaNO3';
+                        saltName = 'NaNO3';
+                    } else if(state.reagentA === 'NaCl' && state.reagentB === 'Pb(NO3)2') {
+                        saltFormula = 'NaNO3';
+                        saltName = 'NaNO3';
+                    }
+                    
+                    if(saltFormula) {
+                        products[saltFormula] = {
+                            name: saltName + ' (aq)',
+                            concentration: molPrecipitate / (totalVolume / 1000),
+                            type: 'aqueous'
+                        };
+                    }
+                    
+                    // Hitung sisa pereaksi berlebih
+                    const excessMol = Math.abs(molA - molB);
+                    if(excessMol > 0) {
+                        products[excessReagent] = {
+                            name: chemicalNames[excessReagent] + ' (sisa)',
+                            concentration: excessMol / (totalVolume / 1000),
+                            type: 'excess'
+                        };
+                    }
+                }
+            }
+        }
+    }
+    
+    // Jika tidak ada reaksi, tampilkan konsentrasi ion awal setelah pencampuran
+    if(!reactionOccurred) {
+        // Pengenceran saja
+        const concA_diluted = (state.mA * state.vA) / totalVolume;
+        const concB_diluted = (state.mB * state.vB) / totalVolume;
+        
+        products[state.reagentA] = {
+            name: chemicalNames[state.reagentA] + ' (terlarut)',
+            concentration: concA_diluted,
+            type: 'diluted'
+        };
+        
+        products[state.reagentB] = {
+            name: chemicalNames[state.reagentB] + ' (terlarut)',
+            concentration: concB_diluted,
+            type: 'diluted'
+        };
+    }
+    
+    return products;
 }
