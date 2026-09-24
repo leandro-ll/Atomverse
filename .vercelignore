@@ -1,0 +1,7 @@
+.git
+.vercel
+backend
+semantic-review
+.env
+*.log
+assets/*.mp3
