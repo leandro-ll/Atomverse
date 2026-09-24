@@ -1,54 +1,33 @@
 <!DOCTYPE html>
-<html lang="id" class="dark">
+<html lang="id" class="dark" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ATOMVERSE - Virtual Chemistry Lab</title>
     
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Poppins:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="css/style.css">
-        <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Marked.js for Markdown parsing (Bold, Lists, etc.) -->
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    
-    <!-- KaTeX for beautiful Math/Chemistry equations -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
-    
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Poppins:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="css/style.css">
 </head>
-<body class="h-screen overflow-hidden flex flex-col">
+<body class="h-dvh overflow-hidden flex flex-col">
 
     <header class="h-16 surface border-b flex items-center justify-between px-6 shrink-0 z-20">
-        <div class="flex items-center gap-1">
-            <div class="w-20 h-20 rounded-lg flex items-center justify-center font-bold text-white text-lg font-heading"><img src="assets/logo.png" alt="Logo"></div>
-            <h1 class="text-xl font-bold tracking-tight font-heading">ATOMVERSE <span class="text-sm font-medium ml-1 opacity-80 font-body">Virtual Lab</span></h1>
+        <div class="flex items-center gap-2 min-w-0">
+            <div class="w-14 h-14 rounded-lg flex items-center justify-center shrink-0">
+                <img src="assets/logo.png" alt="Atomverse">
+            </div>
+            <h1 class="text-xl font-bold tracking-tight font-heading whitespace-nowrap">ATOMVERSE <span class="text-sm font-medium ml-1 opacity-80 font-body">Virtual Lab</span></h1>
         </div>
-        <nav class="flex gap-6 h-full">
-            <button class="tab-btn active h-full flex items-center px-2 text-sm font-medium border-b-2 border-transparent transition-colors" data-tab="lab">Lab Reaksi</button>
-            <button class="tab-btn h-full flex items-center px-2 text-sm font-medium border-b-2 border-transparent text-muted-custom transition-colors" data-tab="inverse">Eksperimen Invers</button>
-            <button class="tab-btn h-full flex items-center px-2 text-sm font-medium border-b-2 border-transparent text-muted-custom transition-colors" data-tab="env">Literasi Lingkungan</button>
+        <nav class="flex gap-6 h-full" role="tablist" aria-label="Modul Atomverse">
+            <button type="button" class="tab-btn active h-full flex items-center px-2 text-sm font-medium border-b-2 border-transparent transition-colors" data-tab="lab" role="tab" aria-controls="tab-lab" aria-selected="true">Lab Reaksi</button>
+            <button type="button" class="tab-btn h-full flex items-center px-2 text-sm font-medium border-b-2 border-transparent text-muted-custom transition-colors" data-tab="inverse" role="tab" aria-controls="tab-inverse" aria-selected="false">Eksperimen Invers</button>
+            <button type="button" class="tab-btn h-full flex items-center px-2 text-sm font-medium border-b-2 border-transparent text-muted-custom transition-colors" data-tab="env" role="tab" aria-controls="tab-env" aria-selected="false">Literasi Lingkungan</button>
         </nav>
-        <div class="flex items-center gap-4">
-            <button id="theme-toggle" class="theme-toggle p-2 rounded-full surface-alt border border-[var(--border-color)] text-[var(--text-main)]">
-                <svg id="icon-sun" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-                <svg id="icon-moon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
-            </button>
-            <div class="w-9 h-9 rounded-full surface-alt border border-[var(--border-color)] flex items-center justify-center text-sm font-bold font-heading">LL</div>
-        </div>
+        <div class="w-9 h-9 rounded-full surface-alt border border-[var(--border-color)] flex items-center justify-center text-sm font-bold font-heading shrink-0" aria-label="Profil LL">LL</div>
     </header>
 
     <main class="flex-1 overflow-hidden relative">
@@ -160,6 +139,16 @@
                 </div>
 
                 <div class="flex-1 flex items-center justify-center p-8 relative overflow-hidden sim-area">
+                    <div id="reaction-loading" class="reaction-loading hidden" role="status" aria-live="polite" aria-label="Reaksi sedang berjalan">
+                        <div class="reaction-loader" aria-hidden="true">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                        <h3>Reaksi Berjalan</h3>
+                        <p>Menganalisis interaksi molekul dan menghitung hasil reaksi...</p>
+                        <div class="reaction-progress" aria-hidden="true"><span></span></div>
+                    </div>
                     <div id="macro-view" class="relative z-10 w-full h-full max-w-3xl flex items-center justify-center">
                         <svg viewBox="0 0 700 450" class="w-full h-full">
                             <g id="beaker-b" transform="translate(420, 180)">
@@ -168,13 +157,13 @@
                                 <text x="100" y="250" fill="var(--text-muted)" font-size="16" font-family="Montserrat" text-anchor="middle" font-weight="bold">Larutan B</text>
                             </g>
 
-                            <g id="beaker-a-group">
+                            <g id="beaker-a-group" transform="translate(130, 180)">
                                 <path d="M10 20 L10 180 Q10 210 40 210 L160 210 Q190 210 190 180 L190 20" fill="none" stroke="var(--beaker-stroke)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
                                 <path id="liquid-a" d="M15 80 L15 178 Q15 205 40 205 L160 205 Q185 205 185 178 L185 80 Z" fill="#e9d5ff" opacity="0.85"/>
                                 <text x="100" y="250" fill="var(--text-muted)" font-size="16" font-family="Montserrat" text-anchor="middle" font-weight="bold">Larutan A</text>
                             </g>
 
-                            <path id="liquid-stream" d="M 430 180 Q 450 220 470 200" fill="none" stroke-width="10" stroke-linecap="round" opacity="0"/>
+                            <path id="liquid-stream" d="M 430 180 Q 425 225 390 260" fill="none" stroke-width="10" stroke-linecap="round" opacity="0"/>
 
                             <g id="beaker-mixed" transform="translate(230, 150)" opacity="0">
                                 <path d="M10 20 L10 220 Q10 260 50 260 L190 260 Q230 260 230 220 L230 20" fill="none" stroke="var(--beaker-stroke)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
@@ -235,12 +224,15 @@
                 </div>
 
                 <div class="flex-1 flex flex-col p-5 overflow-hidden">
-                    <h2 class="text-xs font-bold uppercase tracking-wider mb-3 font-heading" style="color: var(--success);">AI Adaptive Tutor</h2>
+                    <div class="flex items-center justify-between gap-3 mb-3">
+                        <h2 class="text-xs font-bold uppercase tracking-wider font-heading" style="color: var(--success);">AI Adaptive Tutor</h2>
+                        <span id="chat-connection-status" class="chat-connection-status" data-mode="checking">Menghubungkan...</span>
+                    </div>
                     <div id="chat-window" class="flex-1 overflow-y-auto space-y-3 mb-3 pr-1 font-body">
                         <div class="flex gap-2 items-start">
                             <div class="w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold text-white shrink-0 font-heading" style="background-color: var(--success);">AI</div>
                             <div class="chat-bubble-ai p-3 text-xs max-w-[85%] leading-relaxed">
-                                Pilih Larutan A dan B, lalu klik <b>Jalankan Simulasi</b> untuk melihat animasi penuangan dan reaksi partikel secara real-time!
+                                Pilih Larutan A dan B, lalu klik <b>Jalankan Simulasi</b> untuk memproses reaksi dan melihat hasilnya!
                             </div>
                         </div>
                     </div>
@@ -251,7 +243,7 @@
                 </div>
             </aside>
         </div>
-<<!-- Ganti seluruh bagian Modul 02 di index.html dengan ini -->
+<!-- Modul 02 · Inverse Experiment -->
 <div id="tab-inverse" class="tab-content absolute inset-0 hidden p-6 overflow-y-auto bg-[var(--bg-main)]">
     <div class="max-w-6xl mx-auto">
         <h2 class="text-2xl font-bold mb-2 font-heading" style="color: var(--primary);">Sistem memecahkan <i>inverse experimentation problem</i>: menentukan konfigurasi berdasarkan target hasil.</h2>
@@ -264,7 +256,7 @@
                     <button class="inv-btn w-full text-left p-3 rounded-lg border border-[var(--border-color)] hover:border-[var(--primary)] hover:bg-[var(--bg-surface-alt)] transition-all text-sm font-body" data-goal="Membentuk endapan spesifik berwarna putih">
                         🧪 Endapan Putih Spesifik
                     </button>
-                    <button class="inv-btn w-full text-left p-3 rounded-lg border border-[var(--border-color)] hover:border-[var(--primary)] hover:bg-[var(--bg-surface-alt)] transition-all text-sm font-body" data-data-goal="Membentuk endapan spesifik berwarna kuning">
+                    <button class="inv-btn w-full text-left p-3 rounded-lg border border-[var(--border-color)] hover:border-[var(--primary)] hover:bg-[var(--bg-surface-alt)] transition-all text-sm font-body" data-goal="Membentuk endapan spesifik berwarna kuning">
                         🧪 Endapan Kuning Spesifik
                     </button>
                     <button class="inv-btn w-full text-left p-3 rounded-lg border border-[var(--border-color)] hover:border-[var(--primary)] hover:bg-[var(--bg-surface-alt)] transition-all text-sm font-body" data-goal="Memperoleh pH netral (7)">

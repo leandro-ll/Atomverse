@@ -21,6 +21,7 @@ var els = {
     resColor: document.getElementById('res-color'), resPpt: document.getElementById('res-ppt'),
     resPh: document.getElementById('res-ph'), resEnergy: document.getElementById('res-energy'),
     macroView: document.getElementById('macro-view'), submicroView: document.getElementById('submicro-view'),
+    reactionLoading: document.getElementById('reaction-loading'),
     btnMacro: document.getElementById('btn-macro'), btnSubmicro: document.getElementById('btn-submicro'),
     canvas: document.getElementById('submicro-canvas'), legend: document.getElementById('particle-legend'),
     kineticInd: document.getElementById('kinetic-indicator'), chatWindow: document.getElementById('chat-window'),
@@ -39,48 +40,31 @@ var els = {
     layerNameBottom: document.getElementById('layer-name-bottom')
 };
 
-// --- THEME TOGGLE ---
-const themeToggle = document.getElementById('theme-toggle');
-const iconSun = document.getElementById('icon-sun');
-const iconMoon = document.getElementById('icon-moon');
-const html = document.documentElement;
-
-themeToggle.addEventListener('click', () => {
-    if (html.getAttribute('data-theme') === 'dark') {
-        html.removeAttribute('data-theme');
-        iconSun.classList.remove('hidden');
-        iconMoon.classList.add('hidden');
-    } else {
-        html.setAttribute('data-theme', 'dark');
-        iconSun.classList.add('hidden');
-        iconMoon.classList.remove('hidden');
-    }
-});
-
 // --- TAB SWITCHING ---
 // Di bagian tab switching
 els.tabs.forEach(tab => {
     tab.onclick = () => {
-        els.tabs.forEach(t => { 
-            t.classList.remove('active'); 
-            t.classList.add('text-muted-custom'); 
+        els.tabs.forEach(t => {
+            const isActive = t === tab;
+            t.classList.toggle('active', isActive);
+            t.classList.toggle('text-muted-custom', !isActive);
+            t.setAttribute('aria-selected', String(isActive));
         });
-        tab.classList.add('active'); 
-        tab.classList.remove('text-muted-custom');
-        
+
         els.tabContents.forEach(c => c.classList.add('hidden'));
-        document.getElementById(`tab-${tab.dataset.tab}`).classList.remove('hidden');
+        const targetPanel = document.getElementById(`tab-${tab.dataset.tab}`);
+        if (!targetPanel) return;
+        targetPanel.classList.remove('hidden');
         
         // Render environmental cards saat tab environment dibuka
-        if (tab.dataset.tab === 'environment') {
+        if (tab.dataset.tab === 'env') {
             if (typeof renderEnvironmentalCards === 'function') {
                 renderEnvironmentalCards();
             }
         }
         
-        if (tab.dataset.tab === 'lab') { 
-            resizeCanvas(); 
-            generateParticles(); 
+        if (tab.dataset.tab === 'lab' && !els.submicroView.classList.contains('hidden')) {
+            scheduleCanvasResize(state.particles.length === 0);
         }
     };
 });
@@ -92,84 +76,153 @@ function updateMacroColors() {
     els.stream.setAttribute('stroke', chemicalColors[state.reagentA] || '#e2e8f0');
 }
 
-function runSimulation() {
-    if(state.isPouring || state.isReacted) return;
-    state.isPouring = true;
-    els.status.textContent = "Status: Menuangkan & Bereaksi...";
-    els.status.className = "text-xs font-bold mono animate-pulse";
-    els.status.style.color = "var(--secondary)";
-    
-    els.beakerA.classList.add('pouring');
-    els.liquidA.classList.add('draining');
-    els.stream.classList.add('flowing');
-    els.beakerB.classList.add('fading');
-    els.beakerMixed.classList.add('mixed-appear');
-    
+const SIMULATION_DURATION_MS = 2200;
+let simulationTimers = [];
+let simulationRunId = 0;
+
+function clearSimulationTimers() {
+    simulationTimers.forEach(timerId => window.clearTimeout(timerId));
+    simulationTimers = [];
+}
+
+function setSimulationControlsDisabled(disabled) {
+    [els.selectA, els.selectB, els.mASlider, els.vASlider, els.mBSlider, els.vBSlider, els.tempSlider, els.btnMacro, els.btnSubmicro]
+        .filter(Boolean)
+        .forEach(control => { control.disabled = disabled; });
+    const pressureSelect = document.getElementById('press-select');
+    const runButton = document.getElementById('btn-run');
+    if (pressureSelect) pressureSelect.disabled = disabled;
+    if (runButton) runButton.disabled = disabled;
+}
+
+function finishSimulation(runId) {
+    if (runId !== simulationRunId || !state.isPouring) return;
+    clearSimulationTimers();
     state.isReacted = true;
-    state.particles.forEach(p => { if(p.side === 'A') p.vx += 8; });
+    els.reactionLoading.classList.add('hidden');
+    els.submicroView.classList.add('hidden');
+    els.macroView.classList.remove('hidden');
+    els.btnMacro.classList.add('active');
+    els.btnMacro.classList.remove('text-muted-custom');
+    els.btnSubmicro.classList.remove('active');
+    els.btnSubmicro.classList.add('text-muted-custom');
+    els.beakerA.classList.add('hidden');
+    els.beakerB.classList.add('hidden');
+    els.stream.classList.add('hidden');
+    els.beakerMixed.setAttribute('opacity', '1');
+    els.beakerMixed.classList.add('result-reveal');
+    state.particles.forEach(particle => {
+        if (particle.side === 'A' && !particle.isPrecipitate) particle.vx += 3.5;
+    });
 
-    setTimeout(() => {
-        const res = getReactionResult();
-        const isNoReaction = (res.ppt === null && res.energy === 'Normal');
-        
-        if (isNoReaction) {
-            els.liquidMixedBottom.setAttribute('fill', chemicalColors[state.reagentB] || '#bae6fd');
-            els.liquidMixedTop.setAttribute('fill', chemicalColors[state.reagentA] || '#e9d5ff');
-            els.liquidBoundary.setAttribute('opacity', '1');
-            
-            els.layerNameTop.textContent = chemicalNames[state.reagentA] || state.reagentA;
-            els.layerNameBottom.textContent = chemicalNames[state.reagentB] || state.reagentB;
-            els.layerNameTop.classList.add('visible');
-            els.layerNameBottom.classList.add('visible');
-        } else {
-            els.liquidMixedBottom.setAttribute('fill', res.color);
-            els.liquidMixedTop.setAttribute('fill', res.color);
-            els.liquidBoundary.setAttribute('opacity', '0');
-            els.layerNameTop.classList.remove('visible');
-            els.layerNameBottom.classList.remove('visible');
-        }
+    const res = getReactionResult();
+    const isNoReaction = res.ppt === null && res.energy === 'Normal';
 
-        els.equationText.textContent = res.equation;
-        els.equationContainer.classList.remove('hidden');
+    if (isNoReaction) {
+        els.liquidMixedBottom.setAttribute('fill', chemicalColors[state.reagentB] || '#bae6fd');
+        els.liquidMixedTop.setAttribute('fill', chemicalColors[state.reagentA] || '#e9d5ff');
+        els.liquidBoundary.setAttribute('opacity', '1');
+        els.layerNameTop.textContent = chemicalNames[state.reagentA] || state.reagentA;
+        els.layerNameBottom.textContent = chemicalNames[state.reagentB] || state.reagentB;
+        els.layerNameTop.classList.add('visible');
+        els.layerNameBottom.classList.add('visible');
+    } else {
+        els.liquidMixedBottom.setAttribute('fill', res.color);
+        els.liquidMixedTop.setAttribute('fill', res.color);
+        els.liquidBoundary.setAttribute('opacity', '0');
+        els.layerNameTop.classList.remove('visible');
+        els.layerNameBottom.classList.remove('visible');
+    }
 
-        els.pptDots.innerHTML = '';
-        if(res.ppt) {
-            for(let i=0; i<60; i++) {
-                const cx = 30 + Math.random() * 180; const cy = 220 + Math.random() * 30;
-                els.pptDots.innerHTML += `<circle cx="${cx}" cy="${cy}" r="${2 + Math.random() * 2.5}" fill="${res.pptColor}" opacity="0.9"/>`;
-            }
-        }
-        
-        els.resColor.textContent = isNoReaction ? "Terpisah (2 Lapisan)" : (res.ppt ? "Keruh" : "Bening");
-        els.resPpt.textContent = res.ppt || "-"; els.resPpt.style.color = res.pptColor || 'var(--text-main)';
-        els.resPh.textContent = res.ph; els.resEnergy.textContent = res.energy;
-        
-        if(res.energy === 'Eksoterm (Panas)') els.resEnergy.style.color = "var(--danger)";
-        else els.resEnergy.style.color = "var(--text-main)";
+    els.equationText.textContent = res.equation;
+    els.equationContainer.classList.remove('hidden');
 
-        els.status.textContent = "Status: Selesai (Kesetimbangan)";
-        els.status.className = "text-xs font-bold mono";
-        els.status.style.color = "var(--success)";
-        state.isPouring = false;
-    }, 4000);
+    if (res.ppt) {
+        const dots = Array.from({ length: 60 }, () => {
+            const cx = 30 + Math.random() * 180;
+            const cy = 220 + Math.random() * 30;
+            const radius = 2 + Math.random() * 2.5;
+            return `<circle cx="${cx}" cy="${cy}" r="${radius}" fill="${res.pptColor}" opacity="0.9"/>`;
+        });
+        els.pptDots.innerHTML = dots.join('');
+    }
+
+    els.resColor.textContent = isNoReaction ? 'Terpisah (2 Lapisan)' : (res.ppt ? 'Keruh' : 'Bening');
+    els.resPpt.textContent = res.ppt || '-';
+    els.resPpt.style.color = res.pptColor || 'var(--text-main)';
+    els.resPh.textContent = res.ph;
+    els.resEnergy.textContent = res.energy;
+    els.resEnergy.style.color = res.energy === 'Eksoterm (Panas)' ? 'var(--danger)' : 'var(--text-main)';
+    els.status.textContent = 'Status: Selesai (Kesetimbangan)';
+    els.status.className = 'text-xs font-bold mono';
+    els.status.style.color = 'var(--success)';
+
+    state.isPouring = false;
+    setSimulationControlsDisabled(false);
+}
+
+function runSimulation() {
+    if (state.isPouring || state.isReacted) return;
+
+    clearSimulationTimers();
+    const runId = ++simulationRunId;
+    state.isPouring = true;
+    state.isReacted = false;
+    setSimulationControlsDisabled(true);
+
+    els.status.textContent = 'Status: Reaksi Berjalan...';
+    els.status.className = 'text-xs font-bold mono animate-pulse';
+    els.status.style.color = 'var(--secondary)';
+    els.equationContainer.classList.add('hidden');
+    els.pptDots.innerHTML = '';
+    els.macroView.classList.add('hidden');
+    els.submicroView.classList.add('hidden');
+    els.reactionLoading.classList.remove('hidden');
+
+    simulationTimers.push(window.setTimeout(() => finishSimulation(runId), SIMULATION_DURATION_MS));
 }
 
 function resetState() {
-    state.isReacted = false; state.isPouring = false;
-    els.beakerA.classList.remove('pouring');
-    els.liquidA.classList.remove('draining');
-    els.stream.classList.remove('flowing');
-    els.beakerB.classList.remove('fading');
-    els.beakerMixed.classList.remove('mixed-appear');
+    simulationRunId += 1;
+    clearSimulationTimers();
+    state.isReacted = false;
+    state.isPouring = false;
+    setSimulationControlsDisabled(false);
+
+    els.reactionLoading.classList.add('hidden');
+    els.macroView.classList.remove('hidden');
+    els.submicroView.classList.add('hidden');
+    els.btnMacro.classList.add('active');
+    els.btnMacro.classList.remove('text-muted-custom');
+    els.btnSubmicro.classList.remove('active');
+    els.btnSubmicro.classList.add('text-muted-custom');
+    els.beakerA.classList.remove('hidden');
+    els.beakerB.classList.remove('hidden');
+    els.stream.classList.remove('hidden');
+    els.beakerMixed.setAttribute('opacity', '0');
+    els.beakerMixed.classList.remove('result-reveal');
     els.equationContainer.classList.add('hidden');
     els.layerNameTop.classList.remove('visible');
     els.layerNameBottom.classList.remove('visible');
-    void els.beakerA.offsetWidth; 
-    els.status.textContent = "Status: Siap"; els.status.className = "text-xs font-bold mono text-muted-custom";
-    els.resColor.textContent = "Bening"; els.resPpt.textContent = "-"; els.resPh.textContent = "-";
-    els.resEnergy.textContent = "-";
-    els.resEnergy.style.color = "var(--text-main)";
-    updateMacroColors(); generateParticles();
+    els.pptDots.innerHTML = '';
+
+    els.status.textContent = 'Status: Siap';
+    els.status.className = 'text-xs font-bold mono text-muted-custom';
+    els.status.style.color = '';
+    els.resColor.textContent = 'Bening';
+    els.resPpt.textContent = '-';
+    els.resPpt.style.color = 'var(--text-main)';
+    els.resPh.textContent = '-';
+    els.resEnergy.textContent = '-';
+    els.resEnergy.style.color = 'var(--text-main)';
+
+    updateMacroColors();
+    if (!els.submicroView.classList.contains('hidden')) {
+        scheduleCanvasResize(true);
+    } else {
+        state.particles = [];
+        state.effects = [];
+    }
 }
 
 // --- EVENT LISTENERS ---
@@ -181,13 +234,26 @@ els.mBSlider.oninput = (e) => { state.mB = e.target.value / 10; els.mBVal.textCo
 els.vBSlider.oninput = (e) => { state.vB = parseInt(e.target.value); els.vBVal.textContent = state.vB + ' mL'; resetState(); };
 els.tempSlider.oninput = (e) => { state.temperature = parseInt(e.target.value); els.tempVal.textContent = state.temperature + ' °C'; if(state.temperature < 20) els.kineticInd.textContent = "Rendah"; else if(state.temperature < 60) els.kineticInd.textContent = "Sedang"; else els.kineticInd.textContent = "Tinggi"; };
 
-els.btnMacro.onclick = () => { els.macroView.classList.remove('hidden'); els.submicroView.classList.add('hidden'); els.btnMacro.classList.add('active'); els.btnSubmicro.classList.remove('active'); els.btnSubmicro.classList.add('text-muted-custom'); els.btnMacro.classList.remove('text-muted-custom'); };
-els.btnSubmicro.onclick = () => { els.submicroView.classList.remove('hidden'); els.macroView.classList.add('hidden'); els.btnSubmicro.classList.add('active'); els.btnMacro.classList.remove('active'); els.btnMacro.classList.add('text-muted-custom'); els.btnSubmicro.classList.remove('text-muted-custom'); resizeCanvas(); };
+els.btnMacro.onclick = () => {
+    els.macroView.classList.remove('hidden');
+    els.submicroView.classList.add('hidden');
+    els.btnMacro.classList.add('active');
+    els.btnSubmicro.classList.remove('active');
+    els.btnSubmicro.classList.add('text-muted-custom');
+    els.btnMacro.classList.remove('text-muted-custom');
+};
+els.btnSubmicro.onclick = () => {
+    els.submicroView.classList.remove('hidden');
+    els.macroView.classList.add('hidden');
+    els.btnSubmicro.classList.add('active');
+    els.btnMacro.classList.remove('active');
+    els.btnMacro.classList.add('text-muted-custom');
+    els.btnSubmicro.classList.remove('text-muted-custom');
+    scheduleCanvasResize(state.particles.length === 0);
+};
 
 document.getElementById('btn-run').onclick = runSimulation;
 document.getElementById('btn-reset').onclick = resetState;
-document.getElementById('btn-send').onclick = handleSend;
-els.chatInput.addEventListener('keypress', (e) => { if(e.key === 'Enter') handleSend(); });
 
 // --- INVERSE EXPERIMENT TAB ---
 // Inverse Experiment Handler
@@ -440,8 +506,8 @@ function openBondDetail(materialId) {
             </svg>
             <div class="text-xs font-bold uppercase tracking-wider" style="color: var(--primary);">Struktur Molekul</div>
         </div>
-        <div class="font-mono text-xs sm:text-sm text-center p-4 rounded-lg bg-white dark:bg-slate-800/50 border-2 border-[var(--primary)]/20 shadow-inner overflow-x-auto">
-            <code style="color: #ffffff; font-weight: 700; letter-spacing: 0.05em;">${material.bondDetail.diagram}</code>
+        <div class="font-mono text-xs sm:text-sm text-center p-4 rounded-lg bg-[var(--bg-surface-alt)] border-2 border-[var(--primary)]/20 shadow-inner overflow-x-auto">
+            <code style="color: var(--text-main); font-weight: 700; letter-spacing: 0.05em;">${material.bondDetail.diagram}</code>
         </div>
     </div>
 ` : ''}
@@ -494,35 +560,37 @@ if (document.readyState === 'loading') {
 } else {
     renderEnvironmentalCards();
 }
-// --- INITIALIZATION ---
-window.addEventListener('resize', () => { resizeCanvas(); generateParticles(); });
-resizeCanvas(); 
-updateMacroColors(); 
-generateParticles(); 
-animateParticles();
+let pendingCanvasResize = 0;
+let submicroResizeObserver;
 
-// ... [Keep all your existing main.js code above this line exactly as it is] ...
-
-// ==========================================
-// INITIALIZATION (Put this at the VERY BOTTOM of main.js)
-// ==========================================
-window.addEventListener('DOMContentLoaded', () => {
-    // 1. Initialize canvas context safely AFTER els is defined
-    if (typeof initCanvas === 'function') {
-        initCanvas();
-    }
-    
-    // 2. Set up resize listener
-    window.addEventListener('resize', () => { 
-        resizeCanvas(); 
-        generateParticles(); 
+function scheduleCanvasResize(regenerateParticles = false) {
+    if (pendingCanvasResize) window.cancelAnimationFrame(pendingCanvasResize);
+    pendingCanvasResize = window.requestAnimationFrame(() => {
+        pendingCanvasResize = 0;
+        const resized = resizeCanvas();
+        if (resized && (regenerateParticles || state.particles.length === 0)) {
+            generateParticles();
+            if (state.isReacted) {
+                state.particles.forEach(particle => {
+                    if (particle.side === 'A' && !particle.isPrecipitate) particle.vx += 3.5;
+                });
+            }
+        }
     });
-    
-    // 3. Start everything
-    resizeCanvas(); 
-    updateMacroColors(); 
-    generateParticles(); 
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+    initCanvas();
+    updateMacroColors();
     animateParticles();
+
+    window.addEventListener('resize', () => scheduleCanvasResize(false), { passive: true });
+    if (typeof ResizeObserver !== 'undefined') {
+        submicroResizeObserver = new ResizeObserver(() => {
+            if (!els.submicroView.classList.contains('hidden')) scheduleCanvasResize(false);
+        });
+        submicroResizeObserver.observe(els.submicroView);
+    }
 });
 
 // ==========================================
@@ -559,10 +627,7 @@ document.addEventListener('mouseup', () => {
         document.body.style.cursor = '';
         document.body.style.userSelect = '';
         
-        // Optional: Re-render canvas if the window layout shifted significantly
-        if (typeof resizeCanvas === 'function') {
-            resizeCanvas();
-        }
+        scheduleCanvasResize(false);
     }
 });
 
