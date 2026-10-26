@@ -1,0 +1,1814 @@
+{
+  "description": "Golden evaluation vectors for the catalog-backed experiment evaluator. Each vector fixes concrete reagent quantities inside model.bounds and states the whole expected outcome by hand, independently of catalog/chemistry.catalog.json and of the evaluator implementation, so a wrong coefficient, a dropped subscript, a reversed limiting reactant, or a reintroduced layer boundary cannot satisfy both this file and the code. js/domain/chemistry-evaluator.js and backend/app/domain/chemistry_evaluator.py must both reproduce every value here, and must reproduce it identically when the two reagents are supplied in the opposite A/B order. Amounts are stated as exact decimal chemistry; tests compare them within the catalog's declared amount tolerance because double arithmetic cannot represent every decimal product exactly. Colors and other presentation styling are deliberately not asserted here: they are incidental to the chemistry these vectors guard.",
+  "catalogVersion": "1.1.0",
+  "modelVersion": "1.1.0",
+  "locale": "id-ID",
+
+  "regressionGuards": {
+    "description": "The audited defects these vectors exist to make impossible. Defect 1.2 displayed malformed formulas and a precipitate alongside no-reaction text; defect 1.3 rendered ordinary miscible aqueous mixtures as two persistent layers. The malformed-formula patterns are applied to the result's display strings only, listed below as dotted paths: catalog identifiers such as the species id AgNO3 are deliberately ASCII and are not notation shown to a learner.",
+    "displayStringFields": [
+      "displayName",
+      "molecularEquation",
+      "netIonicEquation",
+      "productSummary",
+      "support.message",
+      "phaseModel.message",
+      "energy.message",
+      "appearance.precipitate.formula",
+      "appearance.precipitate.displayName"
+    ],
+    "malformedFormulaPatterns": [
+      {
+        "label": "AgNO without its subscript three, the audited reagent-option and equation defect",
+        "pattern": "AgNO(?!₃)",
+        "defects": ["1.2"]
+      },
+      {
+        "label": "AgNO(aq), the audited truncated equation term",
+        "pattern": "AgNO\\(aq\\)",
+        "defects": ["1.2"]
+      },
+      {
+        "label": "Pb(NO)₂ with a nitrogen-only group, the audited lead nitrate defect",
+        "pattern": "Pb\\(NO\\)₂",
+        "defects": ["1.2"]
+      },
+      {
+        "label": "Pb(NO)2 in ASCII",
+        "pattern": "Pb\\(NO\\)2",
+        "defects": ["1.2"]
+      },
+      {
+        "label": "an ASCII element count inside a Unicode formula",
+        "pattern": "(?:AgNO3|Pb\\(NO3\\)2|BaCl2|Na2SO4|PbCl2|PbI2|BaSO4|NaNO3|KNO3|H2O)\\(",
+        "defects": ["1.2"]
+      }
+    ],
+    "contradictoryNoReactionText": "Tidak terjadi reaksi kimia",
+    "noModeledReactionMessageKey": "model.reaction.noModeledReaction",
+    "forbiddenLayerLabels": ["Terpisah (2 Lapisan)", "Lapisan Atas", "Lapisan Bawah"]
+  },
+
+  "preservedDemonstrations": {
+    "description": "Requirement 26.3 and bugfix regression clause 3.1: the four canonical demonstrations the lab shipped with must still reach their intended precipitation or neutralization category, now with corrected quantitative detail. Each one uses the default 1 M / 50 mL control position so the preserved demonstration is the one a learner reaches without touching a slider.",
+    "requirement": "26.3",
+    "regressionClause": "3.1",
+    "vectors": [
+      {
+        "vectorId": "agno3-nacl-equimolar-demonstration",
+        "reagents": ["AgNO3", "NaCl"],
+        "category": "precipitation",
+        "precipitateSpeciesId": "AgCl",
+        "energyLabel": "normal"
+      },
+      {
+        "vectorId": "pbno32-ki-equal-amounts-demonstration",
+        "reagents": ["Pb(NO3)2", "KI"],
+        "category": "precipitation",
+        "precipitateSpeciesId": "PbI2",
+        "energyLabel": "normal"
+      },
+      {
+        "vectorId": "bacl2-na2so4-equimolar-demonstration",
+        "reagents": ["BaCl2", "Na2SO4"],
+        "category": "precipitation",
+        "precipitateSpeciesId": "BaSO4",
+        "energyLabel": "normal"
+      },
+      {
+        "vectorId": "hcl-naoh-equimolar-demonstration",
+        "reagents": ["HCl", "NaOH"],
+        "category": "strong_acid_base",
+        "precipitateSpeciesId": null,
+        "energyLabel": "exothermic"
+      }
+    ]
+  },
+
+  "controlCapabilities": {
+    "description": "Hand-stated semantics of the four experiment controls, for requirements 5.1, 5.2, 5.3, and 5.4 and audited defect 1.5, where molarity, volume, temperature, and pressure were presented as reaction inputs while being ignored or used only for particle count and speed. Concentration and volume are the only quantitative inputs: quantityBoundaries states, at every declared control bound, the amounts, total mixed volume, extent, limiting reactant, excess, and product amounts those two inputs produce. Temperature is qualitative only: it produces the bounded motion metadata stated below and must change nothing else in a result. Pressure is fixed at 1 atm with no modeled effect and is reported with its localized boundary statement rather than silently ignored. inputValidation states what happens outside those bounds: a selection off the declared range is rejected with a field-safe localized error and produces no result at all, rather than being clamped into a different experiment or dropped. pH follows the same rule as every other quantity: the pHModel section below states it for the one supported HCl/NaOH system, calculated from concentration and volume alone, and every other pair keeps a null pH until task 5.4 attaches its localized boundary explanation. No control position may produce a defaulted or fabricated pH, and temperature may not move the pH at all.",
+    "requirements": [
+      "5.1",
+      "5.2",
+      "5.3",
+      "5.4"
+    ],
+    "defects": [
+      "1.5"
+    ],
+    "quantitativeInputs": [
+      "concentration_molL",
+      "volume_mL"
+    ],
+    "qualitativeInputs": [
+      "temperature_C"
+    ],
+    "unsupportedInputs": [
+      "pressure_atm"
+    ],
+    "quantityBoundaries": [
+      {
+        "id": "agno3-nacl-at-both-minimum-bounds",
+        "title": "The smallest selectable experiment still reacts quantitatively",
+        "pairKey": "AgNO3|NaCl",
+        "boundsExercised": [
+          "concentration_molL.minimum",
+          "volume_mL.minimum"
+        ],
+        "solutions": [
+          {
+            "reagentId": "AgNO3",
+            "concentration_molL": 0.1,
+            "volume_mL": 10,
+            "amount_mol": 0.001
+          },
+          {
+            "reagentId": "NaCl",
+            "concentration_molL": 0.1,
+            "volume_mL": 10,
+            "amount_mol": 0.001
+          }
+        ],
+        "totalVolume_L": 0.02,
+        "extent_mol": 0.001,
+        "limitingSpecies": [
+          "AgNO3",
+          "NaCl"
+        ],
+        "excessSpecies": [],
+        "products": [
+          {
+            "speciesId": "AgCl",
+            "amount_mol": 0.001
+          },
+          {
+            "speciesId": "NaNO3",
+            "amount_mol": 0.001
+          }
+        ]
+      },
+      {
+        "id": "agno3-nacl-at-both-maximum-bounds",
+        "title": "The largest selectable experiment scales every amount by two hundred",
+        "pairKey": "AgNO3|NaCl",
+        "boundsExercised": [
+          "concentration_molL.maximum",
+          "volume_mL.maximum"
+        ],
+        "solutions": [
+          {
+            "reagentId": "AgNO3",
+            "concentration_molL": 2,
+            "volume_mL": 100,
+            "amount_mol": 0.2
+          },
+          {
+            "reagentId": "NaCl",
+            "concentration_molL": 2,
+            "volume_mL": 100,
+            "amount_mol": 0.2
+          }
+        ],
+        "totalVolume_L": 0.2,
+        "extent_mol": 0.2,
+        "limitingSpecies": [
+          "AgNO3",
+          "NaCl"
+        ],
+        "excessSpecies": [],
+        "products": [
+          {
+            "speciesId": "AgCl",
+            "amount_mol": 0.2
+          },
+          {
+            "speciesId": "NaNO3",
+            "amount_mol": 0.2
+          }
+        ]
+      },
+      {
+        "id": "agno3-nacl-maximum-against-minimum",
+        "title": "The dilute, small-volume chloride is limiting at the opposite bounds",
+        "pairKey": "AgNO3|NaCl",
+        "boundsExercised": [
+          "concentration_molL.minimum",
+          "concentration_molL.maximum",
+          "volume_mL.minimum",
+          "volume_mL.maximum"
+        ],
+        "solutions": [
+          {
+            "reagentId": "AgNO3",
+            "concentration_molL": 2,
+            "volume_mL": 100,
+            "amount_mol": 0.2
+          },
+          {
+            "reagentId": "NaCl",
+            "concentration_molL": 0.1,
+            "volume_mL": 10,
+            "amount_mol": 0.001
+          }
+        ],
+        "totalVolume_L": 0.11,
+        "extent_mol": 0.001,
+        "limitingSpecies": [
+          "NaCl"
+        ],
+        "excessSpecies": [
+          {
+            "speciesId": "AgNO3",
+            "amount_mol": 0.199
+          }
+        ],
+        "products": [
+          {
+            "speciesId": "AgCl",
+            "amount_mol": 0.001
+          },
+          {
+            "speciesId": "NaNO3",
+            "amount_mol": 0.001
+          }
+        ]
+      },
+      {
+        "id": "agno3-nacl-minimum-against-maximum",
+        "title": "Swapping which solution sits at the bounds moves the limiting reactant",
+        "pairKey": "AgNO3|NaCl",
+        "boundsExercised": [
+          "concentration_molL.minimum",
+          "concentration_molL.maximum",
+          "volume_mL.minimum",
+          "volume_mL.maximum"
+        ],
+        "solutions": [
+          {
+            "reagentId": "AgNO3",
+            "concentration_molL": 0.1,
+            "volume_mL": 10,
+            "amount_mol": 0.001
+          },
+          {
+            "reagentId": "NaCl",
+            "concentration_molL": 2,
+            "volume_mL": 100,
+            "amount_mol": 0.2
+          }
+        ],
+        "totalVolume_L": 0.11,
+        "extent_mol": 0.001,
+        "limitingSpecies": [
+          "AgNO3"
+        ],
+        "excessSpecies": [
+          {
+            "speciesId": "NaCl",
+            "amount_mol": 0.199
+          }
+        ],
+        "products": [
+          {
+            "speciesId": "AgCl",
+            "amount_mol": 0.001
+          },
+          {
+            "speciesId": "NaNO3",
+            "amount_mol": 0.001
+          }
+        ]
+      },
+      {
+        "id": "hcl-naoh-volume-alone-decides-the-limiting-reagent",
+        "title": "At equal concentration, volume alone decides what is left over",
+        "pairKey": "HCl|NaOH",
+        "boundsExercised": [
+          "volume_mL.maximum"
+        ],
+        "solutions": [
+          {
+            "reagentId": "HCl",
+            "concentration_molL": 1,
+            "volume_mL": 100,
+            "amount_mol": 0.1
+          },
+          {
+            "reagentId": "NaOH",
+            "concentration_molL": 1,
+            "volume_mL": 50,
+            "amount_mol": 0.05
+          }
+        ],
+        "totalVolume_L": 0.15,
+        "extent_mol": 0.05,
+        "limitingSpecies": [
+          "NaOH"
+        ],
+        "excessSpecies": [
+          {
+            "speciesId": "HCl",
+            "amount_mol": 0.05
+          }
+        ],
+        "products": [
+          {
+            "speciesId": "NaCl",
+            "amount_mol": 0.05
+          },
+          {
+            "speciesId": "H2O",
+            "amount_mol": 0.05
+          }
+        ]
+      },
+      {
+        "id": "pbno32-nacl-bounded-quantities-with-coefficient-two",
+        "title": "Concentration and volume feed a coefficient-two extent, not just an amount",
+        "pairKey": "NaCl|Pb(NO3)2",
+        "boundsExercised": [
+          "concentration_molL.minimum",
+          "concentration_molL.maximum",
+          "volume_mL.maximum"
+        ],
+        "solutions": [
+          {
+            "reagentId": "NaCl",
+            "concentration_molL": 0.1,
+            "volume_mL": 100,
+            "amount_mol": 0.01
+          },
+          {
+            "reagentId": "Pb(NO3)2",
+            "concentration_molL": 2,
+            "volume_mL": 50,
+            "amount_mol": 0.1
+          }
+        ],
+        "totalVolume_L": 0.15,
+        "extent_mol": 0.005,
+        "limitingSpecies": [
+          "NaCl"
+        ],
+        "excessSpecies": [
+          {
+            "speciesId": "Pb(NO3)2",
+            "amount_mol": 0.095
+          }
+        ],
+        "products": [
+          {
+            "speciesId": "PbCl2",
+            "amount_mol": 0.005
+          },
+          {
+            "speciesId": "NaNO3",
+            "amount_mol": 0.01
+          }
+        ]
+      }
+    ],
+    "temperature": {
+      "description": "Requirement 5.2: the temperature control's only modeled consequence is a bounded qualitative motion factor. The factor is 0.5 at the lowest selectable temperature and rises linearly to 3.5 at the highest, with 25 °C as the stated reference position. It is not a rate constant, it does not change extent, and it does not correct pH, so two results differing only in temperature must be equal everywhere except in this metadata. The band is closed by rejection rather than by clamping: a temperature outside 0–100 °C is an invalid input under requirement 5.4 and yields no factor and no result, so no selection can land on a boundary factor it did not actually ask for.",
+      "outOfRangeIsRejectedNotClamped": true,
+      "effect": "qualitative_motion_only",
+      "model": "linear_bounded",
+      "quantitative": false,
+      "affectsExtent": false,
+      "affectsRateConstant": false,
+      "affectsPH": false,
+      "referenceTemperature_C": 25,
+      "referenceSpeedFactor": 1.25,
+      "minimumSpeedFactor": 0.5,
+      "maximumSpeedFactor": 3.5,
+      "messageKey": "model.temperature.qualitative",
+      "speedFactors": [
+        {
+          "temperature_C": 0,
+          "speedFactor": 0.5,
+          "bound": "minimum"
+        },
+        {
+          "temperature_C": 25,
+          "speedFactor": 1.25,
+          "bound": "default"
+        },
+        {
+          "temperature_C": 50,
+          "speedFactor": 2,
+          "bound": null
+        },
+        {
+          "temperature_C": 75,
+          "speedFactor": 2.75,
+          "bound": null
+        },
+        {
+          "temperature_C": 100,
+          "speedFactor": 3.5,
+          "bound": "maximum"
+        }
+      ],
+      "invarianceVector": {
+        "pairKey": "HCl|NaOH",
+        "solutions": [
+          {
+            "reagentId": "HCl",
+            "concentration_molL": 1,
+            "volume_mL": 50,
+            "amount_mol": 0.05
+          },
+          {
+            "reagentId": "NaOH",
+            "concentration_molL": 0.4,
+            "volume_mL": 50,
+            "amount_mol": 0.02
+          }
+        ],
+        "totalVolume_L": 0.1,
+        "extent_mol": 0.02,
+        "limitingSpecies": [
+          "NaOH"
+        ],
+        "excessSpecies": [
+          {
+            "speciesId": "HCl",
+            "amount_mol": 0.03
+          }
+        ],
+        "temperatures_C": [
+          0,
+          25,
+          50,
+          100
+        ],
+        "invariantExceptField": "motion"
+      }
+    },
+    "pressure": {
+      "description": "Requirements 5.3 and 5.4: pressure has no supported effect in the version 1 aqueous model, so the result reports the catalog's fixed 1 atm state with its localized boundary statement. Omitting the field changes no result value, and supplying the fixed 1 atm is accepted, because both describe the one pressure the model covers. Any other pressure is not ignored: it is rejected as an invalid input with the PRESSURE_NOT_SUPPORTED reason code, so the control can never read as functional while doing nothing.",
+      "atm": 1,
+      "effect": "none",
+      "selectable": false,
+      "acceptsAlternateValues": false,
+      "affectsResult": false,
+      "messageKey": "model.pressure.unsupported",
+      "omittedFieldIsEquivalent": true,
+      "alternateValueIsRejectedNotIgnored": true,
+      "alternateValueReasonCode": "PRESSURE_NOT_SUPPORTED"
+    },
+
+    "inputValidation": {
+      "description": "Requirement 5.4 and audited defect 1.5: every numeric experiment input is validated against the catalog's declared bounds and rejected rather than clamped or ignored. A value exactly at a bound is a valid experiment; a value just outside it produces no result at all, because clamping would evaluate a different experiment than the learner set up. Each rejection names the offending field, carries a stable reason code the API boundary and the UI can map, and carries an Indonesian message a learner can be shown that does not echo the rejected value. One pass reports every offending field rather than only the first. Reason codes and message text are owned by the domain layer rather than by the catalog message bundle, because an out-of-range selection is not a catalog-declared outcome; scripts/catalog/validate-catalog.mjs owns its own rejection message for the same reason. Declared step size is deliberately not enforced: the step describes how a slider moves, not what chemistry is defined.",
+      "requirements": [
+        "5.4"
+      ],
+      "defects": [
+        "1.5"
+      ],
+      "reasonCodes": [
+        "QUANTITY_REQUIRED",
+        "QUANTITY_NOT_A_NUMBER",
+        "QUANTITY_NOT_FINITE",
+        "QUANTITY_NOT_POSITIVE",
+        "QUANTITY_BELOW_MINIMUM",
+        "QUANTITY_ABOVE_MAXIMUM",
+        "PRESSURE_NOT_SUPPORTED"
+      ],
+      "fields": [
+        { "field": "concentrationA_molL", "bound": "concentration_molL", "label": "Konsentrasi larutan A", "unit": "M", "required": true, "positive": true, "fixed": false },
+        { "field": "volumeA_mL", "bound": "volume_mL", "label": "Volume larutan A", "unit": "mL", "required": true, "positive": true, "fixed": false },
+        { "field": "concentrationB_molL", "bound": "concentration_molL", "label": "Konsentrasi larutan B", "unit": "M", "required": true, "positive": true, "fixed": false },
+        { "field": "volumeB_mL", "bound": "volume_mL", "label": "Volume larutan B", "unit": "mL", "required": true, "positive": true, "fixed": false },
+        { "field": "temperature_C", "bound": "temperature_C", "label": "Suhu", "unit": "°C", "required": false, "positive": false, "fixed": false },
+        { "field": "pressure_atm", "bound": "pressure_atm", "label": "Tekanan", "unit": "atm", "required": false, "positive": false, "fixed": true }
+      ],
+      "baseline": {
+        "title": "A valid experiment at the catalog default control position, used as the base every rejection case overrides one field of",
+        "pairKey": "AgNO3|NaCl",
+        "solutions": [
+          { "reagentId": "AgNO3", "concentration_molL": 1, "volume_mL": 50 },
+          { "reagentId": "NaCl", "concentration_molL": 1, "volume_mL": 50 }
+        ],
+        "temperature_C": 25,
+        "pressure_atm": 1
+      },
+      "acceptedAtBounds": [
+        { "field": "concentrationA_molL", "value": 0.1, "bound": "concentration_molL.minimum" },
+        { "field": "concentrationA_molL", "value": 2, "bound": "concentration_molL.maximum" },
+        { "field": "concentrationB_molL", "value": 0.1, "bound": "concentration_molL.minimum" },
+        { "field": "concentrationB_molL", "value": 2, "bound": "concentration_molL.maximum" },
+        { "field": "volumeA_mL", "value": 10, "bound": "volume_mL.minimum" },
+        { "field": "volumeA_mL", "value": 100, "bound": "volume_mL.maximum" },
+        { "field": "volumeB_mL", "value": 10, "bound": "volume_mL.minimum" },
+        { "field": "volumeB_mL", "value": 100, "bound": "volume_mL.maximum" },
+        { "field": "temperature_C", "value": 0, "bound": "temperature_C.minimum" },
+        { "field": "temperature_C", "value": 100, "bound": "temperature_C.maximum" },
+        { "field": "pressure_atm", "value": 1, "bound": "pressure_atm.minimum" }
+      ],
+      "rejectedJustOutsideBounds": [
+        { "field": "concentrationA_molL", "value": 0.0999, "reasonCode": "QUANTITY_BELOW_MINIMUM", "limit": 0.1 },
+        { "field": "concentrationA_molL", "value": 2.0001, "reasonCode": "QUANTITY_ABOVE_MAXIMUM", "limit": 2 },
+        { "field": "concentrationB_molL", "value": 0.0999, "reasonCode": "QUANTITY_BELOW_MINIMUM", "limit": 0.1 },
+        { "field": "concentrationB_molL", "value": 2.0001, "reasonCode": "QUANTITY_ABOVE_MAXIMUM", "limit": 2 },
+        { "field": "volumeA_mL", "value": 9.99, "reasonCode": "QUANTITY_BELOW_MINIMUM", "limit": 10 },
+        { "field": "volumeA_mL", "value": 100.01, "reasonCode": "QUANTITY_ABOVE_MAXIMUM", "limit": 100 },
+        { "field": "volumeB_mL", "value": 9.99, "reasonCode": "QUANTITY_BELOW_MINIMUM", "limit": 10 },
+        { "field": "volumeB_mL", "value": 100.01, "reasonCode": "QUANTITY_ABOVE_MAXIMUM", "limit": 100 },
+        { "field": "temperature_C", "value": -0.01, "reasonCode": "QUANTITY_BELOW_MINIMUM", "limit": 0 },
+        { "field": "temperature_C", "value": 100.01, "reasonCode": "QUANTITY_ABOVE_MAXIMUM", "limit": 100 },
+        { "field": "pressure_atm", "value": 0.99, "reasonCode": "PRESSURE_NOT_SUPPORTED", "limit": 1 },
+        { "field": "pressure_atm", "value": 1.01, "reasonCode": "PRESSURE_NOT_SUPPORTED", "limit": 1 },
+        { "field": "pressure_atm", "value": 2, "reasonCode": "PRESSURE_NOT_SUPPORTED", "limit": 1 }
+      ],
+      "rejectedUndefinedValues": [
+        { "field": "concentrationA_molL", "valueToken": "nan", "reasonCode": "QUANTITY_NOT_FINITE" },
+        { "field": "concentrationA_molL", "valueToken": "positive_infinity", "reasonCode": "QUANTITY_NOT_FINITE" },
+        { "field": "concentrationA_molL", "valueToken": "negative_infinity", "reasonCode": "QUANTITY_NOT_FINITE" },
+        { "field": "concentrationA_molL", "valueToken": "zero", "reasonCode": "QUANTITY_NOT_POSITIVE" },
+        { "field": "concentrationA_molL", "valueToken": "negative", "reasonCode": "QUANTITY_NOT_POSITIVE" },
+        { "field": "concentrationA_molL", "valueToken": "text", "reasonCode": "QUANTITY_NOT_A_NUMBER" },
+        { "field": "concentrationA_molL", "valueToken": "boolean", "reasonCode": "QUANTITY_NOT_A_NUMBER" },
+        { "field": "concentrationA_molL", "valueToken": "missing", "reasonCode": "QUANTITY_REQUIRED" },
+        { "field": "volumeA_mL", "valueToken": "nan", "reasonCode": "QUANTITY_NOT_FINITE" },
+        { "field": "volumeA_mL", "valueToken": "zero", "reasonCode": "QUANTITY_NOT_POSITIVE" },
+        { "field": "volumeA_mL", "valueToken": "text", "reasonCode": "QUANTITY_NOT_A_NUMBER" },
+        { "field": "volumeA_mL", "valueToken": "missing", "reasonCode": "QUANTITY_REQUIRED" },
+        { "field": "concentrationB_molL", "valueToken": "nan", "reasonCode": "QUANTITY_NOT_FINITE" },
+        { "field": "concentrationB_molL", "valueToken": "negative", "reasonCode": "QUANTITY_NOT_POSITIVE" },
+        { "field": "concentrationB_molL", "valueToken": "missing", "reasonCode": "QUANTITY_REQUIRED" },
+        { "field": "volumeB_mL", "valueToken": "positive_infinity", "reasonCode": "QUANTITY_NOT_FINITE" },
+        { "field": "volumeB_mL", "valueToken": "zero", "reasonCode": "QUANTITY_NOT_POSITIVE" },
+        { "field": "volumeB_mL", "valueToken": "missing", "reasonCode": "QUANTITY_REQUIRED" },
+        { "field": "temperature_C", "valueToken": "nan", "reasonCode": "QUANTITY_NOT_FINITE" },
+        { "field": "temperature_C", "valueToken": "positive_infinity", "reasonCode": "QUANTITY_NOT_FINITE" },
+        { "field": "temperature_C", "valueToken": "negative_infinity", "reasonCode": "QUANTITY_NOT_FINITE" },
+        { "field": "temperature_C", "valueToken": "text", "reasonCode": "QUANTITY_NOT_A_NUMBER" },
+        { "field": "pressure_atm", "valueToken": "nan", "reasonCode": "QUANTITY_NOT_FINITE" },
+        { "field": "pressure_atm", "valueToken": "text", "reasonCode": "QUANTITY_NOT_A_NUMBER" }
+      ],
+      "localizedMessages": [
+        { "field": "concentrationA_molL", "reasonCode": "QUANTITY_BELOW_MINIMUM", "message": "Konsentrasi larutan A tidak boleh kurang dari 0.1 M." },
+        { "field": "concentrationA_molL", "reasonCode": "QUANTITY_ABOVE_MAXIMUM", "message": "Konsentrasi larutan A tidak boleh lebih dari 2 M." },
+        { "field": "concentrationA_molL", "reasonCode": "QUANTITY_NOT_POSITIVE", "message": "Konsentrasi larutan A harus lebih besar dari nol." },
+        { "field": "concentrationA_molL", "reasonCode": "QUANTITY_NOT_FINITE", "message": "Konsentrasi larutan A harus berupa angka yang terhingga." },
+        { "field": "concentrationA_molL", "reasonCode": "QUANTITY_NOT_A_NUMBER", "message": "Konsentrasi larutan A harus berupa angka." },
+        { "field": "concentrationA_molL", "reasonCode": "QUANTITY_REQUIRED", "message": "Konsentrasi larutan A wajib diisi." },
+        { "field": "volumeA_mL", "reasonCode": "QUANTITY_BELOW_MINIMUM", "message": "Volume larutan A tidak boleh kurang dari 10 mL." },
+        { "field": "volumeA_mL", "reasonCode": "QUANTITY_ABOVE_MAXIMUM", "message": "Volume larutan A tidak boleh lebih dari 100 mL." },
+        { "field": "concentrationB_molL", "reasonCode": "QUANTITY_BELOW_MINIMUM", "message": "Konsentrasi larutan B tidak boleh kurang dari 0.1 M." },
+        { "field": "concentrationB_molL", "reasonCode": "QUANTITY_REQUIRED", "message": "Konsentrasi larutan B wajib diisi." },
+        { "field": "volumeB_mL", "reasonCode": "QUANTITY_ABOVE_MAXIMUM", "message": "Volume larutan B tidak boleh lebih dari 100 mL." },
+        { "field": "temperature_C", "reasonCode": "QUANTITY_BELOW_MINIMUM", "message": "Suhu tidak boleh kurang dari 0 °C." },
+        { "field": "temperature_C", "reasonCode": "QUANTITY_ABOVE_MAXIMUM", "message": "Suhu tidak boleh lebih dari 100 °C." },
+        { "field": "temperature_C", "reasonCode": "QUANTITY_NOT_FINITE", "message": "Suhu harus berupa angka yang terhingga." },
+        { "field": "pressure_atm", "reasonCode": "PRESSURE_NOT_SUPPORTED", "message": "Tekanan tidak dapat diubah pada model versi 1 dan harus tetap 1 atm." }
+      ],
+      "multiFieldRejection": {
+        "title": "Four controls set wrongly at once are reported together, in declared field order, rather than one submission at a time",
+        "overrides": [
+          { "field": "concentrationA_molL", "value": 2.5 },
+          { "field": "volumeA_mL", "value": 5 },
+          { "field": "temperature_C", "value": 150 },
+          { "field": "pressure_atm", "value": 2 }
+        ],
+        "expected": [
+          { "field": "concentrationA_molL", "reasonCode": "QUANTITY_ABOVE_MAXIMUM" },
+          { "field": "volumeA_mL", "reasonCode": "QUANTITY_BELOW_MINIMUM" },
+          { "field": "temperature_C", "reasonCode": "QUANTITY_ABOVE_MAXIMUM" },
+          { "field": "pressure_atm", "reasonCode": "PRESSURE_NOT_SUPPORTED" }
+        ]
+      },
+      "offStepValuesStayValid": [
+        { "field": "concentrationA_molL", "value": 0.123456 },
+        { "field": "volumeB_mL", "value": 33.26 }
+      ]
+    }
+  },
+
+  "pHModel": {
+    "description": "Requirements 3.3, 3.4, 3.5, and 3.7 and audited defect 1.1, where the engine seeded every result with a default near 7 and reported exactly neutral for every HCl/NaOH mixture without reading concentration, volume, limiting reagent, or excess. The one supported system is the ideal, fully dissociated, monoprotic HCl/NaOH mixture. Its pH is stated here by hand from the unrounded amounts, the total mixed volume, and the declared pKw, independently of the evaluator: the acid's proton equivalents minus the base's hydroxide equivalents gives a signed difference, the difference divided by the total mixed volume gives the excess ion concentration, and -log10 of that concentration gives pH directly for an acid excess or pOH for a base excess. Equivalence is decided against the declared equivalence tolerance rather than against exact zero. pH values are stated to nine decimals and compared within the catalog's declared pH tolerance, because a cologarithm has no exact decimal form.",
+    "requirements": ["3.3", "3.4", "3.5", "3.7"],
+    "defects": ["1.1"],
+    "supportedPairKey": "HCl|NaOH",
+    "supportedReactionId": "rxn_h2o_neutralization",
+    "modelId": "ideal_strong_monoprotic_acid_base",
+    "modelLabel": "Model ideal asam-basa kuat monoprotik pada 25 °C",
+    "pKw": 14,
+    "pKwSource": "standard_temperature_25C",
+    "temperatureCorrected": false,
+    "neutralPH": 7,
+    "displayPrecision": 2,
+    "neutralDisplay": "7.00",
+    "equivalenceTolerance_mol": 1e-9,
+    "pHTolerance": 1e-6,
+    "protonIonId": "H+",
+    "hydroxideIonId": "OH-",
+    "acidReagentId": "HCl",
+    "baseReagentId": "NaOH",
+    "forbiddenFabricatedValues": ["~7.0", "~ 7.0", "~7"],
+
+    "cases": [
+      {
+        "id": "ph-equivalence-exact",
+        "title": "Equal acid and base equivalents report the pKw/2 neutral point, not a defaulted value",
+        "solutions": [
+          { "reagentId": "HCl", "concentration_molL": 1, "volume_mL": 50 },
+          { "reagentId": "NaOH", "concentration_molL": 1, "volume_mL": 50 }
+        ],
+        "acidEquivalents_mol": 0.05,
+        "baseEquivalents_mol": 0.05,
+        "equivalenceDifference_mol": 0,
+        "totalVolume_L": 0.1,
+        "equivalence": true,
+        "side": "neutral",
+        "excessIonId": null,
+        "excessAmount_mol": 0,
+        "excessConcentration_molL": 0,
+        "pH": 7,
+        "display": "7.00"
+      },
+      {
+        "id": "ph-equivalence-within-tolerance",
+        "title": "Equivalents equal to within the declared tolerance are still equivalence, and ignoring the tolerance would report a basic pH for an acid-side difference",
+        "solutions": [
+          { "reagentId": "HCl", "concentration_molL": 1, "volume_mL": 50 },
+          { "reagentId": "NaOH", "concentration_molL": 0.99999999, "volume_mL": 50 }
+        ],
+        "acidEquivalents_mol": 0.05,
+        "baseEquivalents_mol": 0.0499999995,
+        "equivalenceDifference_mol": 5.0e-10,
+        "totalVolume_L": 0.1,
+        "equivalence": true,
+        "side": "neutral",
+        "excessIonId": null,
+        "excessAmount_mol": 0,
+        "excessConcentration_molL": 0,
+        "pH": 7,
+        "display": "7.00",
+        "pHIfToleranceIgnored": 8.301029996,
+        "toleranceIgnoredLandsOnWrongSide": true
+      },
+      {
+        "id": "ph-acid-excess-matching-vector",
+        "title": "Excess HCl: the excess proton amount over the total mixed volume, below neutral",
+        "vectorId": "hcl-naoh-acid-excess",
+        "solutions": [
+          { "reagentId": "HCl", "concentration_molL": 1, "volume_mL": 60 },
+          { "reagentId": "NaOH", "concentration_molL": 0.5, "volume_mL": 40 }
+        ],
+        "acidEquivalents_mol": 0.06,
+        "baseEquivalents_mol": 0.02,
+        "equivalenceDifference_mol": 0.04,
+        "totalVolume_L": 0.1,
+        "equivalence": false,
+        "side": "acidic",
+        "excessIonId": "H+",
+        "excessAmount_mol": 0.04,
+        "excessConcentration_molL": 0.4,
+        "pH": 0.397940009,
+        "display": "0.40"
+      },
+      {
+        "id": "ph-base-excess-matching-vector",
+        "title": "Excess NaOH: the excess hydroxide amount over the total mixed volume through pKw, above neutral",
+        "vectorId": "hcl-naoh-base-excess",
+        "solutions": [
+          { "reagentId": "HCl", "concentration_molL": 0.2, "volume_mL": 25 },
+          { "reagentId": "NaOH", "concentration_molL": 0.9, "volume_mL": 80 }
+        ],
+        "acidEquivalents_mol": 0.005,
+        "baseEquivalents_mol": 0.072,
+        "equivalenceDifference_mol": -0.067,
+        "totalVolume_L": 0.105,
+        "equivalence": false,
+        "side": "basic",
+        "excessIonId": "OH-",
+        "excessAmount_mol": 0.067,
+        "excessConcentration_molL": 0.638095238,
+        "pOH": 0.195114496,
+        "pH": 13.804885504,
+        "display": "13.80"
+      },
+      {
+        "id": "ph-volume-alone-creates-the-acid-excess",
+        "title": "At equal concentration, the larger acid volume alone decides both the excess and the pH",
+        "solutions": [
+          { "reagentId": "HCl", "concentration_molL": 1, "volume_mL": 100 },
+          { "reagentId": "NaOH", "concentration_molL": 1, "volume_mL": 50 }
+        ],
+        "acidEquivalents_mol": 0.1,
+        "baseEquivalents_mol": 0.05,
+        "equivalenceDifference_mol": 0.05,
+        "totalVolume_L": 0.15,
+        "equivalence": false,
+        "side": "acidic",
+        "excessIonId": "H+",
+        "excessAmount_mol": 0.05,
+        "excessConcentration_molL": 0.333333333,
+        "pH": 0.477121255,
+        "display": "0.48"
+      },
+      {
+        "id": "ph-small-base-excess-in-the-smallest-mixture",
+        "title": "A small hydroxide excess in the smallest permitted mixture still reports above neutral",
+        "solutions": [
+          { "reagentId": "HCl", "concentration_molL": 0.1, "volume_mL": 10 },
+          { "reagentId": "NaOH", "concentration_molL": 0.1, "volume_mL": 11 }
+        ],
+        "acidEquivalents_mol": 0.001,
+        "baseEquivalents_mol": 0.0011,
+        "equivalenceDifference_mol": -0.0001,
+        "totalVolume_L": 0.021,
+        "equivalence": false,
+        "side": "basic",
+        "excessIonId": "OH-",
+        "excessAmount_mol": 0.0001,
+        "excessConcentration_molL": 0.004761905,
+        "pOH": 2.322219295,
+        "pH": 11.677780705,
+        "display": "11.68"
+      }
+    ],
+
+    "monotonicity": {
+      "description": "Requirement 3.3 and 3.4 read as a direction rather than a single value: adding more strong acid to a fixed amount of strong base must lower the pH strictly, and adding more strong base to a fixed amount of strong acid must raise it strictly. Each series starts at equivalence, so the first step also crosses the neutral point in the stated direction. Both series are stated at on-step slider positions, which is what the controls produce.",
+      "series": [
+        {
+          "id": "more-acid-lowers-ph",
+          "direction": "strictly_decreasing",
+          "fixed": { "reagentId": "NaOH", "concentration_molL": 1, "volume_mL": 50 },
+          "varied": { "reagentId": "HCl", "concentration_molL": 1, "volumes_mL": [50, 60, 70, 80, 90, 100] },
+          "pH": [7, 1.041392685, 0.778151250, 0.636822098, 0.544068044, 0.477121255],
+          "sides": ["neutral", "acidic", "acidic", "acidic", "acidic", "acidic"]
+        },
+        {
+          "id": "more-base-raises-ph",
+          "direction": "strictly_increasing",
+          "fixed": { "reagentId": "HCl", "concentration_molL": 1, "volume_mL": 50 },
+          "varied": { "reagentId": "NaOH", "concentration_molL": 1, "volumes_mL": [50, 60, 70, 80, 90, 100] },
+          "pH": [7, 12.958607315, 13.221848750, 13.363177902, 13.455931956, 13.522878745],
+          "sides": ["neutral", "basic", "basic", "basic", "basic", "basic"]
+        }
+      ]
+    },
+
+    "sideOfNeutral": {
+      "description": "Requirements 3.3 and 3.4 as a property over the whole control grid: on every on-step slider position, an acid excess reports strictly below the neutral point and a base excess strictly above it. The grid is what makes the claim unconditional. Because concentration moves in 0.1 M steps and volume in 1 mL steps, every amount is a whole multiple of 0.0001 mol, so the smallest non-equivalent excess is 0.0001 mol; spread over the largest possible mixed volume of 0.2 L that is 0.0005 M, which is the bound stated below. That is more than three decades away from the 1e-7 M neutral concentration, which is why the ideal model, which omits water autoionization, is on the correct side of neutral everywhere a learner can reach. An excess small enough for the ideal formula to cross the neutral point would need the two equivalents to agree to about nine decimals, far finer than any control step.",
+      "concentrationStep_molL": 0.1,
+      "volumeStep_mL": 1,
+      "smallestNonEquivalentExcess_mol": 0.0001,
+      "largestTotalVolume_L": 0.2,
+      "smallestExcessConcentration_molL": 0.0005,
+      "neutralConcentration_molL": 1e-7,
+      "acidMaximumPH": 3.301029996,
+      "baseMinimumPH": 10.698970004,
+      "grid": {
+        "concentrations_molL": [0.1, 0.5, 1, 1.5, 2],
+        "volumes_mL": [10, 25, 50, 75, 100]
+      }
+    },
+
+    "unroundedInputs": {
+      "description": "Requirement 3.7 applied to pH: the pH is calculated from the unrounded amounts, so feeding back the numbers a learner sees on screen would produce a different result. Here it produces a different answer on the opposite side of neutral, because rounding 0.123456 M to 0.12 M and 33.26 mL to 33.3 mL moves the limiting reagent from NaOH to HCl.",
+      "solutions": [
+        { "reagentId": "HCl", "concentration_molL": 0.123456, "volume_mL": 33.26 },
+        { "reagentId": "NaOH", "concentration_molL": 0.100505, "volume_mL": 40.04 }
+      ],
+      "unrounded": { "side": "acidic", "excessIonId": "H+", "pH": 2.951680315, "display": "2.95" },
+      "displayRoundedAcidInput": { "concentration_molL": 0.12, "volume_mL": 33.3 },
+      "leaked": { "side": "basic", "excessIonId": "OH-", "pH": 10.585219182, "display": "10.59" }
+    },
+
+    "unsupportedUntilTask54": {
+      "description": "Every reaction whose catalog record declares no pH model, and every pair with no modeled reaction at all, still reports a null pH here. Task 5.4 owns attaching the machine-readable reason code and the localized Indonesian boundary explanation to those, so nothing numeric may appear for them in the meantime.",
+      "reactionIds": [
+        "rxn_agcl_precipitation",
+        "rxn_agi_precipitation",
+        "rxn_pbcl2_precipitation",
+        "rxn_pbi2_precipitation",
+        "rxn_baso4_precipitation"
+      ],
+      "pH": null
+    }
+  },
+
+  "vectors": [
+    {
+      "id": "agno3-nacl-equimolar-demonstration",
+      "title": "AgNO₃ + NaCl at the default control position reaches stoichiometric equivalence",
+      "pairKey": "AgNO3|NaCl",
+      "reagents": ["AgNO3", "NaCl"],
+      "reagentFormulas": ["AgNO₃", "NaCl"],
+      "support": { "kind": "supported", "code": null, "messageKey": null },
+      "reactionId": "rxn_agcl_precipitation",
+      "category": "precipitation",
+      "displayName": "Pembentukan endapan perak klorida",
+      "stoichiometricEquivalence": true,
+      "preservedDemonstration": true,
+      "solutions": [
+        {
+          "reagentId": "AgNO3",
+          "concentration_molL": 1,
+          "volume_mL": 50,
+          "amount_mol": 0.05,
+          "coefficient": 1,
+          "consumed_mol": 0.05,
+          "remaining_mol": 0,
+          "limiting": true
+        },
+        {
+          "reagentId": "NaCl",
+          "concentration_molL": 1,
+          "volume_mL": 50,
+          "amount_mol": 0.05,
+          "coefficient": 1,
+          "consumed_mol": 0.05,
+          "remaining_mol": 0,
+          "limiting": true
+        }
+      ],
+      "totalVolume_L": 0.1,
+      "extent_mol": 0.05,
+      "limitingSpecies": ["AgNO3", "NaCl"],
+      "excessSpecies": [],
+      "products": [
+        { "speciesId": "AgCl", "phase": "s", "coefficient": 1, "amount_mol": 0.05 },
+        { "speciesId": "NaNO3", "phase": "aq", "coefficient": 1, "amount_mol": 0.05 }
+      ],
+      "spectatorIons": ["NO3-", "Na+"],
+      "molecularEquation": "AgNO₃(aq) + NaCl(aq) → AgCl(s) + NaNO₃(aq)",
+      "netIonicEquation": "Ag⁺(aq) + Cl⁻(aq) → AgCl(s)",
+      "productSummary": "AgCl + NaNO₃",
+      "phaseModel": { "name": "aqueous_with_solid", "phases": ["aq", "s"], "layered": false },
+      "appearance": {
+        "clarity": "cloudy",
+        "precipitateSpeciesId": "AgCl",
+        "precipitateFormula": "AgCl",
+        "precipitateDisplayName": "Perak Klorida"
+      },
+      "energy": { "label": "normal", "exothermic": false },
+      "pH": null,
+      "speciesLedger": null
+    },
+    {
+      "id": "agno3-nacl-chloride-limiting",
+      "title": "AgNO₃ in excess over a more dilute, larger NaCl volume",
+      "pairKey": "AgNO3|NaCl",
+      "reagents": ["AgNO3", "NaCl"],
+      "reagentFormulas": ["AgNO₃", "NaCl"],
+      "support": { "kind": "supported", "code": null, "messageKey": null },
+      "reactionId": "rxn_agcl_precipitation",
+      "category": "precipitation",
+      "displayName": "Pembentukan endapan perak klorida",
+      "stoichiometricEquivalence": false,
+      "preservedDemonstration": false,
+      "solutions": [
+        {
+          "reagentId": "AgNO3",
+          "concentration_molL": 1,
+          "volume_mL": 40,
+          "amount_mol": 0.04,
+          "coefficient": 1,
+          "consumed_mol": 0.03,
+          "remaining_mol": 0.01,
+          "limiting": false
+        },
+        {
+          "reagentId": "NaCl",
+          "concentration_molL": 0.6,
+          "volume_mL": 50,
+          "amount_mol": 0.03,
+          "coefficient": 1,
+          "consumed_mol": 0.03,
+          "remaining_mol": 0,
+          "limiting": true
+        }
+      ],
+      "totalVolume_L": 0.09,
+      "extent_mol": 0.03,
+      "limitingSpecies": ["NaCl"],
+      "excessSpecies": [{ "speciesId": "AgNO3", "amount_mol": 0.01 }],
+      "products": [
+        { "speciesId": "AgCl", "phase": "s", "coefficient": 1, "amount_mol": 0.03 },
+        { "speciesId": "NaNO3", "phase": "aq", "coefficient": 1, "amount_mol": 0.03 }
+      ],
+      "spectatorIons": ["NO3-", "Na+"],
+      "molecularEquation": "AgNO₃(aq) + NaCl(aq) → AgCl(s) + NaNO₃(aq)",
+      "netIonicEquation": "Ag⁺(aq) + Cl⁻(aq) → AgCl(s)",
+      "productSummary": "AgCl + NaNO₃",
+      "phaseModel": { "name": "aqueous_with_solid", "phases": ["aq", "s"], "layered": false },
+      "appearance": {
+        "clarity": "cloudy",
+        "precipitateSpeciesId": "AgCl",
+        "precipitateFormula": "AgCl",
+        "precipitateDisplayName": "Perak Klorida"
+      },
+      "energy": { "label": "normal", "exothermic": false },
+      "pH": null,
+      "speciesLedger": null
+    },
+    {
+      "id": "agno3-ki-silver-limiting",
+      "title": "AgNO₃ limits AgI formation while iodide stays in large excess",
+      "pairKey": "AgNO3|KI",
+      "reagents": ["AgNO3", "KI"],
+      "reagentFormulas": ["AgNO₃", "KI"],
+      "support": { "kind": "supported", "code": null, "messageKey": null },
+      "reactionId": "rxn_agi_precipitation",
+      "category": "precipitation",
+      "displayName": "Pembentukan endapan perak iodida",
+      "stoichiometricEquivalence": false,
+      "preservedDemonstration": false,
+      "solutions": [
+        {
+          "reagentId": "AgNO3",
+          "concentration_molL": 0.4,
+          "volume_mL": 25,
+          "amount_mol": 0.01,
+          "coefficient": 1,
+          "consumed_mol": 0.01,
+          "remaining_mol": 0,
+          "limiting": true
+        },
+        {
+          "reagentId": "KI",
+          "concentration_molL": 0.8,
+          "volume_mL": 60,
+          "amount_mol": 0.048,
+          "coefficient": 1,
+          "consumed_mol": 0.01,
+          "remaining_mol": 0.038,
+          "limiting": false
+        }
+      ],
+      "totalVolume_L": 0.085,
+      "extent_mol": 0.01,
+      "limitingSpecies": ["AgNO3"],
+      "excessSpecies": [{ "speciesId": "KI", "amount_mol": 0.038 }],
+      "products": [
+        { "speciesId": "AgI", "phase": "s", "coefficient": 1, "amount_mol": 0.01 },
+        { "speciesId": "KNO3", "phase": "aq", "coefficient": 1, "amount_mol": 0.01 }
+      ],
+      "spectatorIons": ["NO3-", "K+"],
+      "molecularEquation": "AgNO₃(aq) + KI(aq) → AgI(s) + KNO₃(aq)",
+      "netIonicEquation": "Ag⁺(aq) + I⁻(aq) → AgI(s)",
+      "productSummary": "AgI + KNO₃",
+      "phaseModel": { "name": "aqueous_with_solid", "phases": ["aq", "s"], "layered": false },
+      "appearance": {
+        "clarity": "cloudy",
+        "precipitateSpeciesId": "AgI",
+        "precipitateFormula": "AgI",
+        "precipitateDisplayName": "Perak Iodida"
+      },
+      "energy": { "label": "normal", "exothermic": false },
+      "pH": null,
+      "speciesLedger": null
+    },
+    {
+      "id": "pbno32-nacl-equal-amounts-halide-limiting",
+      "title": "Equal Pb(NO₃)₂ and NaCl amounts are not equal equivalents: chloride runs out first",
+      "pairKey": "NaCl|Pb(NO3)2",
+      "reagents": ["NaCl", "Pb(NO3)2"],
+      "reagentFormulas": ["NaCl", "Pb(NO₃)₂"],
+      "support": { "kind": "supported", "code": null, "messageKey": null },
+      "reactionId": "rxn_pbcl2_precipitation",
+      "category": "precipitation",
+      "displayName": "Pembentukan endapan timbal(II) klorida",
+      "stoichiometricEquivalence": false,
+      "preservedDemonstration": false,
+      "solutions": [
+        {
+          "reagentId": "NaCl",
+          "concentration_molL": 1,
+          "volume_mL": 50,
+          "amount_mol": 0.05,
+          "coefficient": 2,
+          "consumed_mol": 0.05,
+          "remaining_mol": 0,
+          "limiting": true
+        },
+        {
+          "reagentId": "Pb(NO3)2",
+          "concentration_molL": 1,
+          "volume_mL": 50,
+          "amount_mol": 0.05,
+          "coefficient": 1,
+          "consumed_mol": 0.025,
+          "remaining_mol": 0.025,
+          "limiting": false
+        }
+      ],
+      "totalVolume_L": 0.1,
+      "extent_mol": 0.025,
+      "limitingSpecies": ["NaCl"],
+      "excessSpecies": [{ "speciesId": "Pb(NO3)2", "amount_mol": 0.025 }],
+      "products": [
+        { "speciesId": "PbCl2", "phase": "s", "coefficient": 1, "amount_mol": 0.025 },
+        { "speciesId": "NaNO3", "phase": "aq", "coefficient": 2, "amount_mol": 0.05 }
+      ],
+      "spectatorIons": ["NO3-", "Na+"],
+      "molecularEquation": "Pb(NO₃)₂(aq) + 2NaCl(aq) → PbCl₂(s) + 2NaNO₃(aq)",
+      "netIonicEquation": "Pb²⁺(aq) + 2Cl⁻(aq) → PbCl₂(s)",
+      "productSummary": "PbCl₂ + 2NaNO₃",
+      "phaseModel": { "name": "aqueous_with_solid", "phases": ["aq", "s"], "layered": false },
+      "appearance": {
+        "clarity": "cloudy",
+        "precipitateSpeciesId": "PbCl2",
+        "precipitateFormula": "PbCl₂",
+        "precipitateDisplayName": "Timbal(II) Klorida"
+      },
+      "energy": { "label": "normal", "exothermic": false },
+      "pH": null,
+      "speciesLedger": null
+    },
+    {
+      "id": "pbno32-nacl-lead-limiting",
+      "title": "Dilute Pb(NO₃)₂ limits PbCl₂ formation and leaves most of the chloride unconsumed",
+      "pairKey": "NaCl|Pb(NO3)2",
+      "reagents": ["NaCl", "Pb(NO3)2"],
+      "reagentFormulas": ["NaCl", "Pb(NO₃)₂"],
+      "support": { "kind": "supported", "code": null, "messageKey": null },
+      "reactionId": "rxn_pbcl2_precipitation",
+      "category": "precipitation",
+      "displayName": "Pembentukan endapan timbal(II) klorida",
+      "stoichiometricEquivalence": false,
+      "preservedDemonstration": false,
+      "solutions": [
+        {
+          "reagentId": "NaCl",
+          "concentration_molL": 1,
+          "volume_mL": 80,
+          "amount_mol": 0.08,
+          "coefficient": 2,
+          "consumed_mol": 0.012,
+          "remaining_mol": 0.068,
+          "limiting": false
+        },
+        {
+          "reagentId": "Pb(NO3)2",
+          "concentration_molL": 0.2,
+          "volume_mL": 30,
+          "amount_mol": 0.006,
+          "coefficient": 1,
+          "consumed_mol": 0.006,
+          "remaining_mol": 0,
+          "limiting": true
+        }
+      ],
+      "totalVolume_L": 0.11,
+      "extent_mol": 0.006,
+      "limitingSpecies": ["Pb(NO3)2"],
+      "excessSpecies": [{ "speciesId": "NaCl", "amount_mol": 0.068 }],
+      "products": [
+        { "speciesId": "PbCl2", "phase": "s", "coefficient": 1, "amount_mol": 0.006 },
+        { "speciesId": "NaNO3", "phase": "aq", "coefficient": 2, "amount_mol": 0.012 }
+      ],
+      "spectatorIons": ["NO3-", "Na+"],
+      "molecularEquation": "Pb(NO₃)₂(aq) + 2NaCl(aq) → PbCl₂(s) + 2NaNO₃(aq)",
+      "netIonicEquation": "Pb²⁺(aq) + 2Cl⁻(aq) → PbCl₂(s)",
+      "productSummary": "PbCl₂ + 2NaNO₃",
+      "phaseModel": { "name": "aqueous_with_solid", "phases": ["aq", "s"], "layered": false },
+      "appearance": {
+        "clarity": "cloudy",
+        "precipitateSpeciesId": "PbCl2",
+        "precipitateFormula": "PbCl₂",
+        "precipitateDisplayName": "Timbal(II) Klorida"
+      },
+      "energy": { "label": "normal", "exothermic": false },
+      "pH": null,
+      "speciesLedger": null
+    },
+    {
+      "id": "pbno32-ki-equal-amounts-demonstration",
+      "title": "Pb(NO₃)₂ + KI at the default control position: equal amounts, iodide limiting",
+      "pairKey": "KI|Pb(NO3)2",
+      "reagents": ["KI", "Pb(NO3)2"],
+      "reagentFormulas": ["KI", "Pb(NO₃)₂"],
+      "support": { "kind": "supported", "code": null, "messageKey": null },
+      "reactionId": "rxn_pbi2_precipitation",
+      "category": "precipitation",
+      "displayName": "Pembentukan endapan timbal(II) iodida",
+      "stoichiometricEquivalence": false,
+      "preservedDemonstration": true,
+      "solutions": [
+        {
+          "reagentId": "KI",
+          "concentration_molL": 1,
+          "volume_mL": 50,
+          "amount_mol": 0.05,
+          "coefficient": 2,
+          "consumed_mol": 0.05,
+          "remaining_mol": 0,
+          "limiting": true
+        },
+        {
+          "reagentId": "Pb(NO3)2",
+          "concentration_molL": 1,
+          "volume_mL": 50,
+          "amount_mol": 0.05,
+          "coefficient": 1,
+          "consumed_mol": 0.025,
+          "remaining_mol": 0.025,
+          "limiting": false
+        }
+      ],
+      "totalVolume_L": 0.1,
+      "extent_mol": 0.025,
+      "limitingSpecies": ["KI"],
+      "excessSpecies": [{ "speciesId": "Pb(NO3)2", "amount_mol": 0.025 }],
+      "products": [
+        { "speciesId": "PbI2", "phase": "s", "coefficient": 1, "amount_mol": 0.025 },
+        { "speciesId": "KNO3", "phase": "aq", "coefficient": 2, "amount_mol": 0.05 }
+      ],
+      "spectatorIons": ["NO3-", "K+"],
+      "molecularEquation": "Pb(NO₃)₂(aq) + 2KI(aq) → PbI₂(s) + 2KNO₃(aq)",
+      "netIonicEquation": "Pb²⁺(aq) + 2I⁻(aq) → PbI₂(s)",
+      "productSummary": "PbI₂ + 2KNO₃",
+      "phaseModel": { "name": "aqueous_with_solid", "phases": ["aq", "s"], "layered": false },
+      "appearance": {
+        "clarity": "cloudy",
+        "precipitateSpeciesId": "PbI2",
+        "precipitateFormula": "PbI₂",
+        "precipitateDisplayName": "Timbal(II) Iodida"
+      },
+      "energy": { "label": "normal", "exothermic": false },
+      "pH": null,
+      "speciesLedger": null
+    },
+    {
+      "id": "pbno32-ki-lead-limiting",
+      "title": "Concentrated KI leaves Pb(NO₃)₂ limiting for PbI₂",
+      "pairKey": "KI|Pb(NO3)2",
+      "reagents": ["KI", "Pb(NO3)2"],
+      "reagentFormulas": ["KI", "Pb(NO₃)₂"],
+      "support": { "kind": "supported", "code": null, "messageKey": null },
+      "reactionId": "rxn_pbi2_precipitation",
+      "category": "precipitation",
+      "displayName": "Pembentukan endapan timbal(II) iodida",
+      "stoichiometricEquivalence": false,
+      "preservedDemonstration": false,
+      "solutions": [
+        {
+          "reagentId": "KI",
+          "concentration_molL": 1.2,
+          "volume_mL": 70,
+          "amount_mol": 0.084,
+          "coefficient": 2,
+          "consumed_mol": 0.012,
+          "remaining_mol": 0.072,
+          "limiting": false
+        },
+        {
+          "reagentId": "Pb(NO3)2",
+          "concentration_molL": 0.3,
+          "volume_mL": 20,
+          "amount_mol": 0.006,
+          "coefficient": 1,
+          "consumed_mol": 0.006,
+          "remaining_mol": 0,
+          "limiting": true
+        }
+      ],
+      "totalVolume_L": 0.09,
+      "extent_mol": 0.006,
+      "limitingSpecies": ["Pb(NO3)2"],
+      "excessSpecies": [{ "speciesId": "KI", "amount_mol": 0.072 }],
+      "products": [
+        { "speciesId": "PbI2", "phase": "s", "coefficient": 1, "amount_mol": 0.006 },
+        { "speciesId": "KNO3", "phase": "aq", "coefficient": 2, "amount_mol": 0.012 }
+      ],
+      "spectatorIons": ["NO3-", "K+"],
+      "molecularEquation": "Pb(NO₃)₂(aq) + 2KI(aq) → PbI₂(s) + 2KNO₃(aq)",
+      "netIonicEquation": "Pb²⁺(aq) + 2I⁻(aq) → PbI₂(s)",
+      "productSummary": "PbI₂ + 2KNO₃",
+      "phaseModel": { "name": "aqueous_with_solid", "phases": ["aq", "s"], "layered": false },
+      "appearance": {
+        "clarity": "cloudy",
+        "precipitateSpeciesId": "PbI2",
+        "precipitateFormula": "PbI₂",
+        "precipitateDisplayName": "Timbal(II) Iodida"
+      },
+      "energy": { "label": "normal", "exothermic": false },
+      "pH": null,
+      "speciesLedger": null
+    },
+    {
+      "id": "bacl2-na2so4-equimolar-demonstration",
+      "title": "BaCl₂ + Na₂SO₄ at the default control position reaches stoichiometric equivalence",
+      "pairKey": "BaCl2|Na2SO4",
+      "reagents": ["BaCl2", "Na2SO4"],
+      "reagentFormulas": ["BaCl₂", "Na₂SO₄"],
+      "support": { "kind": "supported", "code": null, "messageKey": null },
+      "reactionId": "rxn_baso4_precipitation",
+      "category": "precipitation",
+      "displayName": "Pembentukan endapan barium sulfat",
+      "stoichiometricEquivalence": true,
+      "preservedDemonstration": true,
+      "solutions": [
+        {
+          "reagentId": "BaCl2",
+          "concentration_molL": 1,
+          "volume_mL": 50,
+          "amount_mol": 0.05,
+          "coefficient": 1,
+          "consumed_mol": 0.05,
+          "remaining_mol": 0,
+          "limiting": true
+        },
+        {
+          "reagentId": "Na2SO4",
+          "concentration_molL": 1,
+          "volume_mL": 50,
+          "amount_mol": 0.05,
+          "coefficient": 1,
+          "consumed_mol": 0.05,
+          "remaining_mol": 0,
+          "limiting": true
+        }
+      ],
+      "totalVolume_L": 0.1,
+      "extent_mol": 0.05,
+      "limitingSpecies": ["BaCl2", "Na2SO4"],
+      "excessSpecies": [],
+      "products": [
+        { "speciesId": "BaSO4", "phase": "s", "coefficient": 1, "amount_mol": 0.05 },
+        { "speciesId": "NaCl", "phase": "aq", "coefficient": 2, "amount_mol": 0.1 }
+      ],
+      "spectatorIons": ["Cl-", "Na+"],
+      "molecularEquation": "BaCl₂(aq) + Na₂SO₄(aq) → BaSO₄(s) + 2NaCl(aq)",
+      "netIonicEquation": "Ba²⁺(aq) + SO₄²⁻(aq) → BaSO₄(s)",
+      "productSummary": "BaSO₄ + 2NaCl",
+      "phaseModel": { "name": "aqueous_with_solid", "phases": ["aq", "s"], "layered": false },
+      "appearance": {
+        "clarity": "cloudy",
+        "precipitateSpeciesId": "BaSO4",
+        "precipitateFormula": "BaSO₄",
+        "precipitateDisplayName": "Barium Sulfat"
+      },
+      "energy": { "label": "normal", "exothermic": false },
+      "pH": null,
+      "speciesLedger": null
+    },
+    {
+      "id": "bacl2-na2so4-sulfate-limiting",
+      "title": "Dilute Na₂SO₄ limits BaSO₄ and leaves barium chloride in excess",
+      "pairKey": "BaCl2|Na2SO4",
+      "reagents": ["BaCl2", "Na2SO4"],
+      "reagentFormulas": ["BaCl₂", "Na₂SO₄"],
+      "support": { "kind": "supported", "code": null, "messageKey": null },
+      "reactionId": "rxn_baso4_precipitation",
+      "category": "precipitation",
+      "displayName": "Pembentukan endapan barium sulfat",
+      "stoichiometricEquivalence": false,
+      "preservedDemonstration": false,
+      "solutions": [
+        {
+          "reagentId": "BaCl2",
+          "concentration_molL": 1.5,
+          "volume_mL": 60,
+          "amount_mol": 0.09,
+          "coefficient": 1,
+          "consumed_mol": 0.02,
+          "remaining_mol": 0.07,
+          "limiting": false
+        },
+        {
+          "reagentId": "Na2SO4",
+          "concentration_molL": 0.5,
+          "volume_mL": 40,
+          "amount_mol": 0.02,
+          "coefficient": 1,
+          "consumed_mol": 0.02,
+          "remaining_mol": 0,
+          "limiting": true
+        }
+      ],
+      "totalVolume_L": 0.1,
+      "extent_mol": 0.02,
+      "limitingSpecies": ["Na2SO4"],
+      "excessSpecies": [{ "speciesId": "BaCl2", "amount_mol": 0.07 }],
+      "products": [
+        { "speciesId": "BaSO4", "phase": "s", "coefficient": 1, "amount_mol": 0.02 },
+        { "speciesId": "NaCl", "phase": "aq", "coefficient": 2, "amount_mol": 0.04 }
+      ],
+      "spectatorIons": ["Cl-", "Na+"],
+      "molecularEquation": "BaCl₂(aq) + Na₂SO₄(aq) → BaSO₄(s) + 2NaCl(aq)",
+      "netIonicEquation": "Ba²⁺(aq) + SO₄²⁻(aq) → BaSO₄(s)",
+      "productSummary": "BaSO₄ + 2NaCl",
+      "phaseModel": { "name": "aqueous_with_solid", "phases": ["aq", "s"], "layered": false },
+      "appearance": {
+        "clarity": "cloudy",
+        "precipitateSpeciesId": "BaSO4",
+        "precipitateFormula": "BaSO₄",
+        "precipitateDisplayName": "Barium Sulfat"
+      },
+      "energy": { "label": "normal", "exothermic": false },
+      "pH": null,
+      "speciesLedger": null
+    },
+    {
+      "id": "hcl-naoh-equimolar-demonstration",
+      "title": "Equimolar HCl + NaOH neutralize completely with no reagent left over",
+      "pairKey": "HCl|NaOH",
+      "reagents": ["HCl", "NaOH"],
+      "reagentFormulas": ["HCl", "NaOH"],
+      "support": { "kind": "supported", "code": null, "messageKey": null },
+      "reactionId": "rxn_h2o_neutralization",
+      "category": "strong_acid_base",
+      "displayName": "Netralisasi asam klorida dan natrium hidroksida",
+      "stoichiometricEquivalence": true,
+      "preservedDemonstration": true,
+      "solutions": [
+        {
+          "reagentId": "HCl",
+          "concentration_molL": 1,
+          "volume_mL": 50,
+          "amount_mol": 0.05,
+          "coefficient": 1,
+          "consumed_mol": 0.05,
+          "remaining_mol": 0,
+          "limiting": true
+        },
+        {
+          "reagentId": "NaOH",
+          "concentration_molL": 1,
+          "volume_mL": 50,
+          "amount_mol": 0.05,
+          "coefficient": 1,
+          "consumed_mol": 0.05,
+          "remaining_mol": 0,
+          "limiting": true
+        }
+      ],
+      "totalVolume_L": 0.1,
+      "extent_mol": 0.05,
+      "limitingSpecies": ["HCl", "NaOH"],
+      "excessSpecies": [],
+      "products": [
+        { "speciesId": "NaCl", "phase": "aq", "coefficient": 1, "amount_mol": 0.05 },
+        { "speciesId": "H2O", "phase": "l", "coefficient": 1, "amount_mol": 0.05 }
+      ],
+      "spectatorIons": ["Cl-", "Na+"],
+      "molecularEquation": "HCl(aq) + NaOH(aq) → NaCl(aq) + H₂O(l)",
+      "netIonicEquation": "H⁺(aq) + OH⁻(aq) → H₂O(l)",
+      "productSummary": "NaCl + H₂O",
+      "phaseModel": { "name": "homogeneous_aqueous", "phases": ["aq"], "layered": false },
+      "appearance": {
+        "clarity": "clear",
+        "precipitateSpeciesId": null,
+        "precipitateFormula": null,
+        "precipitateDisplayName": null
+      },
+      "energy": { "label": "exothermic", "exothermic": true },
+      "pH": {
+        "supported": true,
+        "equivalence": true,
+        "side": "neutral",
+        "excessIonId": null,
+        "excessAmount_mol": 0,
+        "excessConcentration_molL": 0,
+        "value": 7,
+        "display": "7.00"
+      },
+      "speciesLedger": null
+    },
+    {
+      "id": "hcl-naoh-acid-excess",
+      "title": "More HCl than NaOH: the base is limiting and strong acid is left over",
+      "pairKey": "HCl|NaOH",
+      "reagents": ["HCl", "NaOH"],
+      "reagentFormulas": ["HCl", "NaOH"],
+      "support": { "kind": "supported", "code": null, "messageKey": null },
+      "reactionId": "rxn_h2o_neutralization",
+      "category": "strong_acid_base",
+      "displayName": "Netralisasi asam klorida dan natrium hidroksida",
+      "stoichiometricEquivalence": false,
+      "preservedDemonstration": false,
+      "solutions": [
+        {
+          "reagentId": "HCl",
+          "concentration_molL": 1,
+          "volume_mL": 60,
+          "amount_mol": 0.06,
+          "coefficient": 1,
+          "consumed_mol": 0.02,
+          "remaining_mol": 0.04,
+          "limiting": false
+        },
+        {
+          "reagentId": "NaOH",
+          "concentration_molL": 0.5,
+          "volume_mL": 40,
+          "amount_mol": 0.02,
+          "coefficient": 1,
+          "consumed_mol": 0.02,
+          "remaining_mol": 0,
+          "limiting": true
+        }
+      ],
+      "totalVolume_L": 0.1,
+      "extent_mol": 0.02,
+      "limitingSpecies": ["NaOH"],
+      "excessSpecies": [{ "speciesId": "HCl", "amount_mol": 0.04 }],
+      "products": [
+        { "speciesId": "NaCl", "phase": "aq", "coefficient": 1, "amount_mol": 0.02 },
+        { "speciesId": "H2O", "phase": "l", "coefficient": 1, "amount_mol": 0.02 }
+      ],
+      "spectatorIons": ["Cl-", "Na+"],
+      "molecularEquation": "HCl(aq) + NaOH(aq) → NaCl(aq) + H₂O(l)",
+      "netIonicEquation": "H⁺(aq) + OH⁻(aq) → H₂O(l)",
+      "productSummary": "NaCl + H₂O",
+      "phaseModel": { "name": "homogeneous_aqueous", "phases": ["aq"], "layered": false },
+      "appearance": {
+        "clarity": "clear",
+        "precipitateSpeciesId": null,
+        "precipitateFormula": null,
+        "precipitateDisplayName": null
+      },
+      "energy": { "label": "exothermic", "exothermic": true },
+      "pH": {
+        "supported": true,
+        "equivalence": false,
+        "side": "acidic",
+        "excessIonId": "H+",
+        "excessAmount_mol": 0.04,
+        "excessConcentration_molL": 0.4,
+        "value": 0.397940009,
+        "display": "0.40"
+      },
+      "speciesLedger": null
+    },
+    {
+      "id": "hcl-naoh-base-excess",
+      "title": "More NaOH than HCl: the acid is limiting and strong base is left over",
+      "pairKey": "HCl|NaOH",
+      "reagents": ["HCl", "NaOH"],
+      "reagentFormulas": ["HCl", "NaOH"],
+      "support": { "kind": "supported", "code": null, "messageKey": null },
+      "reactionId": "rxn_h2o_neutralization",
+      "category": "strong_acid_base",
+      "displayName": "Netralisasi asam klorida dan natrium hidroksida",
+      "stoichiometricEquivalence": false,
+      "preservedDemonstration": false,
+      "solutions": [
+        {
+          "reagentId": "HCl",
+          "concentration_molL": 0.2,
+          "volume_mL": 25,
+          "amount_mol": 0.005,
+          "coefficient": 1,
+          "consumed_mol": 0.005,
+          "remaining_mol": 0,
+          "limiting": true
+        },
+        {
+          "reagentId": "NaOH",
+          "concentration_molL": 0.9,
+          "volume_mL": 80,
+          "amount_mol": 0.072,
+          "coefficient": 1,
+          "consumed_mol": 0.005,
+          "remaining_mol": 0.067,
+          "limiting": false
+        }
+      ],
+      "totalVolume_L": 0.105,
+      "extent_mol": 0.005,
+      "limitingSpecies": ["HCl"],
+      "excessSpecies": [{ "speciesId": "NaOH", "amount_mol": 0.067 }],
+      "products": [
+        { "speciesId": "NaCl", "phase": "aq", "coefficient": 1, "amount_mol": 0.005 },
+        { "speciesId": "H2O", "phase": "l", "coefficient": 1, "amount_mol": 0.005 }
+      ],
+      "spectatorIons": ["Cl-", "Na+"],
+      "molecularEquation": "HCl(aq) + NaOH(aq) → NaCl(aq) + H₂O(l)",
+      "netIonicEquation": "H⁺(aq) + OH⁻(aq) → H₂O(l)",
+      "productSummary": "NaCl + H₂O",
+      "phaseModel": { "name": "homogeneous_aqueous", "phases": ["aq"], "layered": false },
+      "appearance": {
+        "clarity": "clear",
+        "precipitateSpeciesId": null,
+        "precipitateFormula": null,
+        "precipitateDisplayName": null
+      },
+      "energy": { "label": "exothermic", "exothermic": true },
+      "pH": {
+        "supported": true,
+        "equivalence": false,
+        "side": "basic",
+        "excessIonId": "OH-",
+        "excessAmount_mol": 0.067,
+        "excessConcentration_molL": 0.638095238,
+        "value": 13.804885504,
+        "display": "13.80"
+      },
+      "speciesLedger": null
+    },
+    {
+      "id": "ki-nacl-no-reaction",
+      "title": "Two ordinary soluble halide solutions mix into one homogeneous aqueous phase",
+      "pairKey": "KI|NaCl",
+      "reagents": ["KI", "NaCl"],
+      "reagentFormulas": ["KI", "NaCl"],
+      "support": {
+        "kind": "unsupported",
+        "code": "REACTION_NOT_IN_CATALOG",
+        "messageKey": "model.reaction.noModeledReaction"
+      },
+      "reactionId": null,
+      "category": "no_modeled_reaction",
+      "displayName": null,
+      "stoichiometricEquivalence": false,
+      "preservedDemonstration": false,
+      "solutions": [
+        {
+          "reagentId": "KI",
+          "concentration_molL": 1.1,
+          "volume_mL": 35,
+          "amount_mol": 0.0385,
+          "coefficient": null,
+          "consumed_mol": 0,
+          "remaining_mol": 0.0385,
+          "limiting": false
+        },
+        {
+          "reagentId": "NaCl",
+          "concentration_molL": 0.8,
+          "volume_mL": 45,
+          "amount_mol": 0.036,
+          "coefficient": null,
+          "consumed_mol": 0,
+          "remaining_mol": 0.036,
+          "limiting": false
+        }
+      ],
+      "totalVolume_L": 0.08,
+      "extent_mol": 0,
+      "limitingSpecies": [],
+      "excessSpecies": [
+        { "speciesId": "KI", "amount_mol": 0.0385 },
+        { "speciesId": "NaCl", "amount_mol": 0.036 }
+      ],
+      "products": [],
+      "spectatorIons": [],
+      "molecularEquation": null,
+      "netIonicEquation": null,
+      "productSummary": null,
+      "phaseModel": { "name": "homogeneous_aqueous", "phases": ["aq"], "layered": false },
+      "appearance": {
+        "clarity": "clear",
+        "precipitateSpeciesId": null,
+        "precipitateFormula": null,
+        "precipitateDisplayName": null
+      },
+      "energy": { "label": "normal", "exothermic": false },
+      "pH": null,
+      "speciesLedger": null
+    },
+    {
+      "id": "hcl-nacl-no-reaction",
+      "title": "A strong acid and its own salt share a spectator ion and still do not react",
+      "pairKey": "HCl|NaCl",
+      "reagents": ["HCl", "NaCl"],
+      "reagentFormulas": ["HCl", "NaCl"],
+      "support": {
+        "kind": "unsupported",
+        "code": "REACTION_NOT_IN_CATALOG",
+        "messageKey": "model.reaction.noModeledReaction"
+      },
+      "reactionId": null,
+      "category": "no_modeled_reaction",
+      "displayName": null,
+      "stoichiometricEquivalence": false,
+      "preservedDemonstration": false,
+      "solutions": [
+        {
+          "reagentId": "HCl",
+          "concentration_molL": 1,
+          "volume_mL": 50,
+          "amount_mol": 0.05,
+          "coefficient": null,
+          "consumed_mol": 0,
+          "remaining_mol": 0.05,
+          "limiting": false
+        },
+        {
+          "reagentId": "NaCl",
+          "concentration_molL": 1,
+          "volume_mL": 50,
+          "amount_mol": 0.05,
+          "coefficient": null,
+          "consumed_mol": 0,
+          "remaining_mol": 0.05,
+          "limiting": false
+        }
+      ],
+      "totalVolume_L": 0.1,
+      "extent_mol": 0,
+      "limitingSpecies": [],
+      "excessSpecies": [
+        { "speciesId": "HCl", "amount_mol": 0.05 },
+        { "speciesId": "NaCl", "amount_mol": 0.05 }
+      ],
+      "products": [],
+      "spectatorIons": [],
+      "molecularEquation": null,
+      "netIonicEquation": null,
+      "productSummary": null,
+      "phaseModel": { "name": "homogeneous_aqueous", "phases": ["aq"], "layered": false },
+      "appearance": {
+        "clarity": "clear",
+        "precipitateSpeciesId": null,
+        "precipitateFormula": null,
+        "precipitateDisplayName": null
+      },
+      "energy": { "label": "normal", "exothermic": false },
+      "pH": null,
+      "speciesLedger": null
+    },
+    {
+      "id": "agno3-pbno32-no-reaction",
+      "title": "Two nitrate solutions with no precipitating counter-ion stay homogeneous",
+      "pairKey": "AgNO3|Pb(NO3)2",
+      "reagents": ["AgNO3", "Pb(NO3)2"],
+      "reagentFormulas": ["AgNO₃", "Pb(NO₃)₂"],
+      "support": {
+        "kind": "unsupported",
+        "code": "REACTION_NOT_IN_CATALOG",
+        "messageKey": "model.reaction.noModeledReaction"
+      },
+      "reactionId": null,
+      "category": "no_modeled_reaction",
+      "displayName": null,
+      "stoichiometricEquivalence": false,
+      "preservedDemonstration": false,
+      "solutions": [
+        {
+          "reagentId": "AgNO3",
+          "concentration_molL": 1.3,
+          "volume_mL": 70,
+          "amount_mol": 0.091,
+          "coefficient": null,
+          "consumed_mol": 0,
+          "remaining_mol": 0.091,
+          "limiting": false
+        },
+        {
+          "reagentId": "Pb(NO3)2",
+          "concentration_molL": 0.4,
+          "volume_mL": 20,
+          "amount_mol": 0.008,
+          "coefficient": null,
+          "consumed_mol": 0,
+          "remaining_mol": 0.008,
+          "limiting": false
+        }
+      ],
+      "totalVolume_L": 0.09,
+      "extent_mol": 0,
+      "limitingSpecies": [],
+      "excessSpecies": [
+        { "speciesId": "AgNO3", "amount_mol": 0.091 },
+        { "speciesId": "Pb(NO3)2", "amount_mol": 0.008 }
+      ],
+      "products": [],
+      "spectatorIons": [],
+      "molecularEquation": null,
+      "netIonicEquation": null,
+      "productSummary": null,
+      "phaseModel": { "name": "homogeneous_aqueous", "phases": ["aq"], "layered": false },
+      "appearance": {
+        "clarity": "clear",
+        "precipitateSpeciesId": null,
+        "precipitateFormula": null,
+        "precipitateDisplayName": null
+      },
+      "energy": { "label": "normal", "exothermic": false },
+      "pH": null,
+      "speciesLedger": null
+    },
+    {
+      "id": "na2so4-naoh-no-reaction",
+      "title": "A sulfate salt and a strong base mix without a modeled reaction",
+      "pairKey": "Na2SO4|NaOH",
+      "reagents": ["Na2SO4", "NaOH"],
+      "reagentFormulas": ["Na₂SO₄", "NaOH"],
+      "support": {
+        "kind": "unsupported",
+        "code": "REACTION_NOT_IN_CATALOG",
+        "messageKey": "model.reaction.noModeledReaction"
+      },
+      "reactionId": null,
+      "category": "no_modeled_reaction",
+      "displayName": null,
+      "stoichiometricEquivalence": false,
+      "preservedDemonstration": false,
+      "solutions": [
+        {
+          "reagentId": "Na2SO4",
+          "concentration_molL": 0.6,
+          "volume_mL": 90,
+          "amount_mol": 0.054,
+          "coefficient": null,
+          "consumed_mol": 0,
+          "remaining_mol": 0.054,
+          "limiting": false
+        },
+        {
+          "reagentId": "NaOH",
+          "concentration_molL": 1.9,
+          "volume_mL": 15,
+          "amount_mol": 0.0285,
+          "coefficient": null,
+          "consumed_mol": 0,
+          "remaining_mol": 0.0285,
+          "limiting": false
+        }
+      ],
+      "totalVolume_L": 0.105,
+      "extent_mol": 0,
+      "limitingSpecies": [],
+      "excessSpecies": [
+        { "speciesId": "Na2SO4", "amount_mol": 0.054 },
+        { "speciesId": "NaOH", "amount_mol": 0.0285 }
+      ],
+      "products": [],
+      "spectatorIons": [],
+      "molecularEquation": null,
+      "netIonicEquation": null,
+      "productSummary": null,
+      "phaseModel": { "name": "homogeneous_aqueous", "phases": ["aq"], "layered": false },
+      "appearance": {
+        "clarity": "clear",
+        "precipitateSpeciesId": null,
+        "precipitateFormula": null,
+        "precipitateDisplayName": null
+      },
+      "energy": { "label": "normal", "exothermic": false },
+      "pH": null,
+      "speciesLedger": null
+    },
+    {
+      "id": "bacl2-nacl-no-reaction-at-bounds",
+      "title": "The most and least concentrated permitted solutions still mix into one phase",
+      "pairKey": "BaCl2|NaCl",
+      "reagents": ["BaCl2", "NaCl"],
+      "reagentFormulas": ["BaCl₂", "NaCl"],
+      "support": {
+        "kind": "unsupported",
+        "code": "REACTION_NOT_IN_CATALOG",
+        "messageKey": "model.reaction.noModeledReaction"
+      },
+      "reactionId": null,
+      "category": "no_modeled_reaction",
+      "displayName": null,
+      "stoichiometricEquivalence": false,
+      "preservedDemonstration": false,
+      "solutions": [
+        {
+          "reagentId": "BaCl2",
+          "concentration_molL": 2,
+          "volume_mL": 100,
+          "amount_mol": 0.2,
+          "coefficient": null,
+          "consumed_mol": 0,
+          "remaining_mol": 0.2,
+          "limiting": false
+        },
+        {
+          "reagentId": "NaCl",
+          "concentration_molL": 0.1,
+          "volume_mL": 10,
+          "amount_mol": 0.001,
+          "coefficient": null,
+          "consumed_mol": 0,
+          "remaining_mol": 0.001,
+          "limiting": false
+        }
+      ],
+      "totalVolume_L": 0.11,
+      "extent_mol": 0,
+      "limitingSpecies": [],
+      "excessSpecies": [
+        { "speciesId": "BaCl2", "amount_mol": 0.2 },
+        { "speciesId": "NaCl", "amount_mol": 0.001 }
+      ],
+      "products": [],
+      "spectatorIons": [],
+      "molecularEquation": null,
+      "netIonicEquation": null,
+      "productSummary": null,
+      "phaseModel": { "name": "homogeneous_aqueous", "phases": ["aq"], "layered": false },
+      "appearance": {
+        "clarity": "clear",
+        "precipitateSpeciesId": null,
+        "precipitateFormula": null,
+        "precipitateDisplayName": null
+      },
+      "energy": { "label": "normal", "exothermic": false },
+      "pH": null,
+      "speciesLedger": null
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "registryVersion": "1.0.0",
+  "description": "Baseline CI test-suite registry. Every suite declares how an empty match set is handled so that a silently empty suite can never report success.",
+  "runners": {
+    "vitest": {
+      "emptyExitCode": null,
+      "emptyExitCodeReason": "Vitest is never invoked with an empty match set; the runner resolves files first.",
+      "exitCodes": { "0": "passed", "1": "failed" }
+    },
+    "pytest": {
+      "emptyExitCode": 5,
+      "emptyExitCodeReason": "Pytest exit code 5 means no tests were collected and is treated as an empty suite, never as success.",
+      "exitCodes": { "0": "passed", "1": "failed", "2": "failed", "3": "failed", "4": "failed" }
+    }
+  },
+  "suites": [
+    {
+      "id": "frontend-unit",
+      "description": "Frontend toolchain, DOM, and accessibility smoke tests.",
+      "runner": "vitest",
+      "command": ["{node}", "node_modules/vitest/vitest.mjs", "run", "tests/frontend"],
+      "include": ["tests/frontend/**/*.test.js"],
+      "emptyPolicy": "fail"
+    },
+    {
+      "id": "ci-policy",
+      "description": "Release-manifest policy and CI registry tests.",
+      "runner": "vitest",
+      "command": ["{node}", "node_modules/vitest/vitest.mjs", "run", "tests/ci"],
+      "include": ["tests/ci/**/*.test.js"],
+      "emptyPolicy": "fail"
+    },
+    {
+      "id": "repository-safety",
+      "description": "Read-only migration inventory and repository safety tests.",
+      "runner": "pytest",
+      "command": ["{python}", "-m", "pytest", "tests", "-ra", "--strict-markers"],
+      "cwd": ".",
+      "include": ["tests/test_*.py"],
+      "emptyPolicy": "fail"
+    },
+    {
+      "id": "backend-unit",
+      "description": "Backend scaffolding and configuration tests.",
+      "runner": "pytest",
+      "command": ["{python}", "-m", "pytest"],
+      "cwd": "backend",
+      "include": ["backend/tests/test_*.py"],
+      "emptyPolicy": "fail"
+    },
+    {
+      "id": "chemistry-domain",
+      "description": "Catalog, evaluator, conservation, and visualization-plan tests.",
+      "runner": "vitest",
+      "command": ["{node}", "node_modules/vitest/vitest.mjs", "run", "tests/chemistry"],
+      "include": ["tests/chemistry/**/*.test.js"],
+      "emptyPolicy": "fail"
+    },
+    {
+      "id": "backend-contracts",
+      "description": "Strict API contract, inverse solver, and tutor-scope tests.",
+      "runner": "pytest",
+      "command": ["{python}", "-m", "pytest", "tests/contracts", "-ra", "--strict-markers"],
+      "cwd": "backend",
+      "include": ["backend/tests/contracts/test_*.py"],
+      "emptyPolicy": "allow",
+      "emptyReason": "Reserved for the versioned FastAPI contracts delivered by tasks 11 to 16; the directory is intentionally empty until then and the suite is reported as declared-empty rather than passing."
+    }
+  ]
+}

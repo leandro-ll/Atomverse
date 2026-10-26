@@ -1,0 +1,138 @@
+{
+  "schemaVersion": "1.0.0",
+  "generatedFromCatalogVersion": "2.0.0",
+  "fixtures": [
+    {
+      "name": "AgNO3 + NaCl at defaults",
+      "reagentAId": "sub.agno3",
+      "reagentBId": "sub.nacl",
+      "input": {
+        "concentrationA_M": 0.1,
+        "volumeA_L": 0.05,
+        "concentrationB_M": 0.1,
+        "volumeB_L": 0.05,
+        "temperatureC": 25
+      },
+      "expect": {
+        "reactionId": "rxn.agno3__nacl",
+        "outcome": "precipitate_forms",
+        "productId": "sub.agcl",
+        "productIndonesianName": "Perak klorida",
+        "molecularEquation": "AgNO₃(aq) + NaCl(aq) → AgCl(s) + NaNO₃(aq)",
+        "netIonicEquation": "Ag⁺(aq) + Cl⁻(aq) → AgCl(s)",
+        "QApprox": 0.0025,
+        "kspLiteral": "1.77e-10"
+      }
+    },
+    {
+      "name": "AgNO3 + KI at defaults",
+      "reagentAId": "sub.agno3",
+      "reagentBId": "sub.ki",
+      "input": {
+        "concentrationA_M": 0.1,
+        "volumeA_L": 0.05,
+        "concentrationB_M": 0.1,
+        "volumeB_L": 0.05,
+        "temperatureC": 25
+      },
+      "expect": {
+        "reactionId": "rxn.agno3__ki",
+        "outcome": "precipitate_forms",
+        "productId": "sub.agi",
+        "productIndonesianName": "Perak iodida",
+        "molecularEquation": "AgNO₃(aq) + KI(aq) → AgI(s) + KNO₃(aq)",
+        "netIonicEquation": "Ag⁺(aq) + I⁻(aq) → AgI(s)",
+        "QApprox": 0.0025,
+        "kspLiteral": "8.52e-17"
+      }
+    },
+    {
+      "name": "Pb(NO3)2 + NaCl at defaults",
+      "reagentAId": "sub.pb_no3_2",
+      "reagentBId": "sub.nacl",
+      "input": {
+        "concentrationA_M": 0.1,
+        "volumeA_L": 0.05,
+        "concentrationB_M": 0.1,
+        "volumeB_L": 0.05,
+        "temperatureC": 25
+      },
+      "expect": {
+        "reactionId": "rxn.nacl__pb_no3_2",
+        "outcome": "precipitate_forms",
+        "productId": "sub.pbcl2",
+        "productIndonesianName": "Timbal(II) klorida",
+        "molecularEquation": "2 NaCl(aq) + Pb(NO₃)₂(aq) → 2 NaNO₃(aq) + PbCl₂(s)",
+        "netIonicEquation": "2 Cl⁻(aq) + Pb²⁺(aq) → PbCl₂(s)",
+        "QApprox": 0.000125,
+        "kspLiteral": "1.7e-5"
+      }
+    },
+    {
+      "name": "Pb(NO3)2 + KI at defaults",
+      "reagentAId": "sub.pb_no3_2",
+      "reagentBId": "sub.ki",
+      "input": {
+        "concentrationA_M": 0.1,
+        "volumeA_L": 0.05,
+        "concentrationB_M": 0.1,
+        "volumeB_L": 0.05,
+        "temperatureC": 25
+      },
+      "expect": {
+        "reactionId": "rxn.ki__pb_no3_2",
+        "outcome": "precipitate_forms",
+        "productId": "sub.pbi2",
+        "productIndonesianName": "Timbal(II) iodida",
+        "molecularEquation": "2 KI(aq) + Pb(NO₃)₂(aq) → 2 KNO₃(aq) + PbI₂(s)",
+        "netIonicEquation": "2 I⁻(aq) + Pb²⁺(aq) → PbI₂(s)",
+        "QApprox": 0.000125,
+        "kspLiteral": "9.8e-9"
+      }
+    },
+    {
+      "name": "BaCl2 + Na2SO4 at defaults",
+      "reagentAId": "sub.bacl2",
+      "reagentBId": "sub.na2so4",
+      "input": {
+        "concentrationA_M": 0.1,
+        "volumeA_L": 0.05,
+        "concentrationB_M": 0.1,
+        "volumeB_L": 0.05,
+        "temperatureC": 25
+      },
+      "expect": {
+        "reactionId": "rxn.bacl2__na2so4",
+        "outcome": "precipitate_forms",
+        "productId": "sub.baso4",
+        "productIndonesianName": "Barium sulfat",
+        "molecularEquation": "BaCl₂(aq) + Na₂SO₄(aq) → BaSO₄(s) + 2 NaCl(aq)",
+        "netIonicEquation": "Ba²⁺(aq) + SO₄²⁻(aq) → BaSO₄(s)",
+        "QApprox": 0.0025,
+        "kspLiteral": "1.08e-10"
+      }
+    },
+    {
+      "name": "HCl + NaOH at defaults",
+      "reagentAId": "sub.hcl",
+      "reagentBId": "sub.naoh",
+      "input": {
+        "concentrationA_M": 0.1,
+        "volumeA_L": 0.05,
+        "concentrationB_M": 0.1,
+        "volumeB_L": 0.05,
+        "temperatureC": 25
+      },
+      "expect": {
+        "reactionId": "rxn.hcl__naoh",
+        "outcome": "neutralization",
+        "productId": "sub.h2o",
+        "productIndonesianName": "Air",
+        "molecularEquation": "HCl(aq) + NaOH(aq) → H₂O(l) + NaCl(aq)",
+        "netIonicEquation": "H⁺(aq) + OH⁻(aq) → H₂O(l)",
+        "QApprox": null,
+        "kspLiteral": null
+      }
+    }
+  ]
+}

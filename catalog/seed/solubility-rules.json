@@ -1,0 +1,119 @@
+{
+  "schemaVersion": "1.0.0",
+  "defaultClass": "insoluble",
+  "rules": [
+    {
+      "order": 10,
+      "id": "rule.all_nitrates_soluble",
+      "match": { "anionId": "ion.no3_1m" },
+      "class": "soluble",
+      "exceptions": [],
+      "note": "Semua garam nitrat larut dalam air."
+    },
+    {
+      "order": 15,
+      "id": "rule.acetates_soluble",
+      "match": { "anionId": "ion.ch3coo_1m" },
+      "class": "soluble",
+      "exceptions": [],
+      "note": "Semua garam asetat larut dalam air."
+    },
+    {
+      "order": 20,
+      "id": "rule.alkali_soluble",
+      "match": { "cationIdIn": ["ion.na_1p", "ion.k_1p"] },
+      "class": "soluble",
+      "exceptions": [],
+      "note": "Semua garam logam alkali (Na+, K+) larut dalam air."
+    },
+    {
+      "order": 25,
+      "id": "rule.ammonium_soluble",
+      "match": { "cationId": "ion.nh4_1p" },
+      "class": "soluble",
+      "exceptions": [],
+      "note": "Semua garam amonium larut dalam air."
+    },
+    {
+      "order": 28,
+      "id": "rule.bicarbonates_soluble",
+      "match": { "anionId": "ion.hco3_1m" },
+      "class": "soluble",
+      "exceptions": [],
+      "note": "Semua garam bikarbonat larut dalam air."
+    },
+    {
+      "order": 30,
+      "id": "rule.acids_soluble",
+      "match": { "cationId": "ion.h_1p" },
+      "class": "soluble",
+      "exceptions": [],
+      "note": "Senyawa asam anorganik sederhana larut dalam air."
+    },
+    {
+      "order": 40,
+      "id": "rule.halides_soluble_except_heavy",
+      "match": { "anionIdIn": ["ion.cl_1m", "ion.br_1m", "ion.i_1m"] },
+      "class": "soluble",
+      "exceptions": [
+        { "substanceId": "sub.agcl", "class": "insoluble" },
+        { "substanceId": "sub.agbr", "class": "insoluble" },
+        { "substanceId": "sub.agi", "class": "insoluble" },
+        { "substanceId": "sub.pbcl2", "class": "slightly_soluble" },
+        { "substanceId": "sub.pbbr2", "class": "slightly_soluble" },
+        { "substanceId": "sub.pbi2", "class": "insoluble" },
+        { "substanceId": "sub.cui2", "class": "insoluble" },
+        { "substanceId": "sub.fei3", "class": "insoluble" }
+      ],
+      "note": "Sebagian besar klorida, bromida, dan iodida larut kecuali dengan Ag+ dan Pb2+."
+    },
+    {
+      "order": 50,
+      "id": "rule.sulfates_soluble_except_heavy",
+      "match": { "anionId": "ion.so4_2m" },
+      "class": "soluble",
+      "exceptions": [
+        { "substanceId": "sub.baso4", "class": "insoluble" },
+        { "substanceId": "sub.pbso4", "class": "insoluble" },
+        { "substanceId": "sub.caso4", "class": "slightly_soluble" },
+        { "substanceId": "sub.ag2so4", "class": "slightly_soluble" }
+      ],
+      "note": "Sebagian besar sulfat larut kecuali BaSO4, PbSO4, dan CaSO4."
+    },
+    {
+      "order": 60,
+      "id": "rule.hydroxides_insoluble_except_strong_bases",
+      "match": { "anionId": "ion.oh_1m" },
+      "class": "insoluble",
+      "exceptions": [
+        { "substanceId": "sub.ba_oh_2", "class": "soluble" },
+        { "substanceId": "sub.ca_oh_2", "class": "slightly_soluble" }
+      ],
+      "note": "Sebagian besar hidroksida sukar larut kecuali basa kuat alkali dan Ba(OH)2."
+    },
+    {
+      "order": 70,
+      "id": "rule.carbonates_insoluble",
+      "match": { "anionId": "ion.co3_2m" },
+      "class": "insoluble",
+      "exceptions": [],
+      "note": "Sebagian besar karbonat sukar larut kecuali garam alkali."
+    },
+    {
+      "order": 80,
+      "id": "rule.phosphates_insoluble",
+      "match": { "anionId": "ion.po4_3m" },
+      "class": "insoluble",
+      "exceptions": [],
+      "note": "Sebagian besar fosfat sukar larut kecuali garam alkali."
+    },
+    {
+      "order": 90,
+      "id": "rule.sulfides_insoluble",
+      "match": { "anionId": "ion.s_2m" },
+      "class": "insoluble",
+      "exceptions": [],
+      "note": "Sebagian besar sulfida sukar larut kecuali garam alkali."
+    }
+  ]
+}

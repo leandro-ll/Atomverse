@@ -1,0 +1,36 @@
+# Environment variables
+.env
+backend/.env
+
+# Node modules and generated frontend output
+node_modules/
+dist/
+coverage/
+.vite/
+
+# Python virtual environments & caches
+.venv/
+backend/.venv/
+venv/
+env/
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.ruff_cache/
+
+# Audio Assets
+assets/*.mp3
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE & deployment metadata
+.vscode/
+.idea/
+.vercel
+.env*
+.kiro/
+TASK.md
+

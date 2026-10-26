@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en" class="light" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATOMVERSE - Virtual Chemistry Lab</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Poppins:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+</head>
+<body class="h-dvh overflow-hidden flex flex-col">
+
+    <!-- TOP NAVIGATION BAR -->
+    <header class="h-14 surface border-b flex items-center justify-between px-6 shrink-0 z-20">
+        <div class="flex items-center gap-2.5 min-w-0">
+            <div class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0">
+                <img src="assets/logo.png" alt="Atomverse" class="w-full h-full object-contain">
+            </div>
+            <h1 class="text-base font-bold tracking-tight font-heading whitespace-nowrap" style="color: var(--primary);">
+                ATOMVERSE <span class="text-xs font-semibold ml-1 opacity-70 font-body text-[var(--text-muted)]">Virtual Lab</span>
+            </h1>
+        </div>
+        <nav id="tab-nav" class="flex gap-8 h-full" role="tablist" aria-label="Atomverse Modules">
+            <button type="button" class="tab-btn active h-full flex items-center px-2 text-xs font-semibold border-b-2 border-transparent transition-colors" data-tab="lab" role="tab" aria-controls="tab-lab" aria-selected="true">Reaction Lab</button>
+            <button type="button" class="tab-btn h-full flex items-center px-2 text-xs font-semibold border-b-2 border-transparent text-muted-custom transition-colors" data-tab="inverse" role="tab" aria-controls="tab-inverse" aria-selected="false">Inverse Experiment</button>
+            <button type="button" class="tab-btn h-full flex items-center px-2 text-xs font-semibold border-b-2 border-transparent text-muted-custom transition-colors" data-tab="env" role="tab" aria-controls="tab-env" aria-selected="false">Environmental Literacy</button>
+        </nav>
+        <div class="flex items-center gap-2.5 shrink-0">
+            <button id="btn-help-tutorial" onclick="window.startAtomverseTutorial && window.startAtomverseTutorial()" title="Start Guided Tour" class="w-7 h-7 rounded-full surface-alt border border-[var(--border-color)] hover:border-[var(--primary)] hover:text-[var(--primary)] flex items-center justify-center text-xs font-bold transition-all cursor-pointer" aria-label="Guided Tour">
+                ?
+            </button>
+            <button id="btn-student-profile" onclick="window.openStudentProfileModal && window.openStudentProfileModal()" title="Student Profile & Achievements" class="h-8 px-3 rounded-full surface-alt border border-[var(--border-color)] hover:border-[var(--primary)] flex items-center gap-2 cursor-pointer transition-all" aria-label="Student Profile">
+                <span class="w-4 h-4 rounded-full bg-cyan-100 text-cyan-700 flex items-center justify-center text-[10px] font-bold">🧪</span>
+                <span class="text-xs font-semibold text-slate-700 hidden sm:inline">Student</span>
+                <span class="text-[9px] bg-cyan-600 text-white font-bold px-1.5 py-0.5 rounded-full">Lv.1</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="flex-1 overflow-hidden relative">
+        
+        <!-- MODULE 01 · REACTION LAB -->
+        <div id="tab-lab" class="tab-content absolute inset-0 flex">
+            
+            <!-- LEFT CONTROL PANEL -->
+            <aside class="w-72 surface border-r flex flex-col overflow-y-auto shrink-0 z-10 text-xs">
+                <div class="p-5 space-y-5">
+                    
+                    <!-- SOLUTION A -->
+                    <div>
+                        <h2 class="text-[11px] font-bold uppercase tracking-wider mb-2 font-heading" style="color: var(--primary);">Solution A</h2>
+                        <select id="select-a" class="w-full rounded-lg p-2 text-xs mb-3 outline-none border focus:ring-2 focus:ring-[var(--primary)]">
+                            <optgroup label="Precipitation Salts">
+                                <option value="AgNO3">AgNO₃ (Silver Nitrate)</option>
+                                <option value="Pb(NO3)2">Pb(NO₃)₂ (Lead(II) Nitrate)</option>
+                                <option value="BaCl2">BaCl₂ (Barium Chloride)</option>
+                                <option value="CaCl2">CaCl₂ (Calcium Chloride)</option>
+                                <option value="NaCl">NaCl (Sodium Chloride)</option>
+                                <option value="KI">KI (Potassium Iodide)</option>
+                                <option value="Na2SO4">Na₂SO₄ (Sodium Sulfate)</option>
+                                <option value="Na2CO3">Na₂CO₃ (Sodium Carbonate)</option>
+                            </optgroup>
+                            <optgroup label="Acids, Bases & Everyday">
+                                <option value="HCl">HCl (Hydrochloric Acid)</option>
+                                <option value="CH3COOH">CH₃COOH (Acetic Acid / Vinegar)</option>
+                                <option value="NaOH">NaOH (Sodium Hydroxide)</option>
+                                <option value="NaHCO3">NaHCO₃ (Baking Soda / Bicarbonate)</option>
+                                <option value="Ca(OH)2">Ca(OH)₂ (Limewater)</option>
+                                <option value="NH3">NH₃ (Aqueous Ammonia)</option>
+                            </optgroup>
+                        </select>
+                        <div class="space-y-3">
+                            <div>
+                                <label class="flex justify-between text-[11px] font-medium text-muted-custom mb-1 font-body">
+                                    <span>Concentration</span>
+                                    <span id="m-a-val" class="mono font-bold" style="color: var(--primary);">1.0 M</span>
+                                </label>
+                                <input type="range" min="1" max="20" value="10" id="m-a-slider" class="w-full h-2 rounded-full cursor-pointer">
+                            </div>
+                            <div>
+                                <label class="flex justify-between text-[11px] font-medium text-muted-custom mb-1 font-body">
+                                    <span>Volume</span>
+                                    <span id="v-a-val" class="mono font-bold" style="color: var(--primary);">50 mL</span>
+                                </label>
+                                <input type="range" min="10" max="100" value="50" id="v-a-slider" class="w-full h-2 rounded-full cursor-pointer">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SOLUTION B -->
+                    <div class="border-t border-[var(--border-color)] pt-4">
+                        <h2 class="text-[11px] font-bold uppercase tracking-wider mb-2 font-heading" style="color: var(--secondary);">Solution B</h2>
+                        <select id="select-b" class="w-full rounded-lg p-2 text-xs mb-3 outline-none border focus:ring-2 focus:ring-[var(--secondary)]">
+                            <optgroup label="Salts & Carbonates">
+                                <option value="NaCl" selected>NaCl (Sodium Chloride)</option>
+                                <option value="NaHCO3">NaHCO₃ (Baking Soda / Bicarbonate)</option>
+                                <option value="Na2CO3">Na₂CO₃ (Sodium Carbonate)</option>
+                                <option value="KI">KI (Potassium Iodide)</option>
+                                <option value="Na2SO4">Na₂SO₄ (Sodium Sulfate)</option>
+                                <option value="CaCl2">CaCl₂ (Calcium Chloride)</option>
+                                <option value="BaCl2">BaCl₂ (Barium Chloride)</option>
+                                <option value="AgNO3">AgNO₃ (Silver Nitrate)</option>
+                                <option value="Pb(NO3)2">Pb(NO₃)₂ (Lead(II) Nitrate)</option>
+                            </optgroup>
+                            <optgroup label="Acids & Bases">
+                                <option value="HCl">HCl (Hydrochloric Acid)</option>
+                                <option value="CH3COOH">CH₃COOH (Acetic Acid / Vinegar)</option>
+                                <option value="NaOH">NaOH (Sodium Hydroxide)</option>
+                                <option value="Ca(OH)2">Ca(OH)₂ (Limewater)</option>
+                                <option value="NH3">NH₃ (Aqueous Ammonia)</option>
+                            </optgroup>
+                        </select>
+                        <div class="space-y-3">
+                            <div>
+                                <label class="flex justify-between text-[11px] font-medium text-muted-custom mb-1 font-body">
+                                    <span>Concentration</span>
+                                    <span id="m-b-val" class="mono font-bold" style="color: var(--secondary);">1.0 M</span>
+                                </label>
+                                <input type="range" min="1" max="20" value="10" id="m-b-slider" class="w-full h-2 rounded-full cursor-pointer">
+                            </div>
+                            <div>
+                                <label class="flex justify-between text-[11px] font-medium text-muted-custom mb-1 font-body">
+                                    <span>Volume</span>
+                                    <span id="v-b-val" class="mono font-bold" style="color: var(--secondary);">50 mL</span>
+                                </label>
+                                <input type="range" min="10" max="100" value="50" id="v-b-slider" class="w-full h-2 rounded-full cursor-pointer">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ENVIRONMENT -->
+                    <div class="border-t border-[var(--border-color)] pt-4">
+                        <h2 class="text-[11px] font-bold uppercase tracking-wider mb-2 font-heading" style="color: var(--danger);">Environment</h2>
+                        <div class="space-y-3">
+                            <div>
+                                <label class="flex justify-between text-[11px] font-medium text-muted-custom mb-1 font-body">
+                                    <span>Temperature</span>
+                                    <span id="temp-val" class="mono font-bold" style="color: var(--danger);">25 °C</span>
+                                </label>
+                                <input type="range" min="0" max="100" value="25" id="temp-slider" class="w-full h-2 rounded-full cursor-pointer">
+                            </div>
+                            <div>
+                                <label class="flex justify-between text-[11px] font-medium text-muted-custom mb-1 font-body">
+                                    <span>Pressure</span>
+                                    <span id="press-val" class="mono font-bold text-muted-custom">1 atm</span>
+                                </label>
+                                <select id="press-select" class="w-full rounded-lg p-1.5 text-xs outline-none border">
+                                    <option value="1">Standard (1 atm)</option>
+                                    <option value="high">Elevated</option>
+                                    <option value="low">Reduced</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ACTION BUTTONS -->
+                    <div class="pt-4 border-t border-[var(--border-color)] space-y-2.5">
+                        <button id="btn-run" class="w-full py-2.5 text-xs font-bold rounded-lg btn-primary flex items-center justify-center gap-2">
+                            <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/></svg>
+                            Run Simulation
+                        </button>
+                        <button id="btn-reset" class="w-full py-2 text-xs font-bold rounded-lg btn-secondary">Reset</button>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- CENTER SIMULATION STAGE -->
+            <section class="flex-1 flex flex-col relative bg-[var(--sim-bg)]">
+                
+                <!-- STAGE TOP BAR -->
+                <div class="h-12 surface-alt border-b flex items-center px-6 justify-between shrink-0">
+                    <div class="flex gap-1.5 surface p-1 rounded-lg border border-[var(--border-color)]">
+                        <button id="btn-macro" class="view-btn active px-3 py-1 text-xs font-semibold rounded-md transition-colors">Macroscopic</button>
+                        <button id="btn-submicro" class="view-btn px-3 py-1 text-xs font-semibold text-muted-custom rounded-md transition-colors">Submicroscopic</button>
+                    </div>
+                    <div id="sim-status" class="status-pill">
+                        <span class="status-pill-dot"></span>
+                        <span id="sim-status-text">Status: Ready</span>
+                    </div>
+                </div>
+
+                <!-- STAGE VISUALIZER AREA -->
+                <div class="flex-1 flex flex-col items-center justify-between p-6 relative overflow-hidden sim-area">
+                    
+                    <!-- ORBIT LOADING OVERLAY -->
+                    <div id="reaction-loading" class="reaction-loading hidden" role="status" aria-live="polite" aria-label="Reaction in progress">
+                        <div class="reaction-loader" aria-hidden="true">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                        <h3>Reaction in Progress</h3>
+                        <p>Analyzing molecular interactions and calculating reaction outcome...</p>
+                        <div class="reaction-progress" aria-hidden="true"><span></span></div>
+                    </div>
+
+                    <!-- MACROSCOPIC VIEW: TWO BEAKERS & CENTRAL REACTION BEAKER -->
+                    <div id="macro-view" class="relative z-10 w-full h-full max-w-3xl flex-1 flex items-center justify-center">
+                        <svg viewBox="0 0 700 450" class="w-full h-full max-h-[380px]">
+                            <defs>
+                                <linearGradient id="grad-beaker-glint" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" stop-color="#ffffff" stop-opacity="0.25"/>
+                                    <stop offset="30%" stop-color="#ffffff" stop-opacity="0.05"/>
+                                    <stop offset="100%" stop-color="#ffffff" stop-opacity="0.15"/>
+                                </linearGradient>
+                            </defs>
+
+                            <!-- BEAKER B (RIGHT) -->
+                            <g id="beaker-b-group" transform="translate(420, 150)">
+                                <path d="M10 20 L10 180 Q10 210 40 210 L160 210 Q190 210 190 180 L190 20" 
+                                      fill="url(#grad-beaker-glint)" stroke="var(--beaker-stroke)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path id="liquid-b" class="liquid-fill" d="M15 80 L15 178 Q15 205 40 205 L160 205 Q185 205 185 178 L185 80 Z" 
+                                      fill="#e2e8f0" opacity="0.85"/>
+                                <text id="label-beaker-b" x="100" y="245" fill="var(--text-muted)" font-size="15" font-family="Montserrat" text-anchor="middle" font-weight="700">Solution B</text>
+                            </g>
+
+                            <!-- BEAKER A (LEFT) -->
+                            <g id="beaker-a-group" transform="translate(130, 150)">
+                                <path d="M10 20 L10 180 Q10 210 40 210 L160 210 Q190 210 190 180 L190 20" 
+                                      fill="url(#grad-beaker-glint)" stroke="var(--beaker-stroke)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path id="liquid-a" class="liquid-fill" d="M15 80 L15 178 Q15 205 40 205 L160 205 Q185 205 185 178 L185 80 Z" 
+                                      fill="#bae6fd" opacity="0.85"/>
+                                <text id="label-beaker-a" x="100" y="245" fill="var(--text-muted)" font-size="15" font-family="Montserrat" text-anchor="middle" font-weight="700">Solution A</text>
+                            </g>
+
+                            <!-- CENTRAL REACTION BEAKER (REVEALED AFTER SIMULATION) -->
+                            <g id="beaker-mixed" transform="translate(230, 120)" opacity="0" class="hidden">
+                                <path d="M10 20 L10 220 Q10 260 50 260 L190 260 Q230 260 230 220 L230 20" 
+                                      fill="url(#grad-beaker-glint)" stroke="var(--beaker-stroke)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path id="liquid-mixed-bottom" d="M15 140 L15 218 Q15 255 50 255 L190 255 Q225 255 225 218 L225 140 Z" 
+                                      fill="#bae6fd" opacity="0.85"/>
+                                <path id="liquid-mixed-top" d="M15 20 L15 140 L225 140 L225 20 Z" 
+                                      fill="#e9d5ff" opacity="0.85"/>
+                                <line id="liquid-boundary" x1="15" y1="140" x2="225" y2="140" stroke="rgba(0,0,0,0.15)" stroke-width="2" opacity="0"/>
+                                
+                                <text id="layer-name-top" class="layer-name-text" x="120" y="80" fill="#18181b" font-size="13" font-family="Montserrat" text-anchor="middle" font-weight="bold" opacity="0">-</text>
+                                <text id="layer-name-bottom" class="layer-name-text" x="120" y="200" fill="#18181b" font-size="13" font-family="Montserrat" text-anchor="middle" font-weight="bold" opacity="0">-</text>
+                                
+                                <g id="precipitate-dots"></g>
+                                <g id="bubbles-group"></g>
+                                <text x="120" y="295" fill="var(--text-muted)" font-size="15" font-family="Montserrat" text-anchor="middle" font-weight="700">Reaction Mixture</text>
+                            </g>
+                        </svg>
+
+                        <!-- BALANCED REACTION EQUATION BOX -->
+                        <div id="equation-container" class="equation-box hidden">
+                            <div class="text-[9px] font-bold uppercase tracking-wider mb-1 font-heading" style="color: var(--secondary);">Reaction Equation</div>
+                            <div id="equation-text" class="mono text-xs leading-relaxed" style="color: var(--text-main);">-</div>
+                        </div>
+                    </div>
+
+                    <!-- SUBMICROSCOPIC VIEW: PARTICLE DYNAMICS -->
+                    <div id="submicro-view" class="relative z-10 hidden w-full h-full max-w-4xl max-h-[480px] flex-1 flex flex-col items-center justify-center">
+                        <canvas id="submicro-canvas" class="w-full h-full"></canvas>
+                        <div id="particle-legend" class="absolute bottom-4 left-4 surface p-2.5 rounded-lg border border-[var(--border-color)] text-xs flex flex-wrap gap-2.5 max-w-xs font-body"></div>
+                        <div class="absolute top-4 right-4 surface p-2.5 rounded-lg border border-[var(--border-color)] text-xs font-body">
+                            <span class="text-muted-custom">Kinetic Energy:</span>
+                            <span id="kinetic-indicator" class="font-bold ml-1 font-heading" style="color: var(--secondary);">Medium</span>
+                        </div>
+                    </div>
+
+                    <!-- FLOATING STAGE METRICS (BOTTOM RESULTS BAR) -->
+                    <div id="stage-metrics" class="stage-metrics">
+                        <div class="metric-item">
+                            <span class="metric-label">Color</span>
+                            <span id="res-color" class="metric-value">Clear</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-label">Precipitate</span>
+                            <span id="res-ppt" class="metric-value highlight">-</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-label">Final pH</span>
+                            <span id="res-ph" class="metric-value">-</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-label">Temperature</span>
+                            <span id="res-energy" class="metric-value">25°C</span>
+                        </div>
+                        <div id="res-gas-card" class="metric-item hidden">
+                            <span class="metric-label">Gas Evolution</span>
+                            <span id="res-gas" class="metric-value text-cyan-600">-</span>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- RESIZE HANDLE -->
+            <div id="resize-handle" class="w-1 hover:bg-[var(--primary)] cursor-col-resize transition-colors z-20 shrink-0"></div>
+
+            <!-- RIGHT PANEL: AI ADAPTIVE TUTOR -->
+            <aside id="right-panel" class="w-80 min-w-[280px] max-w-[500px] surface border-l flex flex-col overflow-hidden shrink-0 z-10">
+                <div class="p-4 border-b border-[var(--border-color)] flex items-center justify-between shrink-0">
+                    <div class="flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <h2 class="text-xs font-bold uppercase tracking-wider font-heading" style="color: var(--primary);">AI Tutor</h2>
+                    </div>
+                    <span id="chat-connection-status" class="chat-connection-status text-[10px]" data-mode="online">Online</span>
+                </div>
+                
+                <!-- CHAT MESSAGES WINDOW -->
+                <div id="chat-window" class="flex-1 overflow-y-auto p-4 space-y-3 font-body text-xs">
+                    <div class="flex gap-2 items-start">
+                        <div class="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold text-white shrink-0 font-heading" style="background-color: var(--primary);">AI</div>
+                        <div class="chat-bubble-ai p-3 text-xs max-w-[85%] leading-relaxed">
+                            Select <b>Solution A</b> and <b>Solution B</b>, then click <b>Run Simulation</b> to observe the reaction and explore its molecular dynamics!
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CHAT INPUT BAR -->
+                <div class="p-3 border-t border-[var(--border-color)] flex gap-2 shrink-0">
+                    <input type="text" id="chat-input" placeholder="Ask AI about your reaction..." class="flex-1 rounded-lg px-3 py-2 text-xs outline-none border focus:ring-2 focus:ring-[var(--primary)]">
+                    <button id="btn-send" class="px-4 rounded-lg text-xs font-bold text-white transition-colors font-heading" style="background-color: var(--primary);">Send</button>
+                </div>
+            </aside>
+        </div>
+
+        <!-- MODULE 02 · INVERSE EXPERIMENT -->
+        <div id="tab-inverse" class="tab-content absolute inset-0 hidden p-6 overflow-y-auto bg-[var(--bg-main)]">
+            <div class="max-w-5xl mx-auto py-4">
+                <h2 class="text-2xl font-bold mb-2 font-heading" style="color: var(--primary);">
+                    Inverse Experimentation Engine
+                </h2>
+                <p class="text-muted-custom text-sm mb-6 font-body">
+                    Solve the <i>inverse problem</i> in chemistry: define your target outcome, and the AI algorithm computes the optimal reactant pair and stoichiometric conditions.
+                </p>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- GOAL SELECTION & TYPED INPUT -->
+                    <div class="lg:col-span-1 surface border border-[var(--border-color)] rounded-xl p-5 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <h3 class="text-xs font-bold uppercase tracking-wider font-heading" style="color: var(--secondary);">1. Define Target Goal</h3>
+                                <span class="text-[10px] px-2 py-0.5 rounded-full font-bold bg-teal-50 text-[var(--primary)] border border-teal-200">Natural Language</span>
+                            </div>
+                            
+                            <!-- TYPED QUERY BOX -->
+                            <div class="space-y-2 mb-4">
+                                <label for="inv-input" class="block text-[11px] font-medium text-muted-custom font-body">
+                                    Type your desired experimental outcome:
+                                </label>
+                                <div class="relative">
+                                    <textarea id="inv-input" rows="3" 
+                                        placeholder="e.g. Form a yellow PbI2 precipitate, or produce CO2 gas..." 
+                                        class="w-full rounded-lg p-2.5 text-xs outline-none border border-[var(--border-color)] bg-white focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] transition-all resize-none font-body leading-relaxed"></textarea>
+                                    <button type="button" id="inv-clear-btn" class="hidden absolute top-2 right-2 text-gray-400 hover:text-gray-600 text-xs p-1" title="Clear text">✕</button>
+                                </div>
+                                <button type="button" id="inv-submit-btn" class="w-full py-2.5 text-xs font-bold rounded-lg btn-primary flex items-center justify-center gap-2 shadow-sm transition-all font-heading">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                                    <span>Compute Configuration</span>
+                                </button>
+                            </div>
+
+                            <!-- INSPIRATION CHIPS / PRESET TAGS -->
+                            <div class="border-t border-[var(--border-color)] pt-3">
+                                <div class="text-[10px] uppercase font-bold text-muted-custom mb-2 font-heading">Quick Inspiration Prompts</div>
+                                <div class="flex flex-wrap gap-1.5" id="inv-chips-container">
+                                    <button type="button" class="inv-chip text-[11px] px-2.5 py-1 rounded-full border border-[var(--border-color)] bg-[var(--bg-surface-alt)] hover:border-[var(--primary)] hover:bg-white transition-all text-left font-medium" data-prompt="Form a yellow precipitate (PbI2)">
+                                        🟡 Yellow Precipitate
+                                    </button>
+                                    <button type="button" class="inv-chip text-[11px] px-2.5 py-1 rounded-full border border-[var(--border-color)] bg-[var(--bg-surface-alt)] hover:border-[var(--primary)] hover:bg-white transition-all text-left font-medium" data-prompt="Form a white precipitate of Silver Chloride (AgCl)">
+                                        ⚪ White Precipitate
+                                    </button>
+                                    <button type="button" class="inv-chip text-[11px] px-2.5 py-1 rounded-full border border-[var(--border-color)] bg-[var(--bg-surface-alt)] hover:border-[var(--primary)] hover:bg-white transition-all text-left font-medium" data-prompt="Produce effervescent carbon dioxide (CO2) gas">
+                                        💨 CO₂ Gas Evolution
+                                    </button>
+                                    <button type="button" class="inv-chip text-[11px] px-2.5 py-1 rounded-full border border-[var(--border-color)] bg-[var(--bg-surface-alt)] hover:border-[var(--primary)] hover:bg-white transition-all text-left font-medium" data-prompt="Neutralize acid and base to reach neutral pH 7.0">
+                                        ⚖️ Neutral pH (7.0)
+                                    </button>
+                                    <button type="button" class="inv-chip text-[11px] px-2.5 py-1 rounded-full border border-[var(--border-color)] bg-[var(--bg-surface-alt)] hover:border-[var(--primary)] hover:bg-white transition-all text-left font-medium" data-prompt="Form white chalk precipitate (CaCO3)">
+                                        🧱 Chalk (CaCO₃)
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- RECOMMENDATION OUTPUT -->
+                    <div class="lg:col-span-2 surface border border-[var(--border-color)] rounded-xl p-5">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xs font-bold uppercase tracking-wider font-heading" style="color: var(--secondary);">2. Recommended Synthesis Plan</h3>
+                            <span id="inv-engine-badge" class="text-[10px] font-mono text-muted-custom">Ready</span>
+                        </div>
+                        <div id="inv-output" class="text-muted-custom text-xs p-5 bg-[var(--bg-surface-alt)] rounded-lg leading-relaxed border border-[var(--border-color)]">
+                            Type your experiment target on the left or click an inspiration chip to compute optimal reactants and stoichiometric conditions.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODULE 03 · ENVIRONMENTAL LITERACY -->
+        <div id="tab-env" class="tab-content absolute inset-0 hidden overflow-y-auto bg-[var(--bg-main)]">
+            <div class="p-8 max-w-6xl mx-auto">
+                <h2 class="text-2xl font-bold mb-2 font-heading" style="color: var(--primary);">
+                    Module 03 · Environmental Molecular Literacy
+                </h2>
+                <p class="text-muted-custom mb-6 text-sm font-body">
+                    Connecting chemical bond strength to real-world environmental persistence. Click any material card to explore its molecular stability and degradation mechanism.
+                </p>
+                
+                <!-- GRID CONTAINER FOR CARDS -->
+                <div id="env-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                    <!-- Dynamic Material Cards rendered via JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- MOLECULAR BOND DETAIL MODAL -->
+        <div id="bond-detail-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+            <div class="surface border border-[var(--border-color)] rounded-2xl max-w-2xl w-full max-h-[85vh] overflow-y-auto shadow-2xl">
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 id="modal-title" class="text-xl font-bold font-heading" style="color: var(--primary);"></h3>
+                        <button onclick="closeBondModal()" class="text-muted-custom hover:text-[var(--text-main)] text-2xl cursor-pointer">&times;</button>
+                    </div>
+                    <div id="modal-content" class="space-y-4 text-xs font-body"></div>
+                    <div class="mt-6 pt-4 border-t border-[var(--border-color)] flex justify-end">
+                        <button onclick="closeBondModal()" class="px-5 py-2 rounded-lg btn-secondary text-xs font-bold">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- JavaScript Files -->
+    <script src="js/config.js"></script>
+    <script src="js/chemistry-engine.js"></script>
+    <script src="js/visualization.js"></script>
+    <script src="js/ai-tutor.js"></script>
+    <script src="js/inverse-experiment.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/tutorial.js"></script>
+    <script src="js/progress-tracker.js"></script>
+</body>
+</html>

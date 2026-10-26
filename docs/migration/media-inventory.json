@@ -1,0 +1,112 @@
+{
+  "aggregateSha256": "7b330314203ecda68583b656c4fdecfec89a35ae99674675aee46f6f760d5d49",
+  "algorithm": "sha256",
+  "expectedCount": 9,
+  "fileCount": 9,
+  "files": [
+    {
+      "deploymentExcluded": true,
+      "deploymentExclusionRules": ["assets/*.mp3"],
+      "gitTracked": false,
+      "ownerClassification": "pending",
+      "path": "assets/Ai.mp3",
+      "preservationPolicy": "preserve-byte-for-byte",
+      "sha256": "26af5580cfc889403a677a6ee536122567b0c662293e1abba138ffc7dfea6c44",
+      "sizeBytes": 180452
+    },
+    {
+      "deploymentExcluded": true,
+      "deploymentExclusionRules": ["assets/*.mp3"],
+      "gitTracked": false,
+      "ownerClassification": "pending",
+      "path": "assets/demo part 1.mp3",
+      "preservationPolicy": "preserve-byte-for-byte",
+      "sha256": "285d9ec3291936404f669a449054ae055bde4c32594664038f464094e9ac49db",
+      "sizeBytes": 630460
+    },
+    {
+      "deploymentExcluded": true,
+      "deploymentExclusionRules": ["assets/*.mp3"],
+      "gitTracked": false,
+      "ownerClassification": "pending",
+      "path": "assets/demo part 2.mp3",
+      "preservationPolicy": "preserve-byte-for-byte",
+      "sha256": "4ed127ba419a5818735e765ad3d2162ca7d78885a91f4e26fd66ab33522ea721",
+      "sizeBytes": 368689
+    },
+    {
+      "deploymentExcluded": true,
+      "deploymentExclusionRules": ["assets/*.mp3"],
+      "gitTracked": false,
+      "ownerClassification": "pending",
+      "path": "assets/endign.mp3",
+      "preservationPolicy": "preserve-byte-for-byte",
+      "sha256": "7c0316939bc4871ca7fff84d31b8a67bdcbe7def7a50c2a76d9949da3479d0d6",
+      "sizeBytes": 152797
+    },
+    {
+      "deploymentExcluded": true,
+      "deploymentExclusionRules": ["assets/*.mp3"],
+      "gitTracked": false,
+      "ownerClassification": "pending",
+      "path": "assets/johnstone.mp3",
+      "preservationPolicy": "preserve-byte-for-byte",
+      "sha256": "1f275fe59279d563322f0e99fa57a7c32a4b0b1c5cf7e7596aef5162017d3037",
+      "sizeBytes": 232282
+    },
+    {
+      "deploymentExcluded": true,
+      "deploymentExclusionRules": ["assets/*.mp3"],
+      "gitTracked": false,
+      "ownerClassification": "pending",
+      "path": "assets/modul lingkungan.mp3",
+      "preservationPolicy": "preserve-byte-for-byte",
+      "sha256": "72b78bd6e0d90f81cca7b379624bb516b9d0f37e1f32081e1c15aaa255d96b5e",
+      "sizeBytes": 394243
+    },
+    {
+      "deploymentExcluded": true,
+      "deploymentExclusionRules": ["assets/*.mp3"],
+      "gitTracked": false,
+      "ownerClassification": "pending",
+      "path": "assets/Problem part 1.mp3",
+      "preservationPolicy": "preserve-byte-for-byte",
+      "sha256": "2a1baeee01e94335acf45804068700d27980fcf1198ef1ce3d45757a4ab9b50d",
+      "sizeBytes": 351453
+    },
+    {
+      "deploymentExcluded": true,
+      "deploymentExclusionRules": ["assets/*.mp3"],
+      "gitTracked": false,
+      "ownerClassification": "pending",
+      "path": "assets/problem part 2.mp3",
+      "preservationPolicy": "preserve-byte-for-byte",
+      "sha256": "666726dded6dec7277741906702725dfa38a0b602abf5f8614b35f996e1d47e1",
+      "sizeBytes": 149721
+    },
+    {
+      "deploymentExcluded": true,
+      "deploymentExclusionRules": ["assets/*.mp3"],
+      "gitTracked": false,
+      "ownerClassification": "pending",
+      "path": "assets/solution intro.mp3",
+      "preservationPolicy": "preserve-byte-for-byte",
+      "sha256": "885e38986d0c7c2999dab5d9983558eeec9916f38f9de09e8d2798a0e0c7157e",
+      "sizeBytes": 292025
+    }
+  ],
+  "inventoryVersion": 1,
+  "kind": "deferred-mp3-inventory",
+  "safety": {
+    "filesWrittenOrDeleted": false,
+    "mediaContentReadOnlyForHashing": true,
+    "ownerApprovalRequiredBeforeReclassification": true
+  },
+  "validation": {
+    "allDeploymentExcluded": true,
+    "allUntracked": true,
+    "exactExpectedSet": true,
+    "problems": [],
+    "valid": true
+  }
+}

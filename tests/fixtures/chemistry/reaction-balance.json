@@ -1,0 +1,112 @@
+{
+  "description": "Golden elemental totals and net charges for both sides of every catalog reaction, stated independently of the catalog. Each entry is the total consumed and produced with the declared integer coefficients, so an unbalanced equation or a wrong coefficient disagrees with these values.",
+  "catalogVersion": "1.1.0",
+  "reactions": [
+    {
+      "pairKey": "AgNO3|NaCl",
+      "reactionId": "rxn_agcl_precipitation",
+      "molecular": {
+        "reactants": "AgNO3(aq) + NaCl(aq)",
+        "products": "AgCl(s) + NaNO3(aq)",
+        "elementTotals": { "Ag": 1, "Cl": 1, "N": 1, "Na": 1, "O": 3 },
+        "charge": 0
+      },
+      "netIonic": {
+        "reactants": "Ag+(aq) + Cl-(aq)",
+        "products": "AgCl(s)",
+        "elementTotals": { "Ag": 1, "Cl": 1 },
+        "charge": 0
+      }
+    },
+    {
+      "pairKey": "AgNO3|KI",
+      "reactionId": "rxn_agi_precipitation",
+      "molecular": {
+        "reactants": "AgNO3(aq) + KI(aq)",
+        "products": "AgI(s) + KNO3(aq)",
+        "elementTotals": { "Ag": 1, "I": 1, "K": 1, "N": 1, "O": 3 },
+        "charge": 0
+      },
+      "netIonic": {
+        "reactants": "Ag+(aq) + I-(aq)",
+        "products": "AgI(s)",
+        "elementTotals": { "Ag": 1, "I": 1 },
+        "charge": 0
+      }
+    },
+    {
+      "pairKey": "NaCl|Pb(NO3)2",
+      "reactionId": "rxn_pbcl2_precipitation",
+      "molecular": {
+        "reactants": "Pb(NO3)2(aq) + 2 NaCl(aq)",
+        "products": "PbCl2(s) + 2 NaNO3(aq)",
+        "elementTotals": { "Cl": 2, "N": 2, "Na": 2, "O": 6, "Pb": 1 },
+        "charge": 0
+      },
+      "netIonic": {
+        "reactants": "Pb2+(aq) + 2 Cl-(aq)",
+        "products": "PbCl2(s)",
+        "elementTotals": { "Cl": 2, "Pb": 1 },
+        "charge": 0
+      }
+    },
+    {
+      "pairKey": "KI|Pb(NO3)2",
+      "reactionId": "rxn_pbi2_precipitation",
+      "molecular": {
+        "reactants": "Pb(NO3)2(aq) + 2 KI(aq)",
+        "products": "PbI2(s) + 2 KNO3(aq)",
+        "elementTotals": { "I": 2, "K": 2, "N": 2, "O": 6, "Pb": 1 },
+        "charge": 0
+      },
+      "netIonic": {
+        "reactants": "Pb2+(aq) + 2 I-(aq)",
+        "products": "PbI2(s)",
+        "elementTotals": { "I": 2, "Pb": 1 },
+        "charge": 0
+      }
+    },
+    {
+      "pairKey": "BaCl2|Na2SO4",
+      "reactionId": "rxn_baso4_precipitation",
+      "molecular": {
+        "reactants": "BaCl2(aq) + Na2SO4(aq)",
+        "products": "BaSO4(s) + 2 NaCl(aq)",
+        "elementTotals": { "Ba": 1, "Cl": 2, "Na": 2, "O": 4, "S": 1 },
+        "charge": 0
+      },
+      "netIonic": {
+        "reactants": "Ba2+(aq) + SO4 2-(aq)",
+        "products": "BaSO4(s)",
+        "elementTotals": { "Ba": 1, "O": 4, "S": 1 },
+        "charge": 0
+      }
+    },
+    {
+      "pairKey": "HCl|NaOH",
+      "reactionId": "rxn_h2o_neutralization",
+      "molecular": {
+        "reactants": "HCl(aq) + NaOH(aq)",
+        "products": "NaCl(aq) + H2O(l)",
+        "elementTotals": { "Cl": 1, "H": 2, "Na": 1, "O": 1 },
+        "charge": 0
+      },
+      "netIonic": {
+        "reactants": "H+(aq) + OH-(aq)",
+        "products": "H2O(l)",
+        "elementTotals": { "H": 2, "O": 1 },
+        "charge": 0
+      }
+    }
+  ],
+  "dissociation": [
+    { "reagentId": "AgNO3", "ions": { "Ag+": 1, "NO3-": 1 }, "elementTotals": { "Ag": 1, "N": 1, "O": 3 }, "charge": 0 },
+    { "reagentId": "Pb(NO3)2", "ions": { "Pb2+": 1, "NO3-": 2 }, "elementTotals": { "N": 2, "O": 6, "Pb": 1 }, "charge": 0 },
+    { "reagentId": "BaCl2", "ions": { "Ba2+": 1, "Cl-": 2 }, "elementTotals": { "Ba": 1, "Cl": 2 }, "charge": 0 },
+    { "reagentId": "NaCl", "ions": { "Na+": 1, "Cl-": 1 }, "elementTotals": { "Cl": 1, "Na": 1 }, "charge": 0 },
+    { "reagentId": "KI", "ions": { "K+": 1, "I-": 1 }, "elementTotals": { "I": 1, "K": 1 }, "charge": 0 },
+    { "reagentId": "Na2SO4", "ions": { "Na+": 2, "SO4_2-": 1 }, "elementTotals": { "Na": 2, "O": 4, "S": 1 }, "charge": 0 },
+    { "reagentId": "HCl", "ions": { "H+": 1, "Cl-": 1 }, "elementTotals": { "Cl": 1, "H": 1 }, "charge": 0 },
+    { "reagentId": "NaOH", "ions": { "Na+": 1, "OH-": 1 }, "elementTotals": { "H": 1, "Na": 1, "O": 1 }, "charge": 0 }
+  ]
+}

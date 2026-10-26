@@ -1,0 +1,113 @@
+{
+  "schemaVersion": "1.0.0",
+  "reagentGroups": [
+    {
+      "id": "grp.acid_base",
+      "labelId": "label.group.acid_base",
+      "label": "Asam & Basa Kuat",
+      "match": { "acidBaseRoleAny": true },
+      "order": 5
+    },
+    {
+      "id": "grp.nitrate",
+      "labelId": "label.group.nitrate",
+      "label": "Nitrat",
+      "match": { "anionId": "ion.no3_1m" },
+      "order": 10
+    },
+    {
+      "id": "grp.everyday",
+      "labelId": "label.group.everyday",
+      "label": "Kimia Sehari-hari & Karbonat",
+      "match": { "anionIdIn": ["ion.ch3coo_1m", "ion.hco3_1m", "ion.co3_2m"] },
+      "order": 18
+    },
+    {
+      "id": "grp.halide",
+      "labelId": "label.group.halide",
+      "label": "Halida",
+      "match": { "anionIdIn": ["ion.cl_1m", "ion.br_1m", "ion.i_1m"] },
+      "order": 20
+    },
+    {
+      "id": "grp.sulfate",
+      "labelId": "label.group.sulfate",
+      "label": "Sulfat",
+      "match": { "anionId": "ion.so4_2m" },
+      "order": 30
+    },
+    {
+      "id": "grp.other",
+      "labelId": "label.group.other",
+      "label": "Lainnya",
+      "match": { "fallback": true },
+      "order": 99
+    }
+  ],
+  "nomenclatureOverrides": [
+    {
+      "substanceId": "sub.h2o",
+      "name": "Air",
+      "reason": "Nama konvensional, bukan hasil komposisi."
+    },
+    {
+      "substanceId": "sub.hcl",
+      "name": "Asam klorida",
+      "reason": "Asam biner dinamai dengan konvensi asam."
+    },
+    {
+      "substanceId": "sub.hbr",
+      "name": "Asam bromida",
+      "reason": "Asam biner dinamai dengan konvensi asam."
+    },
+    {
+      "substanceId": "sub.hi",
+      "name": "Asam iodida",
+      "reason": "Asam biner dinamai dengan konvensi asam."
+    },
+    {
+      "substanceId": "sub.h2so4",
+      "name": "Asam sulfat",
+      "reason": "Oksiasam dinamai dengan konvensi asam."
+    },
+    {
+      "substanceId": "sub.naoh",
+      "name": "Natrium hidroksida",
+      "reason": "Hasil komposisi sudah benar; dicatat eksplisit sebagai jangkar uji."
+    }
+  ],
+  "substanceColors": {
+    "sub.ag2co3": "#eab308",
+    "sub.ag2s": "#1e293b",
+    "sub.ag3po4": "#fef08a",
+    "sub.agbr": "#fef08a",
+    "sub.agcl": "#ffffff",
+    "sub.agi": "#facc15",
+    "sub.baco3": "#ffffff",
+    "sub.baso4": "#ffffff",
+    "sub.caco3": "#ffffff",
+    "sub.caso4": "#ffffff",
+    "sub.cu_oh_2": "#38bdf8",
+    "sub.cuco3": "#10b981",
+    "sub.cus": "#0f172a",
+    "sub.fe_oh_3": "#b45309",
+    "sub.fepo4": "#fef08a",
+    "sub.mg_oh_2": "#ffffff",
+    "sub.pb_oh_2": "#ffffff",
+    "sub.pbbr2": "#ffffff",
+    "sub.pbcl2": "#ffffff",
+    "sub.pbco3": "#ffffff",
+    "sub.pbi2": "#eab308",
+    "sub.pbs": "#0f172a",
+    "sub.pbso4": "#ffffff",
+    "sub.zn_oh_2": "#ffffff",
+    "sub.zns": "#ffffff"
+  },
+  "explanations": {
+    "below_saturation": "Hasil kali ion ({{Q}}) belum melampaui tetapan hasil kali kelarutan {{solidName}} ({{Ksp}}) pada jumlah yang kamu masukkan, sehingga belum ada endapan yang terbentuk.",
+    "no_modeled_reaction": "Pasangan larutan ini tidak memiliki reaksi yang dimodelkan; campuran tetap homogen.",
+    "unsupported.gas_evolution": "Pembentukan gas belum didukung pada fase ini.",
+    "unsupported.redox": "Reaksi redoks dan deret keaktifan logam belum didukung pada fase ini.",
+    "unsupported.weak_equilibrium": "Kesetimbangan asam/basa lemah dan buffer belum didukung pada fase ini."
+  }
+}

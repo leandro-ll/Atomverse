@@ -1,0 +1,56 @@
+{
+  "inventoryVersion": 1,
+  "kind": "redacted-local-path-inventory",
+  "paths": [
+    {
+      "category": "local-environment",
+      "contentInspected": false,
+      "deploymentExcluded": true,
+      "deploymentExclusionRules": [".env*"],
+      "gitIgnored": true,
+      "gitTracked": false,
+      "metadataRecorded": ["path", "category", "presence", "exclusion-status"],
+      "path": ".env.local",
+      "pathKind": "file",
+      "present": true
+    },
+    {
+      "category": "backend-local-environment",
+      "contentInspected": false,
+      "deploymentExcluded": true,
+      "deploymentExclusionRules": ["backend", ".env*", "backend/.env"],
+      "gitIgnored": true,
+      "gitTracked": false,
+      "metadataRecorded": ["path", "category", "presence", "exclusion-status"],
+      "path": "backend/.env",
+      "pathKind": "file",
+      "present": true
+    },
+    {
+      "category": "local-deployment-metadata",
+      "contentInspected": false,
+      "deploymentExcluded": true,
+      "deploymentExclusionRules": [".vercel"],
+      "gitIgnored": true,
+      "gitTracked": false,
+      "metadataRecorded": ["path", "category", "presence", "exclusion-status"],
+      "path": ".vercel",
+      "pathKind": "directory",
+      "present": true
+    }
+  ],
+  "redactionProfile": "path-and-exclusion-metadata-only",
+  "safety": {
+    "directoryContentsEnumerated": false,
+    "filesWrittenOrDeleted": false,
+    "sensitiveFileContentsRead": false,
+    "sensitiveHashesSizesAndTimestampsRecorded": false
+  },
+  "validation": {
+    "allPresentPathsDeploymentExcluded": true,
+    "allPresentPathsGitIgnored": true,
+    "allPresentPathsUntracked": true,
+    "problems": [],
+    "valid": true
+  }
+}

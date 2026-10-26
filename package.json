@@ -1,0 +1,58 @@
+{
+  "name": "atomverse-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": "^22.22.2 || ^24.15.0 || >=26.0.0",
+    "npm": ">=11.0.0"
+  },
+  "packageManager": "npm@12.0.2",
+  "scripts": {
+    "dev": "vite",
+    "backend:dev": "python scripts/dev_backend.py",
+    "preview": "vite preview",
+    "build": "vite build",
+    "test": "vitest run",
+    "test:unit": "vitest run tests/frontend",
+    "test:accessibility": "vitest run tests/frontend/accessibility-smoke.test.js",
+    "test:property": "vitest run tests/frontend/runtime-assets.property.test.js",
+    "test:chemistry": "vitest run tests/chemistry",
+    "test:ci": "vitest run tests/ci",
+    "catalog:validate": "node scripts/catalog/validate-catalog.mjs",
+    "catalog:digest": "node scripts/catalog/generate-digest.mjs",
+    "catalog:generate": "node scripts/catalog/generate-bindings.mjs",
+    "catalog:bindings:check": "node scripts/catalog/check-bindings.mjs",
+    "ci:suites": "node scripts/ci/run-test-suites.mjs",
+    "ci:artifacts": "node scripts/ci/inspect-release-artifacts.mjs",
+    "ci:chemistry": "python scripts/ci/run_chemistry_pipeline.py",
+    "ci:baseline": "npm run catalog:validate && npm run catalog:bindings:check && npm run ci:suites && npm run ci:artifacts",
+    "check:dependencies": "npm ls --all",
+    "audit:dependencies": "npm audit --audit-level=high",
+    "check:build": "node scripts/frontend/verify-no-runtime-cdn.mjs",
+    "check:import-graph": "python scripts/ci/verify-import-graph.py",
+    "check:unicode": "python scripts/ci/verify-no-unicode-notation.py",
+    "check:seam": "npm run check:build && npm run check:import-graph && npm run check:unicode",
+    "precommit": "npm run check:seam",
+    "validate:frontend": "npm run check:dependencies && npm run audit:dependencies && npm test && npm run build && npm run check:build"
+  },
+  "dependencies": {
+    "@fontsource/jetbrains-mono": "5.3.0",
+    "@fontsource/montserrat": "5.3.0",
+    "@fontsource/poppins": "5.3.0",
+    "dompurify": "3.4.16",
+    "katex": "0.18.9",
+    "marked": "18.0.14"
+  },
+  "devDependencies": {
+    "ajv": "8.20.0",
+    "autoprefixer": "10.6.1",
+    "axe-core": "4.13.0",
+    "fast-check": "4.10.2",
+    "jsdom": "30.1.1",
+    "postcss": "8.5.28",
+    "tailwindcss": "3.4.19",
+    "vite": "8.3.1",
+    "vitest": "5.0.2"
+  }
+}

@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atomverse - Interactive 4-Theme Studio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Poppins:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #060913;
+            color: #f1f5f9;
+            min-height: 100vh;
+            padding: 24px;
+        }
+
+        .studio-header {
+            max-width: 1440px;
+            margin: 0 auto 20px auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #0f172a;
+            border: 1px solid #1e293b;
+            padding: 14px 24px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.5);
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .studio-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .studio-title h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 19px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+        .studio-badge {
+            background: rgba(6, 182, 212, 0.15);
+            color: #06b6d4;
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 999px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .view-controls {
+            display: flex;
+            gap: 6px;
+            background: #090d16;
+            padding: 4px;
+            border-radius: 12px;
+            border: 1px solid #1e293b;
+            flex-wrap: wrap;
+        }
+        .view-btn {
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 180ms ease;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .view-btn.active {
+            background: #1e293b;
+            color: #f8fafc;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+        }
+        .view-btn.btn-light.active {
+            background: #0891b2;
+            color: #ffffff;
+        }
+
+        /* GRID LAYOUTS */
+        .comparison-grid {
+            max-width: 1440px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            transition: all 300ms ease;
+        }
+        .comparison-grid.show-only-light .palette-card:not(.theme-light) { display: none; }
+        .comparison-grid.show-only-light { grid-template-columns: 1fr; }
+
+        .comparison-grid.show-only-dim .palette-card:not(.theme-dim) { display: none; }
+        .comparison-grid.show-only-dim { grid-template-columns: 1fr; }
+
+        .comparison-grid.show-only-cyan .palette-card:not(.theme-cyan) { display: none; }
+        .comparison-grid.show-only-cyan { grid-template-columns: 1fr; }
+
+        .comparison-grid.show-only-zinc .palette-card:not(.theme-zinc) { display: none; }
+        .comparison-grid.show-only-zinc { grid-template-columns: 1fr; }
+
+        .comparison-grid.show-all-4 {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        /* PALETTE CARD WRAPPER */
+        .palette-card {
+            border-radius: 16px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            border-width: 2px;
+            border-style: solid;
+            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.6);
+            transition: all 200ms ease;
+        }
+
+        .card-header-bar {
+            padding: 12px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 13px;
+            font-weight: 600;
+            font-family: 'Montserrat', sans-serif;
+            border-bottom-width: 1px;
+            border-bottom-style: solid;
+        }
+        .card-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        /* ========================================================
+           THEME DEFINITIONS (CSS VARIABLES)
+           ======================================================== */
+
+        /* 1. CLEAN MODERN LIGHT LAB THEME */
+        .theme-light {
+            --t-bg-main: #F8FAFC;
+            --t-bg-surface: #FFFFFF;
+            --t-bg-surface-alt: #F1F5F9;
+            --t-text-main: #0F172A;
+            --t-text-muted: #64748B;
+            --t-border: #E2E8F0;
+            --t-primary: #0891B2;       /* Clinical Teal */
+            --t-primary-hover: #0E7490;
+            --t-secondary: #D97706;     /* Amber */
+            --t-success: #16A34A;       /* Emerald */
+            --t-danger: #DC2626;        /* Red */
+            --t-sim-bg: #F1F5F9;
+            --t-beaker-stroke: #94A3B8;
+            --t-header-bg: #FFFFFF;
+            border-color: #0891B2;
+            background: var(--t-bg-main);
+        }
+        .theme-light .card-header-bar {
+            background: #FFFFFF;
+            border-color: #E2E8F0;
+            color: #0891B2;
+        }
+        .theme-light .card-tag {
+            background: rgba(8, 145, 178, 0.12);
+            color: #0891B2;
+            border: 1px solid rgba(8, 145, 178, 0.25);
+        }
+
+        /* 2. SOFT DIM SLATE THEME (Mid-tone) */
+        .theme-dim {
+            --t-bg-main: #1E293B;
+            --t-bg-surface: #334155;
+            --t-bg-surface-alt: #475569;
+            --t-text-main: #F8FAFC;
+            --t-text-muted: #CBD5E1;
+            --t-border: #475569;
+            --t-primary: #38BDF8;       /* Bright Sky Blue */
+            --t-primary-hover: #0EA5E9;
+            --t-secondary: #FBBF24;     /* Solar Amber */
+            --t-success: #34D399;       /* Mint */
+            --t-danger: #F87171;        /* Coral */
+            --t-sim-bg: #0F172A;
+            --t-beaker-stroke: #94A3B8;
+            --t-header-bg: #334155;
+            border-color: #38BDF8;
+            background: var(--t-bg-main);
+        }
+        .theme-dim .card-header-bar {
+            background: #334155;
+            border-color: #475569;
+            color: #38BDF8;
+        }
+        .theme-dim .card-tag {
+            background: rgba(56, 189, 248, 0.15);
+            color: #38BDF8;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+        }
+
+        /* 3. DEEP SLATE & ELECTRIC CYAN THEME */
+        .theme-cyan {
+            --t-bg-main: #0B1120;
+            --t-bg-surface: #111B30;
+            --t-bg-surface-alt: #1E293B;
+            --t-text-main: #F8FAFC;
+            --t-text-muted: #94A3B8;
+            --t-border: #1E293B;
+            --t-primary: #06B6D4;
+            --t-primary-hover: #0891B2;
+            --t-secondary: #F59E0B;
+            --t-success: #10B981;
+            --t-danger: #F43F5E;
+            --t-sim-bg: #0F172A;
+            --t-beaker-stroke: #64748B;
+            --t-header-bg: #111B30;
+            border-color: #06B6D4;
+            background: var(--t-bg-main);
+        }
+        .theme-cyan .card-header-bar {
+            background: #111B30;
+            border-color: #1E293B;
+            color: #06B6D4;
+        }
+        .theme-cyan .card-tag {
+            background: rgba(6, 182, 212, 0.15);
+            color: #06B6D4;
+            border: 1px solid rgba(6, 182, 212, 0.3);
+        }
+
+        /* 4. CURRENT ZINC DARK THEME */
+        .theme-zinc {
+            --t-bg-main: #09090b;
+            --t-bg-surface: #18181b;
+            --t-bg-surface-alt: #27272a;
+            --t-text-main: #fafafa;
+            --t-text-muted: #a1a1aa;
+            --t-border: #3f3f46;
+            --t-primary: #14b8a6;
+            --t-secondary: #fbbf24;
+            --t-success: #34d399;
+            --t-danger: #f87171;
+            --t-sim-bg: #27272a;
+            --t-beaker-stroke: #a1a1aa;
+            --t-header-bg: #18181b;
+            border-color: #3f3f46;
+            background: var(--t-bg-main);
+        }
+        .theme-zinc .card-header-bar {
+            background: #18181b;
+            border-color: #27272a;
+            color: #a1a1aa;
+        }
+        .theme-zinc .card-tag {
+            background: #27272a;
+            color: #a1a1aa;
+        }
+
+        /* SIMULATED APP WINDOW STYLES */
+        .sim-window {
+            background: var(--t-bg-main);
+            color: var(--t-text-main);
+            display: flex;
+            flex-direction: column;
+            height: 560px;
+            font-size: 13px;
+            transition: all 200ms ease;
+        }
+
+        /* TOP NAVIGATION */
+        .app-nav {
+            height: 48px;
+            background: var(--t-header-bg);
+            border-bottom: 1px solid var(--t-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            flex-shrink: 0;
+        }
+        .app-brand {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--t-primary);
+        }
+        .app-tabs {
+            display: flex;
+            gap: 16px;
+            height: 100%;
+        }
+        .app-tab {
+            display: flex;
+            align-items: center;
+            color: var(--t-text-muted);
+            border-bottom: 2px solid transparent;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            padding: 0 4px;
+        }
+        .app-tab.active {
+            color: var(--t-primary);
+            border-bottom-color: var(--t-primary);
+            font-weight: 600;
+        }
+        .user-pill {
+            width: 26px;
+            height: 26px;
+            border-radius: 999px;
+            background: var(--t-bg-surface-alt);
+            border: 1px solid var(--t-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: bold;
+            color: var(--t-primary);
+        }
+
+        /* APP MAIN LAYOUT */
+        .app-body {
+            display: grid;
+            grid-template-columns: 210px 1fr 200px;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        /* LEFT SIDEBAR CONTROLS */
+        .app-sidebar {
+            background: var(--t-bg-surface);
+            border-right: 1px solid var(--t-border);
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            overflow-y: auto;
+        }
+        .control-group label {
+            display: block;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--t-primary);
+            margin-bottom: 4px;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .control-select {
+            width: 100%;
+            padding: 6px 8px;
+            border-radius: 6px;
+            background: var(--t-bg-surface-alt);
+            border: 1px solid var(--t-border);
+            color: var(--t-text-main);
+            font-size: 11px;
+            outline: none;
+        }
+        .slider-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 10px;
+            color: var(--t-text-muted);
+            margin-bottom: 2px;
+        }
+        .app-slider {
+            width: 100%;
+            height: 4px;
+            border-radius: 4px;
+            accent-color: var(--t-primary);
+            cursor: pointer;
+        }
+
+        .cta-btn {
+            width: 100%;
+            padding: 9px;
+            border-radius: 6px;
+            background: var(--t-primary);
+            color: #ffffff;
+            font-weight: 700;
+            border: none;
+            font-size: 11px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: all 180ms ease;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .cta-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+        .secondary-btn {
+            width: 100%;
+            padding: 6px;
+            border-radius: 6px;
+            background: var(--t-bg-surface-alt);
+            color: var(--t-text-main);
+            border: 1px solid var(--t-border);
+            font-weight: 600;
+            font-size: 10px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* CENTER STAGE VIEW */
+        .app-stage {
+            background: var(--t-sim-bg);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            padding: 14px;
+        }
+        .stage-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .mode-toggles {
+            display: flex;
+            background: var(--t-bg-surface);
+            padding: 2px;
+            border-radius: 6px;
+            border: 1px solid var(--t-border);
+        }
+        .mode-btn {
+            background: transparent;
+            border: none;
+            color: var(--t-text-muted);
+            padding: 4px 8px;
+            font-size: 10px;
+            font-weight: 600;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .mode-btn.active {
+            background: var(--t-bg-surface-alt);
+            color: var(--t-primary);
+        }
+        .status-badge {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--t-success);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            font-size: 10px;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: 999px;
+        }
+
+        /* SIMULATION CANVAS */
+        .stage-canvas {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .beaker-svg {
+            width: 100%;
+            max-width: 280px;
+            height: 150px;
+        }
+
+        /* RESULT SUMMARY METRICS */
+        .stage-metrics {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+            background: var(--t-bg-surface);
+            border: 1px solid var(--t-border);
+            border-radius: 8px;
+            padding: 8px;
+        }
+        .metric-item {
+            text-align: center;
+        }
+        .metric-label {
+            font-size: 9px;
+            color: var(--t-text-muted);
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+        .metric-value {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--t-text-main);
+            margin-top: 1px;
+        }
+        .metric-value.highlight {
+            color: var(--t-secondary);
+        }
+
+        /* RIGHT SIDEBAR AI TUTOR */
+        .app-ai {
+            background: var(--t-bg-surface);
+            border-left: 1px solid var(--t-border);
+            display: flex;
+            flex-direction: column;
+            padding: 12px;
+        }
+        .ai-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .ai-title {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--t-success);
+            text-transform: uppercase;
+            font-family: 'Montserrat', sans-serif;
+            letter-spacing: 0.05em;
+        }
+        .ai-status-dot {
+            font-size: 9px;
+            color: var(--t-success);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .ai-status-dot::before {
+            content: '';
+            width: 5px;
+            height: 5px;
+            border-radius: 999px;
+            background: var(--t-success);
+            display: inline-block;
+        }
+
+        .ai-chat {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+        }
+        .chat-msg {
+            padding: 8px 10px;
+            border-radius: 8px;
+            font-size: 10px;
+            line-height: 1.45;
+        }
+        .chat-ai {
+            background: var(--t-bg-surface-alt);
+            border: 1px solid var(--t-border);
+            color: var(--t-text-main);
+            border-bottom-left-radius: 2px;
+        }
+        .chat-user {
+            background: var(--t-primary);
+            color: #ffffff;
+            align-self: flex-end;
+            border-bottom-right-radius: 2px;
+        }
+        .ai-input-row {
+            display: flex;
+            gap: 4px;
+        }
+        .ai-input {
+            flex: 1;
+            background: var(--t-bg-surface-alt);
+            border: 1px solid var(--t-border);
+            border-radius: 6px;
+            padding: 5px 8px;
+            color: var(--t-text-main);
+            font-size: 10px;
+            outline: none;
+        }
+        .ai-send {
+            background: var(--t-primary);
+            border: none;
+            color: #ffffff;
+            border-radius: 6px;
+            padding: 5px 10px;
+            font-size: 10px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* PALETTE SPECS INFO FOOTER */
+        .palette-specs {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid #1e293b;
+            border-radius: 12px;
+            padding: 16px 20px;
+            max-width: 1440px;
+            margin: 20px auto 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            font-size: 11px;
+        }
+        .spec-box {
+            background: #090d16;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #1e293b;
+        }
+        .spec-box h4 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 11px;
+            margin-bottom: 4px;
+        }
+        .spec-box p {
+            color: #94a3b8;
+            font-size: 10px;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="studio-header">
+        <div class="studio-title">
+            <span class="studio-badge">UI/UX Pro Max</span>
+            <h1>Theme Studio: Lighter & Dark Palettes</h1>
+        </div>
+
+        <div class="view-controls">
+            <button class="view-btn btn-light" onclick="setView('only-light')">☀️ Clean Light Lab</button>
+            <button class="view-btn" onclick="setView('only-dim')">🌥️ Soft Dim Slate</button>
+            <button class="view-btn" onclick="setView('only-cyan')">⚡ Deep Slate & Cyan</button>
+            <button class="view-btn" onclick="setView('only-zinc')">⬛ Zinc Dark (Old)</button>
+            <button class="view-btn active" onclick="setView('all-4')">📊 Compare All 4</button>
+        </div>
+    </header>
+
+    <main class="comparison-grid show-all-4" id="compGrid">
+
+        <!-- 1. CLEAN MODERN LIGHT LAB THEME -->
+        <section class="palette-card theme-light">
+            <div class="card-header-bar">
+                <span>☀️ 1. Clean Modern Light Lab</span>
+                <span class="card-tag">Crisp Slate #F8FAFC • Pure White #FFFFFF</span>
+            </div>
+
+            <div class="sim-window">
+                <nav class="app-nav">
+                    <div class="app-brand">ATOMVERSE</div>
+                    <div class="app-tabs">
+                        <div class="app-tab active">Lab Reaksi</div>
+                        <div class="app-tab">Eksperimen Invers</div>
+                        <div class="app-tab">Literasi Lingkungan</div>
+                    </div>
+                    <div class="user-pill">LL</div>
+                </nav>
+
+                <div class="app-body">
+                    <aside class="app-sidebar">
+                        <div class="control-group">
+                            <label>Larutan A</label>
+                            <select class="control-select">
+                                <option>AgNO₃ (Perak Nitrat)</option>
+                                <option>Pb(NO₃)₂ (Timbal Nitrat)</option>
+                            </select>
+                        </div>
+                        <div class="control-group">
+                            <div class="slider-row">
+                                <span>Konsentrasi</span>
+                                <b>1.0 M</b>
+                            </div>
+                            <input type="range" class="app-slider" value="50">
+                        </div>
+                        <div class="control-group">
+                            <label>Larutan B</label>
+                            <select class="control-select">
+                                <option>NaCl (Natrium Klorida)</option>
+                                <option>KI (Kalium Iodida)</option>
+                            </select>
+                        </div>
+                        <div class="control-group">
+                            <div class="slider-row">
+                                <span>Volume</span>
+                                <b>50 mL</b>
+                            </div>
+                            <input type="range" class="app-slider" value="50">
+                        </div>
+                        <button class="cta-btn">Jalankan Simulasi</button>
+                        <button class="secondary-btn">Reset</button>
+                    </aside>
+
+                    <div class="app-stage">
+                        <div class="stage-header">
+                            <div class="mode-toggles">
+                                <button class="mode-btn active">Makroskopik</button>
+                                <button class="mode-btn">Submikroskopik</button>
+                            </div>
+                            <span class="status-badge">Status: Siap</span>
+                        </div>
+
+                        <div class="stage-canvas">
+                            <svg class="beaker-svg" viewBox="0 0 300 150">
+                                <g transform="translate(40, 20)">
+                                    <path d="M5 5 L5 90 Q5 105 20 105 L60 105 Q75 105 75 90 L75 5" fill="none" stroke="var(--t-beaker-stroke)" stroke-width="3"/>
+                                    <path d="M7 45 L7 89 Q7 103 20 103 L60 103 Q73 103 73 89 L73 45 Z" fill="#93c5fd" opacity="0.85"/>
+                                    <text x="40" y="125" fill="var(--t-text-muted)" font-size="10" text-anchor="middle" font-weight="600">AgNO₃</text>
+                                </g>
+                                <g transform="translate(180, 20)">
+                                    <path d="M5 5 L5 90 Q5 105 20 105 L60 105 Q75 105 75 90 L75 5" fill="none" stroke="var(--t-beaker-stroke)" stroke-width="3"/>
+                                    <path d="M7 45 L7 89 Q7 103 20 103 L60 103 Q73 103 73 89 L73 45 Z" fill="#e2e8f0" opacity="0.9"/>
+                                    <text x="40" y="125" fill="var(--t-text-muted)" font-size="10" text-anchor="middle" font-weight="600">NaCl</text>
+                                </g>
+                            </svg>
+                        </div>
+
+                        <div class="stage-metrics">
+                            <div class="metric-item">
+                                <div class="metric-label">Warna</div>
+                                <div class="metric-value">Putih Susu</div>
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-label">Endapan</div>
+                                <div class="metric-value highlight">AgCl(s)</div>
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-label">pH Final</div>
+                                <div class="metric-value">7.0</div>
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-label">Suhu</div>
+                                <div class="metric-value">25°C</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <aside class="app-ai">
+                        <div class="ai-header">
+                            <span class="ai-title">AI Tutor</span>
+                            <span class="ai-status-dot">Online</span>
+                        </div>
+                        <div class="ai-chat">
+                            <div class="chat-msg chat-ai">Pilih larutan untuk menjalankan simulasi reaksi.</div>
+                            <div class="chat-msg chat-user">Kenapa endapannya putih?</div>
+                            <div class="chat-msg chat-ai">Ion Ag⁺ & Cl⁻ berikatan membentuk kisi padat AgCl.</div>
+                        </div>
+                        <div class="ai-input-row">
+                            <input type="text" class="ai-input" placeholder="Tanya AI...">
+                            <button class="ai-send">Kirim</button>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. SOFT DIM SLATE THEME (Mid-tone) -->
+        <section class="palette-card theme-dim">
+            <div class="card-header-bar">
+                <span>🌥️ 2. Soft Dim Slate (Eye-Friendly Gray)</span>
+                <span class="card-tag">Mid-Slate #1E293B • Sky Blue #38BDF8</span>
+            </div>
+
+            <div class="sim-window">
+                <nav class="app-nav">
+                    <div class="app-brand">ATOMVERSE</div>
+                    <div class="app-tabs">
+                        <div class="app-tab active">Lab Reaksi</div>
+                        <div class="app-tab">Eksperimen Invers</div>
+                        <div class="app-tab">Literasi Lingkungan</div>
+                    </div>
+                    <div class="user-pill">LL</div>
+                </nav>
+
+                <div class="app-body">
+                    <aside class="app-sidebar">
+                        <div class="control-group">
+                            <label>Larutan A</label>
+                            <select class="control-select">
+                                <option>AgNO₃ (Perak Nitrat)</option>
+                                <option>Pb(NO₃)₂ (Timbal Nitrat)</option>
+                            </select>
+                        </div>
+                        <div class="control-group">
+                            <div class="slider-row">
+                                <span>Konsentrasi</span>
+                                <b>1.0 M</b>
+                            </div>
+                            <input type="range" class="app-slider" value="50">
+                        </div>
+                        <div class="control-group">
+                            <label>Larutan B</label>
+                            <select class="control-select">
+                                <option>NaCl (Natrium Klorida)</option>
+                                <option>KI (Kalium Iodida)</option>
+                            </select>
+                        </div>
+                        <div class="control-group">
+                            <div class="slider-row">
+                                <span>Volume</span>
+                                <b>50 mL</b>
+                            </div>
+                            <input type="range" class="app-slider" value="50">
+                        </div>
+                        <button class="cta-btn">Jalankan Simulasi</button>
+                        <button class="secondary-btn">Reset</button>
+                    </aside>
+
+                    <div class="app-stage">
+                        <div class="stage-header">
+                            <div class="mode-toggles">
+                                <button class="mode-btn active">Makroskopik</button>
+                                <button class="mode-btn">Submikroskopik</button>
+                            </div>
+                            <span class="status-badge">Status: Siap</span>
+                        </div>
+
+                        <div class="stage-canvas">
+                            <svg class="beaker-svg" viewBox="0 0 300 150">
+                                <g transform="translate(40, 20)">
+                                    <path d="M5 5 L5 90 Q5 105 20 105 L60 105 Q75 105 75 90 L75 5" fill="none" stroke="var(--t-beaker-stroke)" stroke-width="3"/>
+                                    <path d="M7 45 L7 89 Q7 103 20 103 L60 103 Q73 103 73 89 L73 45 Z" fill="#38bdf8" opacity="0.85"/>
+                                    <text x="40" y="125" fill="var(--t-text-muted)" font-size="10" text-anchor="middle" font-weight="600">AgNO₃</text>
+                                </g>
+                                <g transform="translate(180, 20)">
+                                    <path d="M5 5 L5 90 Q5 105 20 105 L60 105 Q75 105 75 90 L75 5" fill="none" stroke="var(--t-beaker-stroke)" stroke-width="3"/>
+                                    <path d="M7 45 L7 89 Q7 103 20 103 L60 103 Q73 103 73 89 L73 45 Z" fill="#cbd5e1" opacity="0.85"/>
+                                    <text x="40" y="125" fill="var(--t-text-muted)" font-size="10" text-anchor="middle" font-weight="600">NaCl</text>
+                                </g>
+                            </svg>
+                        </div>
+
+                        <div class="stage-metrics">
+                            <div class="metric-item">
+                                <div class="metric-label">Warna</div>
+                                <div class="metric-value">Putih Susu</div>
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-label">Endapan</div>
+                                <div class="metric-value highlight">AgCl(s)</div>
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-label">pH Final</div>
+                                <div class="metric-value">7.0</div>
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-label">Suhu</div>
+                                <div class="metric-value">25°C</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <aside class="app-ai">
+                        <div class="ai-header">
+                            <span class="ai-title">AI Tutor</span>
+                            <span class="ai-status-dot">Online</span>
+                        </div>
+                        <div class="ai-chat">
+                            <div class="chat-msg chat-ai">Pilih larutan untuk menjalankan simulasi reaksi.</div>
+                            <div class="chat-msg chat-user">Kenapa endapannya putih?</div>
+                            <div class="chat-msg chat-ai">Ion Ag⁺ & Cl⁻ berikatan membentuk kisi padat AgCl.</div>
+                        </div>
+                        <div class="ai-input-row">
+                            <input type="text" class="ai-input" placeholder="Tanya AI...">
+                            <button class="ai-send">Kirim</button>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. DEEP SLATE & ELECTRIC CYAN THEME -->
+        <section class="palette-card theme-cyan">
+            <div class="card-header-bar">
+                <span>⚡ 3. Deep Slate & Electric Cyan</span>
+                <span class="card-tag">Midnight Slate #0B1120 • Cyan #06B6D4</span>
+            </div>
+
+            <div class="sim-window">
+                <nav class="app-nav">
+                    <div class="app-brand">ATOMVERSE</div>
+                    <div class="app-tabs">
+                        <div class="app-tab active">Lab Reaksi</div>
+                        <div class="app-tab">Eksperimen Invers</div>
+                        <div class="app-tab">Literasi Lingkungan</div>
+                    </div>
+                    <div class="user-pill">LL</div>
+                </nav>
+
+                <div class="app-body">
+                    <aside class="app-sidebar">
+                        <div class="control-group">
+                            <label>Larutan A</label>
+                            <select class="control-select">
+                                <option>AgNO₃ (Perak Nitrat)</option>
+                                <option>Pb(NO₃)₂ (Timbal Nitrat)</option>
+                            </select>
+                        </div>
+                        <div class="control-group">
+                            <div class="slider-row">
+                                <span>Konsentrasi</span>
+                                <b>1.0 M</b>
+                            </div>
+                            <input type="range" class="app-slider" value="50">
+                        </div>
+                        <div class="control-group">
+                            <label>Larutan B</label>
+                            <select class="control-select">
+                                <option>NaCl (Natrium Klorida)</option>
+                                <option>KI (Kalium Iodida)</option>
+                            </select>
+                        </div>
+                        <div class="control-group">
+                            <div class="slider-row">
+                                <span>Volume</span>
+                                <b>50 mL</b>
+                            </div>
+                            <input type="range" class="app-slider" value="50">
+                        </div>
+                        <button class="cta-btn">Jalankan Simulasi</button>
+                        <button class="secondary-btn">Reset</button>
+                    </aside>
+
+                    <div class="app-stage">
+                        <div class="stage-header">
+                            <div class="mode-toggles">
+                                <button class="mode-btn active">Makroskopik</button>
+                                <button class="mode-btn">Submikroskopik</button>
+                            </div>
+                            <span class="status-badge">Status: Siap</span>
+                        </div>
+
+                        <div class="stage-canvas">
+                            <svg class="beaker-svg" viewBox="0 0 300 150">
+                                <g transform="translate(40, 20)">
+                                    <path d="M5 5 L5 90 Q5 105 20 105 L60 105 Q75 105 75 90 L75 5" fill="none" stroke="var(--t-beaker-stroke)" stroke-width="3"/>
+                                    <path d="M7 45 L7 89 Q7 103 20 103 L60 103 Q73 103 73 89 L73 45 Z" fill="#38bdf8" opacity="0.85"/>
+                                    <text x="40" y="125" fill="var(--t-text-muted)" font-size="10" text-anchor="middle" font-weight="600">AgNO₃</text>
+                                </g>
+                                <g transform="translate(180, 20)">
+                                    <path d="M5 5 L5 90 Q5 105 20 105 L60 105 Q75 105 75 90 L75 5" fill="none" stroke="var(--t-beaker-stroke)" stroke-width="3"/>
+                                    <path d="M7 45 L7 89 Q7 103 20 103 L60 103 Q73 103 73 89 L73 45 Z" fill="#e0f2fe" opacity="0.85"/>
+                                    <text x="40" y="125" fill="var(--t-text-muted)" font-size="10" text-anchor="middle" font-weight="600">NaCl</text>
+                                </g>
+                            </svg>
+                        </div>
+
+                        <div class="stage-metrics">
+                            <div class="metric-item">
+                                <div class="metric-label">Warna</div>
+                                <div class="metric-value">Putih Susu</div>
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-label">Endapan</div>
+                                <div class="metric-value highlight">AgCl(s)</div>
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-label">pH Final</div>
+                                <div class="metric-value">7.0</div>
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-label">Suhu</div>
+                                <div class="metric-value">25°C</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <aside class="app-ai">
+                        <div class="ai-header">
+                            <span class="ai-title">AI Tutor</span>
+                            <span class="ai-status-dot">Online</span>
+                        </div>
+                        <div class="ai-chat">
+                            <div class="chat-msg chat-ai">Pilih larutan untuk menjalankan simulasi reaksi.</div>
+                            <div class="chat-msg chat-user">Kenapa endapannya putih?</div>
+                            <div class="chat-msg chat-ai">Ion Ag⁺ & Cl⁻ berikatan membentuk kisi padat AgCl.</div>
+                        </div>
+                        <div class="ai-input-row">
+                            <input type="text" class="ai-input" placeholder="Tanya AI...">
+                            <button class="ai-send">Kirim</button>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. CURRENT ZINC DARK THEME -->
+        <section class="palette-card theme-zinc">
+            <div class="card-header-bar">
+                <span>⬛ 4. Current Zinc Dark</span>
+                <span class="card-tag">Zinc #09090b • Teal #14b8a6</span>
+            </div>
+
+            <div class="sim-window">
+                <nav class="app-nav">
+                    <div class="app-brand">ATOMVERSE</div>
+                    <div class="app-tabs">
+                        <div class="app-tab active">Lab Reaksi</div>
+                        <div class="app-tab">Eksperimen Invers</div>
+                        <div class="app-tab">Literasi Lingkungan</div>
+                    </div>
+                    <div class="user-pill">LL</div>
+                </nav>
+
+                <div class="app-body">
+                    <aside class="app-sidebar">
+                        <div class="control-group">
+                            <label>Larutan A</label>
+                            <select class="control-select">
+                                <option>AgNO₃ (Perak Nitrat)</option>
+                                <option>Pb(NO₃)₂ (Timbal Nitrat)</option>
+                            </select>
+                        </div>
+                        <div class="control-group">
+                            <div class="slider-row">
+                                <span>Konsentrasi</span>
+                                <b>1.0 M</b>
+                            </div>
+                            <input type="range" class="app-slider" value="50">
+                        </div>
+                        <div class="control-group">
+                            <label>Larutan B</label>
+                            <select class="control-select">
+                                <option>NaCl (Natrium Klorida)</option>
+                                <option>KI (Kalium Iodida)</option>
+                            </select>
+                        </div>
+                        <div class="control-group">
+                            <div class="slider-row">
+                                <span>Volume</span>
+                                <b>50 mL</b>
+                            </div>
+                            <input type="range" class="app-slider" value="50">
+                        </div>
+                        <button class="cta-btn">Jalankan Simulasi</button>
+                        <button class="secondary-btn">Reset</button>
+                    </aside>
+
+                    <div class="app-stage">
+                        <div class="stage-header">
+                            <div class="mode-toggles">
+                                <button class="mode-btn active">Makroskopik</button>
+                                <button class="mode-btn">Submikroskopik</button>
+                            </div>
+                            <span class="status-badge">Status: Siap</span>
+                        </div>
+
+                        <div class="stage-canvas">
+                            <svg class="beaker-svg" viewBox="0 0 300 150">
+                                <g transform="translate(40, 20)">
+                                    <path d="M5 5 L5 90 Q5 105 20 105 L60 105 Q75 105 75 90 L75 5" fill="none" stroke="var(--t-beaker-stroke)" stroke-width="3"/>
+                                    <path d="M7 45 L7 89 Q7 103 20 103 L60 103 Q73 103 73 89 L73 45 Z" fill="#93c5fd" opacity="0.8"/>
+                                    <text x="40" y="125" fill="var(--t-text-muted)" font-size="10" text-anchor="middle">AgNO₃</text>
+                                </g>
+                                <g transform="translate(180, 20)">
+                                    <path d="M5 5 L5 90 Q5 105 20 105 L60 105 Q75 105 75 90 L75 5" fill="none" stroke="var(--t-beaker-stroke)" stroke-width="3"/>
+                                    <path d="M7 45 L7 89 Q7 103 20 103 L60 103 Q73 103 73 89 L73 45 Z" fill="#f1f5f9" opacity="0.8"/>
+                                    <text x="40" y="125" fill="var(--t-text-muted)" font-size="10" text-anchor="middle">NaCl</text>
+                                </g>
+                            </svg>
+                        </div>
+
+                        <div class="stage-metrics">
+                            <div class="metric-item">
+                                <div class="metric-label">Warna</div>
+                                <div class="metric-value">Putih Susu</div>
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-label">Endapan</div>
+                                <div class="metric-value highlight">AgCl(s)</div>
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-label">pH Final</div>
+                                <div class="metric-value">7.0</div>
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-label">Suhu</div>
+                                <div class="metric-value">25°C</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <aside class="app-ai">
+                        <div class="ai-header">
+                            <span class="ai-title">AI Tutor</span>
+                            <span class="ai-status-dot">Online</span>
+                        </div>
+                        <div class="ai-chat">
+                            <div class="chat-msg chat-ai">Pilih larutan untuk menjalankan simulasi reaksi.</div>
+                            <div class="chat-msg chat-user">Kenapa endapannya putih?</div>
+                            <div class="chat-msg chat-ai">Ion Ag⁺ & Cl⁻ berikatan membentuk kisi padat AgCl.</div>
+                        </div>
+                        <div class="ai-input-row">
+                            <input type="text" class="ai-input" placeholder="Tanya AI...">
+                            <button class="ai-send">Kirim</button>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="palette-specs">
+        <div class="spec-box">
+            <h4 style="color: #0891B2;">1. Clean Modern Light Lab</h4>
+            <p>Crisp slate-50 (<code>#F8FAFC</code>) background, pure white elevated cards, clinical teal (<code>#0891B2</code>) and amber. Highest daylight readability.</p>
+        </div>
+        <div class="spec-box">
+            <h4 style="color: #38BDF8;">2. Soft Dim Slate</h4>
+            <p>Balanced mid-slate (<code>#1E293B</code>) background with sky blue (<code>#38BDF8</code>). Soft and relaxing for eyes; neither dark black nor blinding white.</p>
+        </div>
+        <div class="spec-box">
+            <h4 style="color: #06B6D4;">3. Deep Slate & Cyan</h4>
+            <p>Oceanic midnight slate (<code>#0B1120</code>) with glowing electric cyan (<code>#06B6D4</code>). Futuristic scientific simulation feel.</p>
+        </div>
+        <div class="spec-box">
+            <h4 style="color: #A1A1AA;">4. Current Zinc Dark</h4>
+            <p>Original flat zinc (<code>#09090b</code>) with standard muted teal (<code>#14b8a6</code>). High contrast traditional dark theme.</p>
+        </div>
+    </footer>
+
+    <script>
+        function setView(mode) {
+            const grid = document.getElementById('compGrid');
+            const buttons = document.querySelectorAll('.view-btn');
+            buttons.forEach(b => b.classList.remove('active'));
+
+            if (mode === 'only-light') {
+                grid.className = 'comparison-grid show-only-light';
+                buttons[0].classList.add('active');
+            } else if (mode === 'only-dim') {
+                grid.className = 'comparison-grid show-only-dim';
+                buttons[1].classList.add('active');
+            } else if (mode === 'only-cyan') {
+                grid.className = 'comparison-grid show-only-cyan';
+                buttons[2].classList.add('active');
+            } else if (mode === 'only-zinc') {
+                grid.className = 'comparison-grid show-only-zinc';
+                buttons[3].classList.add('active');
+            } else if (mode === 'all-4') {
+                grid.className = 'comparison-grid show-all-4';
+                buttons[4].classList.add('active');
+            }
+        }
+    </script>
+</body>
+</html>

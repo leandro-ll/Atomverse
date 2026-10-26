@@ -1,0 +1,18 @@
+{
+  "pipeline": "chemistry-species-expansion",
+  "catalogDigest": "5ec94be5c1112c62f1127b33347b38a6b652505e35d96d9d0ce98a988285351e",
+  "catalogVersion": "2.0.0",
+  "status": "passed",
+  "boundedReport": true,
+  "containsSecrets": false,
+  "containsRawPrompts": false,
+  "containsNetworkTraces": false,
+  "stageTimingsSeconds": {
+    "stage1_pipeline_drift": 7.101069900003495,
+    "stage2_seams": 5.337649299995974,
+    "stage3_determinism": 7.256241399998544,
+    "stage4_test_matrix": 55.56981580000138
+  },
+  "totalElapsedSeconds": 75.26477639999939,
+  "generatedAt": "2026-10-16T07:30:59.501852Z"
+}

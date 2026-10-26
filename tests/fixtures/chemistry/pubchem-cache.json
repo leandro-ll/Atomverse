@@ -1,0 +1,672 @@
+{
+  "endpoint": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/{name}/property/MolecularFormula,MolecularWeight/JSON",
+  "missing": [
+    {
+      "reason": "No matching anhydrous compound found for 'iron(III) carbonate' in PubChem",
+      "substanceId": "sub.fe2_co3_3"
+    },
+    {
+      "reason": "ambiguous name match, left unverified",
+      "substanceId": "sub.fe2_so4_3"
+    },
+    {
+      "reason": "No matching anhydrous compound found for 'iron(III) hydroxide' in PubChem",
+      "substanceId": "sub.fe_oh_3"
+    }
+  ],
+  "queried": [
+    {
+      "cid": 92796,
+      "molecularFormula": "CAg2O3",
+      "molecularWeight": "275.745",
+      "queryName": "silver carbonate",
+      "substanceId": "sub.ag2co3"
+    },
+    {
+      "cid": 166738,
+      "molecularFormula": "Ag2S",
+      "molecularWeight": "247.80",
+      "queryName": "silver sulfide",
+      "substanceId": "sub.ag2s"
+    },
+    {
+      "cid": 159865,
+      "molecularFormula": "Ag2O4S",
+      "molecularWeight": "311.80",
+      "queryName": "silver sulfate",
+      "substanceId": "sub.ag2so4"
+    },
+    {
+      "cid": 159913,
+      "molecularFormula": "Ag3O4P",
+      "molecularWeight": "418.576",
+      "queryName": "silver phosphate",
+      "substanceId": "sub.ag3po4"
+    },
+    {
+      "cid": 66199,
+      "molecularFormula": "AgBr",
+      "molecularWeight": "187.77",
+      "queryName": "silver bromide",
+      "substanceId": "sub.agbr"
+    },
+    {
+      "cid": 24561,
+      "molecularFormula": "AgCl",
+      "molecularWeight": "143.32",
+      "queryName": "silver chloride",
+      "substanceId": "sub.agcl"
+    },
+    {
+      "cid": 24563,
+      "molecularFormula": "AgI",
+      "molecularWeight": "234.773",
+      "queryName": "silver iodide",
+      "substanceId": "sub.agi"
+    },
+    {
+      "cid": 24470,
+      "molecularFormula": "AgNO3",
+      "molecularWeight": "169.873",
+      "queryName": "silver nitrate",
+      "substanceId": "sub.agno3"
+    },
+    {
+      "cid": 10129950,
+      "molecularFormula": "AgHO",
+      "molecularWeight": "124.876",
+      "queryName": "silver hydroxide",
+      "substanceId": "sub.agoh"
+    },
+    {
+      "cid": 165803,
+      "molecularFormula": "Ba3O8P2",
+      "molecularWeight": "601.9",
+      "queryName": "barium phosphate",
+      "substanceId": "sub.ba3_po4_2"
+    },
+    {
+      "cid": 24798,
+      "molecularFormula": "BaN2O6",
+      "molecularWeight": "261.34",
+      "queryName": "barium nitrate",
+      "substanceId": "sub.ba_no3_2"
+    },
+    {
+      "cid": 6093286,
+      "molecularFormula": "BaH2O2",
+      "molecularWeight": "171.34",
+      "queryName": "barium hydroxide",
+      "substanceId": "sub.ba_oh_2"
+    },
+    {
+      "cid": 5462743,
+      "molecularFormula": "BaBr2",
+      "molecularWeight": "297.13",
+      "queryName": "barium bromide",
+      "substanceId": "sub.babr2"
+    },
+    {
+      "cid": 25204,
+      "molecularFormula": "BaCl2",
+      "molecularWeight": "208.23",
+      "queryName": "barium chloride",
+      "substanceId": "sub.bacl2"
+    },
+    {
+      "cid": 10563,
+      "molecularFormula": "CBaO3",
+      "molecularWeight": "197.34",
+      "queryName": "barium carbonate",
+      "substanceId": "sub.baco3"
+    },
+    {
+      "cid": 83684,
+      "molecularFormula": "BaI2",
+      "molecularWeight": "391.14",
+      "queryName": "barium iodide",
+      "substanceId": "sub.bai2"
+    },
+    {
+      "cid": 6857597,
+      "molecularFormula": "BaS",
+      "molecularWeight": "169.39",
+      "queryName": "barium sulfide",
+      "substanceId": "sub.bas"
+    },
+    {
+      "cid": 24414,
+      "molecularFormula": "BaO4S",
+      "molecularWeight": "233.39",
+      "queryName": "barium sulfate",
+      "substanceId": "sub.baso4"
+    },
+    {
+      "cid": 24456,
+      "molecularFormula": "Ca3O8P2",
+      "molecularWeight": "310.18",
+      "queryName": "calcium phosphate",
+      "substanceId": "sub.ca3_po4_2"
+    },
+    {
+      "cid": 24963,
+      "molecularFormula": "CaN2O6",
+      "molecularWeight": "164.09",
+      "queryName": "calcium nitrate",
+      "substanceId": "sub.ca_no3_2"
+    },
+    {
+      "cid": 6093208,
+      "molecularFormula": "CaH2O2",
+      "molecularWeight": "74.09",
+      "queryName": "calcium hydroxide",
+      "substanceId": "sub.ca_oh_2"
+    },
+    {
+      "cid": 5360316,
+      "molecularFormula": "Br2Ca",
+      "molecularWeight": "199.89",
+      "queryName": "calcium bromide",
+      "substanceId": "sub.cabr2"
+    },
+    {
+      "cid": 5284359,
+      "molecularFormula": "CaCl2",
+      "molecularWeight": "110.98",
+      "queryName": "calcium chloride",
+      "substanceId": "sub.cacl2"
+    },
+    {
+      "cid": 10112,
+      "molecularFormula": "CCaO3",
+      "molecularWeight": "100.09",
+      "queryName": "calcium carbonate",
+      "substanceId": "sub.caco3"
+    },
+    {
+      "cid": 5462722,
+      "molecularFormula": "CaI2",
+      "molecularWeight": "293.89",
+      "queryName": "calcium iodide",
+      "substanceId": "sub.cai2"
+    },
+    {
+      "cid": 10197613,
+      "molecularFormula": "CaS",
+      "molecularWeight": "72.15",
+      "queryName": "calcium sulfide",
+      "substanceId": "sub.cas"
+    },
+    {
+      "cid": 24497,
+      "molecularFormula": "CaO4S",
+      "molecularWeight": "136.14",
+      "queryName": "calcium sulfate",
+      "substanceId": "sub.caso4"
+    },
+    {
+      "cid": 86469,
+      "molecularFormula": "Cu3O8P2",
+      "molecularWeight": "380.58",
+      "queryName": "copper(II) phosphate",
+      "substanceId": "sub.cu3_po4_2"
+    },
+    {
+      "cid": 18616,
+      "molecularFormula": "CuN2O6",
+      "molecularWeight": "187.56",
+      "queryName": "copper(II) nitrate",
+      "substanceId": "sub.cu_no3_2"
+    },
+    {
+      "cid": 164826,
+      "molecularFormula": "CuH2O2",
+      "molecularWeight": "97.56",
+      "queryName": "copper(II) hydroxide",
+      "substanceId": "sub.cu_oh_2"
+    },
+    {
+      "cid": 24611,
+      "molecularFormula": "Br2Cu",
+      "molecularWeight": "223.35",
+      "queryName": "copper(II) bromide",
+      "substanceId": "sub.cubr2"
+    },
+    {
+      "cid": 24014,
+      "molecularFormula": "Cl2Cu",
+      "molecularWeight": "134.45",
+      "queryName": "copper(II) chloride",
+      "substanceId": "sub.cucl2"
+    },
+    {
+      "cid": 14452,
+      "molecularFormula": "CCuO3",
+      "molecularWeight": "123.55",
+      "queryName": "copper(II) carbonate",
+      "substanceId": "sub.cuco3"
+    },
+    {
+      "cid": 83717,
+      "molecularFormula": "CuI2",
+      "molecularWeight": "317.35",
+      "queryName": "copper(II) iodide",
+      "substanceId": "sub.cui2"
+    },
+    {
+      "cid": 165914,
+      "molecularFormula": "CuS",
+      "molecularWeight": "95.61",
+      "queryName": "copper(II) sulfide",
+      "substanceId": "sub.cus"
+    },
+    {
+      "cid": 24462,
+      "molecularFormula": "CuO4S",
+      "molecularWeight": "159.61",
+      "queryName": "copper(II) sulfate",
+      "substanceId": "sub.cuso4"
+    },
+    {
+      "cid": 160957,
+      "molecularFormula": "Fe2S3",
+      "molecularWeight": "207.9",
+      "queryName": "iron(III) sulfide",
+      "substanceId": "sub.fe2s3"
+    },
+    {
+      "cid": 25251,
+      "molecularFormula": "FeN3O9",
+      "molecularWeight": "241.86",
+      "queryName": "iron(III) nitrate",
+      "substanceId": "sub.fe_no3_3"
+    },
+    {
+      "cid": 82310,
+      "molecularFormula": "Br3Fe",
+      "molecularWeight": "295.56",
+      "queryName": "iron(III) bromide",
+      "substanceId": "sub.febr3"
+    },
+    {
+      "cid": 24380,
+      "molecularFormula": "Cl3Fe",
+      "molecularWeight": "162.20",
+      "queryName": "iron(III) chloride",
+      "substanceId": "sub.fecl3"
+    },
+    {
+      "cid": 85017,
+      "molecularFormula": "FeI3",
+      "molecularWeight": "436.56",
+      "queryName": "iron(III) iodide",
+      "substanceId": "sub.fei3"
+    },
+    {
+      "cid": 24861,
+      "molecularFormula": "FeO4P",
+      "molecularWeight": "150.82",
+      "queryName": "iron(III) phosphate",
+      "substanceId": "sub.fepo4"
+    },
+    {
+      "cid": 962,
+      "molecularFormula": "H2O",
+      "molecularWeight": "18.015",
+      "queryName": "water",
+      "substanceId": "sub.h2o"
+    },
+    {
+      "cid": 1118,
+      "molecularFormula": "H2O4S",
+      "molecularWeight": "98.08",
+      "queryName": "sulfuric acid",
+      "substanceId": "sub.h2so4"
+    },
+    {
+      "cid": 260,
+      "molecularFormula": "BrH",
+      "molecularWeight": "80.91",
+      "queryName": "hydrobromic acid",
+      "substanceId": "sub.hbr"
+    },
+    {
+      "cid": 313,
+      "molecularFormula": "ClH",
+      "molecularWeight": "36.46",
+      "queryName": "hydrochloric acid",
+      "substanceId": "sub.hcl"
+    },
+    {
+      "cid": 24841,
+      "molecularFormula": "HI",
+      "molecularWeight": "127.9124",
+      "queryName": "hydriodic acid",
+      "substanceId": "sub.hi"
+    },
+    {
+      "cid": 944,
+      "molecularFormula": "HNO3",
+      "molecularWeight": "63.013",
+      "queryName": "nitric acid",
+      "substanceId": "sub.hno3"
+    },
+    {
+      "cid": 11430,
+      "molecularFormula": "CK2O3",
+      "molecularWeight": "138.205",
+      "queryName": "potassium carbonate",
+      "substanceId": "sub.k2co3"
+    },
+    {
+      "cid": 162263,
+      "molecularFormula": "K2S",
+      "molecularWeight": "110.26",
+      "queryName": "potassium sulfide",
+      "substanceId": "sub.k2s"
+    },
+    {
+      "cid": 24507,
+      "molecularFormula": "K2O4S",
+      "molecularWeight": "174.26",
+      "queryName": "potassium sulfate",
+      "substanceId": "sub.k2so4"
+    },
+    {
+      "cid": 62657,
+      "molecularFormula": "K3O4P",
+      "molecularWeight": "212.266",
+      "queryName": "K3PO4",
+      "substanceId": "sub.k3po4"
+    },
+    {
+      "cid": 253877,
+      "molecularFormula": "BrK",
+      "molecularWeight": "119.00",
+      "queryName": "potassium bromide",
+      "substanceId": "sub.kbr"
+    },
+    {
+      "cid": 4873,
+      "molecularFormula": "ClK",
+      "molecularWeight": "74.55",
+      "queryName": "potassium chloride",
+      "substanceId": "sub.kcl"
+    },
+    {
+      "cid": 4875,
+      "molecularFormula": "IK",
+      "molecularWeight": "166.0028",
+      "queryName": "potassium iodide",
+      "substanceId": "sub.ki"
+    },
+    {
+      "cid": 24434,
+      "molecularFormula": "KNO3",
+      "molecularWeight": "101.103",
+      "queryName": "potassium nitrate",
+      "substanceId": "sub.kno3"
+    },
+    {
+      "cid": 14797,
+      "molecularFormula": "HKO",
+      "molecularWeight": "56.106",
+      "queryName": "potassium hydroxide",
+      "substanceId": "sub.koh"
+    },
+    {
+      "cid": 24439,
+      "molecularFormula": "Mg3O8P2",
+      "molecularWeight": "262.86",
+      "queryName": "magnesium phosphate",
+      "substanceId": "sub.mg3_po4_2"
+    },
+    {
+      "cid": 25212,
+      "molecularFormula": "MgN2O6",
+      "molecularWeight": "148.32",
+      "queryName": "magnesium nitrate",
+      "substanceId": "sub.mg_no3_2"
+    },
+    {
+      "cid": 73981,
+      "molecularFormula": "H2MgO2",
+      "molecularWeight": "58.320",
+      "queryName": "magnesium hydroxide",
+      "substanceId": "sub.mg_oh_2"
+    },
+    {
+      "cid": 82241,
+      "molecularFormula": "Br2Mg",
+      "molecularWeight": "184.11",
+      "queryName": "magnesium bromide",
+      "substanceId": "sub.mgbr2"
+    },
+    {
+      "cid": 5360315,
+      "molecularFormula": "Cl2Mg",
+      "molecularWeight": "95.21",
+      "queryName": "magnesium chloride",
+      "substanceId": "sub.mgcl2"
+    },
+    {
+      "cid": 11029,
+      "molecularFormula": "CMgO3",
+      "molecularWeight": "84.31",
+      "queryName": "magnesium carbonate",
+      "substanceId": "sub.mgco3"
+    },
+    {
+      "cid": 66322,
+      "molecularFormula": "I2Mg",
+      "molecularWeight": "278.114",
+      "queryName": "magnesium iodide",
+      "substanceId": "sub.mgi2"
+    },
+    {
+      "cid": 82824,
+      "molecularFormula": "MgS",
+      "molecularWeight": "56.37",
+      "queryName": "magnesium sulfide",
+      "substanceId": "sub.mgs"
+    },
+    {
+      "cid": 24083,
+      "molecularFormula": "MgO4S",
+      "molecularWeight": "120.37",
+      "queryName": "magnesium sulfate",
+      "substanceId": "sub.mgso4"
+    },
+    {
+      "cid": 10340,
+      "molecularFormula": "CNa2O3",
+      "molecularWeight": "105.988",
+      "queryName": "sodium carbonate",
+      "substanceId": "sub.na2co3"
+    },
+    {
+      "cid": 14804,
+      "molecularFormula": "Na2S",
+      "molecularWeight": "78.05",
+      "queryName": "Na2S",
+      "substanceId": "sub.na2s"
+    },
+    {
+      "cid": 24436,
+      "molecularFormula": "Na2O4S",
+      "molecularWeight": "142.04",
+      "queryName": "sodium sulfate",
+      "substanceId": "sub.na2so4"
+    },
+    {
+      "cid": 24243,
+      "molecularFormula": "Na3O4P",
+      "molecularWeight": "163.941",
+      "queryName": "trisodium phosphate",
+      "substanceId": "sub.na3po4"
+    },
+    {
+      "cid": 253881,
+      "molecularFormula": "BrNa",
+      "molecularWeight": "102.89",
+      "queryName": "NaBr",
+      "substanceId": "sub.nabr"
+    },
+    {
+      "cid": 5234,
+      "molecularFormula": "ClNa",
+      "molecularWeight": "58.44",
+      "queryName": "sodium chloride",
+      "substanceId": "sub.nacl"
+    },
+    {
+      "cid": 5238,
+      "molecularFormula": "INa",
+      "molecularWeight": "149.8942",
+      "queryName": "sodium iodide",
+      "substanceId": "sub.nai"
+    },
+    {
+      "cid": 24268,
+      "molecularFormula": "NNaO3",
+      "molecularWeight": "84.995",
+      "queryName": "sodium nitrate",
+      "substanceId": "sub.nano3"
+    },
+    {
+      "cid": 14798,
+      "molecularFormula": "HNaO",
+      "molecularWeight": "39.997",
+      "queryName": "sodium hydroxide",
+      "substanceId": "sub.naoh"
+    },
+    {
+      "cid": 24009,
+      "molecularFormula": "O8P2Pb3",
+      "molecularWeight": "811.54",
+      "queryName": "lead(II) phosphate",
+      "substanceId": "sub.pb3_po4_2"
+    },
+    {
+      "cid": 24924,
+      "molecularFormula": "N2O6Pb",
+      "molecularWeight": "331.21",
+      "queryName": "lead(II) nitrate",
+      "substanceId": "sub.pb_no3_2"
+    },
+    {
+      "cid": 9859601,
+      "molecularFormula": "H2O2Pb",
+      "molecularWeight": "241.21",
+      "queryName": "lead(II) hydroxide",
+      "substanceId": "sub.pb_oh_2"
+    },
+    {
+      "cid": 24831,
+      "molecularFormula": "Br2Pb",
+      "molecularWeight": "367",
+      "queryName": "PbBr2",
+      "substanceId": "sub.pbbr2"
+    },
+    {
+      "cid": 24459,
+      "molecularFormula": "Cl2Pb",
+      "molecularWeight": "278",
+      "queryName": "lead(II) chloride",
+      "substanceId": "sub.pbcl2"
+    },
+    {
+      "cid": 11727,
+      "molecularFormula": "CO3Pb",
+      "molecularWeight": "267.21",
+      "queryName": "lead(II) carbonate",
+      "substanceId": "sub.pbco3"
+    },
+    {
+      "cid": 24931,
+      "molecularFormula": "I2Pb",
+      "molecularWeight": "461",
+      "queryName": "lead(II) iodide",
+      "substanceId": "sub.pbi2"
+    },
+    {
+      "cid": 9794739,
+      "molecularFormula": "PbS",
+      "molecularWeight": "239.26",
+      "queryName": "lead(II) sulfide",
+      "substanceId": "sub.pbs"
+    },
+    {
+      "cid": 24008,
+      "molecularFormula": "O4PbS",
+      "molecularWeight": "303.26",
+      "queryName": "lead(II) sulfate",
+      "substanceId": "sub.pbso4"
+    },
+    {
+      "cid": 24519,
+      "molecularFormula": "O8P2Zn3",
+      "molecularWeight": "386.1",
+      "queryName": "zinc phosphate",
+      "substanceId": "sub.zn3_po4_2"
+    },
+    {
+      "cid": 24518,
+      "molecularFormula": "N2O6Zn",
+      "molecularWeight": "189.4",
+      "queryName": "zinc nitrate",
+      "substanceId": "sub.zn_no3_2"
+    },
+    {
+      "cid": 9812759,
+      "molecularFormula": "H2O2Zn",
+      "molecularWeight": "99.4",
+      "queryName": "zinc hydroxide",
+      "substanceId": "sub.zn_oh_2"
+    },
+    {
+      "cid": 10421208,
+      "molecularFormula": "Br2Zn",
+      "molecularWeight": "225.2",
+      "queryName": "zinc bromide",
+      "substanceId": "sub.znbr2"
+    },
+    {
+      "cid": 5727,
+      "molecularFormula": "Cl2Zn",
+      "molecularWeight": "136.3",
+      "queryName": "zinc chloride",
+      "substanceId": "sub.zncl2"
+    },
+    {
+      "cid": 19005,
+      "molecularFormula": "CO3Zn",
+      "molecularWeight": "125.4",
+      "queryName": "zinc carbonate",
+      "substanceId": "sub.znco3"
+    },
+    {
+      "cid": 66278,
+      "molecularFormula": "I2Zn",
+      "molecularWeight": "319.2",
+      "queryName": "zinc iodide",
+      "substanceId": "sub.zni2"
+    },
+    {
+      "cid": 9833931,
+      "molecularFormula": "SZn",
+      "molecularWeight": "97.4",
+      "queryName": "zinc sulfide",
+      "substanceId": "sub.zns"
+    },
+    {
+      "cid": 24424,
+      "molecularFormula": "O4SZn",
+      "molecularWeight": "161.4",
+      "queryName": "zinc sulfate",
+      "substanceId": "sub.znso4"
+    }
+  ],
+  "retrievedOn": "2025-06-01",
+  "schemaVersion": "1.0.0"
+}

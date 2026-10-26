@@ -1,0 +1,27 @@
+{
+  "anionCount": 9,
+  "canonicalPairCount": 1378,
+  "cationCount": 11,
+  "declaredExclusions": [
+    {
+      "reason": "weak_acid_outside_model",
+      "substanceId": "sub.h2co3"
+    },
+    {
+      "reason": "weak_acid_outside_model",
+      "substanceId": "sub.h2s"
+    },
+    {
+      "reason": "weak_acid_outside_model",
+      "substanceId": "sub.h3po4"
+    }
+  ],
+  "reactionRecordCount": 1378,
+  "selectablePairCount": 1326,
+  "selectableReagentBand": {
+    "max": 55,
+    "min": 40
+  },
+  "selectableReagentCount": 52,
+  "substanceCount": 96
+}

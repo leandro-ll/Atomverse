@@ -1,0 +1,35 @@
+{
+  "description": "Golden composition and charge for every catalog species and ion. Values are stated independently of the catalog so a wrong structural term, a wrong element count, or a malformed ASCII formula such as AgNO cannot agree with both the catalog and this fixture.",
+  "catalogVersion": "1.1.0",
+  "species": [
+    { "id": "AgNO3", "formulaAscii": "AgNO3", "elementCounts": { "Ag": 1, "N": 1, "O": 3 }, "charge": 0 },
+    { "id": "Pb(NO3)2", "formulaAscii": "Pb(NO3)2", "elementCounts": { "Pb": 1, "N": 2, "O": 6 }, "charge": 0 },
+    { "id": "BaCl2", "formulaAscii": "BaCl2", "elementCounts": { "Ba": 1, "Cl": 2 }, "charge": 0 },
+    { "id": "NaCl", "formulaAscii": "NaCl", "elementCounts": { "Na": 1, "Cl": 1 }, "charge": 0 },
+    { "id": "KI", "formulaAscii": "KI", "elementCounts": { "K": 1, "I": 1 }, "charge": 0 },
+    { "id": "Na2SO4", "formulaAscii": "Na2SO4", "elementCounts": { "Na": 2, "S": 1, "O": 4 }, "charge": 0 },
+    { "id": "HCl", "formulaAscii": "HCl", "elementCounts": { "H": 1, "Cl": 1 }, "charge": 0 },
+    { "id": "NaOH", "formulaAscii": "NaOH", "elementCounts": { "Na": 1, "O": 1, "H": 1 }, "charge": 0 },
+    { "id": "NaNO3", "formulaAscii": "NaNO3", "elementCounts": { "Na": 1, "N": 1, "O": 3 }, "charge": 0 },
+    { "id": "KNO3", "formulaAscii": "KNO3", "elementCounts": { "K": 1, "N": 1, "O": 3 }, "charge": 0 },
+    { "id": "AgCl", "formulaAscii": "AgCl", "elementCounts": { "Ag": 1, "Cl": 1 }, "charge": 0 },
+    { "id": "AgI", "formulaAscii": "AgI", "elementCounts": { "Ag": 1, "I": 1 }, "charge": 0 },
+    { "id": "PbCl2", "formulaAscii": "PbCl2", "elementCounts": { "Pb": 1, "Cl": 2 }, "charge": 0 },
+    { "id": "PbI2", "formulaAscii": "PbI2", "elementCounts": { "Pb": 1, "I": 2 }, "charge": 0 },
+    { "id": "BaSO4", "formulaAscii": "BaSO4", "elementCounts": { "Ba": 1, "S": 1, "O": 4 }, "charge": 0 },
+    { "id": "H2O", "formulaAscii": "H2O", "elementCounts": { "H": 2, "O": 1 }, "charge": 0 }
+  ],
+  "ions": [
+    { "id": "Ag+", "formulaAscii": "Ag+", "elementCounts": { "Ag": 1 }, "charge": 1 },
+    { "id": "Pb2+", "formulaAscii": "Pb2+", "elementCounts": { "Pb": 1 }, "charge": 2 },
+    { "id": "Ba2+", "formulaAscii": "Ba2+", "elementCounts": { "Ba": 1 }, "charge": 2 },
+    { "id": "Na+", "formulaAscii": "Na+", "elementCounts": { "Na": 1 }, "charge": 1 },
+    { "id": "K+", "formulaAscii": "K+", "elementCounts": { "K": 1 }, "charge": 1 },
+    { "id": "H+", "formulaAscii": "H+", "elementCounts": { "H": 1 }, "charge": 1 },
+    { "id": "NO3-", "formulaAscii": "NO3-", "elementCounts": { "N": 1, "O": 3 }, "charge": -1 },
+    { "id": "Cl-", "formulaAscii": "Cl-", "elementCounts": { "Cl": 1 }, "charge": -1 },
+    { "id": "I-", "formulaAscii": "I-", "elementCounts": { "I": 1 }, "charge": -1 },
+    { "id": "SO4_2-", "formulaAscii": "SO4 2-", "elementCounts": { "S": 1, "O": 4 }, "charge": -2 },
+    { "id": "OH-", "formulaAscii": "OH-", "elementCounts": { "O": 1, "H": 1 }, "charge": -1 }
+  ]
+}

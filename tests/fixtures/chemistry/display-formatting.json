@@ -1,0 +1,235 @@
+{
+  "description": "Golden display snapshot for the shared chemistry formatters. Every Unicode formula, balanced molecular equation, net ionic equation, dissociation equation, and localized model-boundary message is written by hand here, independently of catalog/chemistry.catalog.json, so a formatter that drops a subscript, loses a coefficient, or invents a message cannot satisfy both this file and the catalog. The frontend formatters in js/domain/chemistry-formatters.js and the backend formatters in backend/app/domain/chemistry_formatters.py must both reproduce these exact strings.",
+  "catalogVersion": "1.1.0",
+  "locale": "id-ID",
+  "arrow": "→",
+  "energyTerm": "Energi",
+  "speciesFormulas": {
+    "AgNO3": "AgNO₃",
+    "Pb(NO3)2": "Pb(NO₃)₂",
+    "BaCl2": "BaCl₂",
+    "NaCl": "NaCl",
+    "KI": "KI",
+    "Na2SO4": "Na₂SO₄",
+    "HCl": "HCl",
+    "NaOH": "NaOH",
+    "NaNO3": "NaNO₃",
+    "KNO3": "KNO₃",
+    "AgCl": "AgCl",
+    "AgI": "AgI",
+    "PbCl2": "PbCl₂",
+    "PbI2": "PbI₂",
+    "BaSO4": "BaSO₄",
+    "H2O": "H₂O"
+  },
+  "ionFormulas": {
+    "Ag+": "Ag⁺",
+    "Pb2+": "Pb²⁺",
+    "Ba2+": "Ba²⁺",
+    "Na+": "Na⁺",
+    "K+": "K⁺",
+    "H+": "H⁺",
+    "NO3-": "NO₃⁻",
+    "Cl-": "Cl⁻",
+    "I-": "I⁻",
+    "SO4_2-": "SO₄²⁻",
+    "OH-": "OH⁻"
+  },
+  "reagentLabels": {
+    "AgNO3": "AgNO₃ (Perak Nitrat)",
+    "Pb(NO3)2": "Pb(NO₃)₂ (Timbal(II) Nitrat)",
+    "BaCl2": "BaCl₂ (Barium Klorida)",
+    "NaCl": "NaCl (Natrium Klorida)",
+    "KI": "KI (Kalium Iodida)",
+    "Na2SO4": "Na₂SO₄ (Natrium Sulfat)",
+    "HCl": "HCl (Asam Klorida)",
+    "NaOH": "NaOH (Natrium Hidroksida)"
+  },
+  "dissociationEquations": {
+    "AgNO3": "AgNO₃(aq) → Ag⁺(aq) + NO₃⁻(aq)",
+    "Pb(NO3)2": "Pb(NO₃)₂(aq) → Pb²⁺(aq) + 2NO₃⁻(aq)",
+    "BaCl2": "BaCl₂(aq) → Ba²⁺(aq) + 2Cl⁻(aq)",
+    "NaCl": "NaCl(aq) → Na⁺(aq) + Cl⁻(aq)",
+    "KI": "KI(aq) → K⁺(aq) + I⁻(aq)",
+    "Na2SO4": "Na₂SO₄(aq) → 2Na⁺(aq) + SO₄²⁻(aq)",
+    "HCl": "HCl(aq) → H⁺(aq) + Cl⁻(aq)",
+    "NaOH": "NaOH(aq) → Na⁺(aq) + OH⁻(aq)"
+  },
+  "reactions": [
+    {
+      "pairKey": "AgNO3|NaCl",
+      "reactionId": "rxn_agcl_precipitation",
+      "reagents": ["AgNO3", "NaCl"],
+      "category": "precipitation",
+      "energyLabel": "normal",
+      "molecularEquation": "AgNO₃(aq) + NaCl(aq) → AgCl(s) + NaNO₃(aq)",
+      "netIonicEquation": "Ag⁺(aq) + Cl⁻(aq) → AgCl(s)",
+      "productSummary": "AgCl + NaNO₃",
+      "spectatorIons": ["NO₃⁻", "Na⁺"],
+      "precipitate": { "formula": "AgCl", "displayName": "Perak Klorida" }
+    },
+    {
+      "pairKey": "AgNO3|KI",
+      "reactionId": "rxn_agi_precipitation",
+      "reagents": ["AgNO3", "KI"],
+      "category": "precipitation",
+      "energyLabel": "normal",
+      "molecularEquation": "AgNO₃(aq) + KI(aq) → AgI(s) + KNO₃(aq)",
+      "netIonicEquation": "Ag⁺(aq) + I⁻(aq) → AgI(s)",
+      "productSummary": "AgI + KNO₃",
+      "spectatorIons": ["NO₃⁻", "K⁺"],
+      "precipitate": { "formula": "AgI", "displayName": "Perak Iodida" }
+    },
+    {
+      "pairKey": "NaCl|Pb(NO3)2",
+      "reactionId": "rxn_pbcl2_precipitation",
+      "reagents": ["Pb(NO3)2", "NaCl"],
+      "category": "precipitation",
+      "energyLabel": "normal",
+      "molecularEquation": "Pb(NO₃)₂(aq) + 2NaCl(aq) → PbCl₂(s) + 2NaNO₃(aq)",
+      "netIonicEquation": "Pb²⁺(aq) + 2Cl⁻(aq) → PbCl₂(s)",
+      "productSummary": "PbCl₂ + 2NaNO₃",
+      "spectatorIons": ["NO₃⁻", "Na⁺"],
+      "precipitate": { "formula": "PbCl₂", "displayName": "Timbal(II) Klorida" }
+    },
+    {
+      "pairKey": "KI|Pb(NO3)2",
+      "reactionId": "rxn_pbi2_precipitation",
+      "reagents": ["Pb(NO3)2", "KI"],
+      "category": "precipitation",
+      "energyLabel": "normal",
+      "molecularEquation": "Pb(NO₃)₂(aq) + 2KI(aq) → PbI₂(s) + 2KNO₃(aq)",
+      "netIonicEquation": "Pb²⁺(aq) + 2I⁻(aq) → PbI₂(s)",
+      "productSummary": "PbI₂ + 2KNO₃",
+      "spectatorIons": ["NO₃⁻", "K⁺"],
+      "precipitate": { "formula": "PbI₂", "displayName": "Timbal(II) Iodida" }
+    },
+    {
+      "pairKey": "BaCl2|Na2SO4",
+      "reactionId": "rxn_baso4_precipitation",
+      "reagents": ["BaCl2", "Na2SO4"],
+      "category": "precipitation",
+      "energyLabel": "normal",
+      "molecularEquation": "BaCl₂(aq) + Na₂SO₄(aq) → BaSO₄(s) + 2NaCl(aq)",
+      "netIonicEquation": "Ba²⁺(aq) + SO₄²⁻(aq) → BaSO₄(s)",
+      "productSummary": "BaSO₄ + 2NaCl",
+      "spectatorIons": ["Cl⁻", "Na⁺"],
+      "precipitate": { "formula": "BaSO₄", "displayName": "Barium Sulfat" }
+    },
+    {
+      "pairKey": "HCl|NaOH",
+      "reactionId": "rxn_h2o_neutralization",
+      "reagents": ["HCl", "NaOH"],
+      "category": "strong_acid_base",
+      "energyLabel": "exothermic",
+      "molecularEquation": "HCl(aq) + NaOH(aq) → NaCl(aq) + H₂O(l)",
+      "netIonicEquation": "H⁺(aq) + OH⁻(aq) → H₂O(l)",
+      "productSummary": "NaCl + H₂O",
+      "molecularEquationWithEnergy": "HCl(aq) + NaOH(aq) → NaCl(aq) + H₂O(l) + Energi",
+      "netIonicEquationWithEnergy": "H⁺(aq) + OH⁻(aq) → H₂O(l) + Energi",
+      "spectatorIons": ["Cl⁻", "Na⁺"],
+      "precipitate": null
+    }
+  ],
+  "unmodeledPairs": [
+    { "reagents": ["AgNO3", "Pb(NO3)2"], "pairKey": "AgNO3|Pb(NO3)2" },
+    { "reagents": ["NaCl", "KI"], "pairKey": "KI|NaCl" },
+    { "reagents": ["HCl", "NaCl"], "pairKey": "HCl|NaCl" },
+    { "reagents": ["Na2SO4", "NaOH"], "pairKey": "Na2SO4|NaOH" }
+  ],
+  "noModeledReaction": {
+    "status": "unsupported",
+    "category": "no_modeled_reaction",
+    "reasonCode": "REACTION_NOT_IN_CATALOG",
+    "messageKey": "model.reaction.noModeledReaction",
+    "phaseModel": "homogeneous_aqueous",
+    "layered": false,
+    "molecularEquation": null,
+    "netIonicEquation": null,
+    "precipitate": null,
+    "pHReasonCode": "PH_MODEL_NO_MODELED_REACTION"
+  },
+  "outsideCatalogCapability": {
+    "status": "unsupported",
+    "reasonCode": "OUTSIDE_CATALOG_CAPABILITY",
+    "messageKey": "model.capability.outsideCatalog"
+  },
+  "pHUnsupportedReasonCodes": {
+    "AgNO3|NaCl": "PH_MODEL_SALT_SOLUTION",
+    "AgNO3|KI": "PH_MODEL_SALT_SOLUTION",
+    "NaCl|Pb(NO3)2": "PH_MODEL_SALT_SOLUTION",
+    "KI|Pb(NO3)2": "PH_MODEL_SALT_SOLUTION",
+    "BaCl2|Na2SO4": "PH_MODEL_SALT_SOLUTION"
+  },
+  "capabilityBoundaryKeys": {
+    "temperature": "model.temperature.qualitative",
+    "pressure": "model.pressure.unsupported",
+    "energy": "model.energy.qualitative",
+    "inverse": "model.inverse.scope",
+    "visualization": "visual.sample.nonQuantitative"
+  },
+  "boundaryMessages": {
+    "model.temperature.qualitative": "Suhu hanya mengubah kecepatan gerak partikel pada visualisasi. Suhu tidak mengubah jumlah mol, pereaksi pembatas, derajat reaksi, atau tetapan laju pada model versi 1.",
+    "model.pressure.unsupported": "Tekanan tidak memiliki efek yang dimodelkan pada larutan berair versi 1. Nilai tekanan dikunci pada 1 atm.",
+    "model.energy.qualitative": "Label energi bersifat kualitatif. Model versi 1 tidak menghitung entalpi reaksi.",
+    "model.inverse.scope": "Perancang eksperimen invers hanya menangani target endapan dan target pH yang ada di dalam katalog versi 1.",
+    "model.reaction.noModeledReaction": "Tidak ada reaksi yang dimodelkan untuk pasangan larutan ini. Kedua larutan tetap bercampur sebagai satu fasa berair homogen tanpa endapan, gas, atau batas lapisan.",
+    "model.capability.outsideCatalog": "Perilaku kimia ini berada di luar kemampuan model katalog versi 1, sehingga hasilnya tidak dapat dihitung.",
+    "model.phase.homogeneousAqueous": "Campuran berada dalam satu fasa berair homogen.",
+    "model.phase.aqueousWithSolid": "Campuran terdiri atas fasa berair dengan endapan padat.",
+    "model.ph.unsupported.salt": "Nilai pH tidak dihitung untuk larutan garam. Model versi 1 tidak memodelkan hidrolisis garam.",
+    "model.ph.unsupported.notStrongAcidBase": "Nilai pH hanya dihitung untuk campuran ideal asam kuat HCl dan basa kuat NaOH pada model versi 1.",
+    "model.ph.unsupported.precipitationCoupled": "Nilai pH tidak dihitung ketika reaksi menghasilkan endapan, karena kesetimbangan kelarutan belum dimodelkan.",
+    "model.ph.unsupported.noModeledReaction": "Nilai pH tidak dihitung karena tidak ada reaksi yang dimodelkan untuk pasangan larutan ini.",
+    "visual.sample.nonQuantitative": "Jumlah partikel pada visualisasi adalah sampel proporsional yang dibatasi, bukan jumlah partikel sebenarnya."
+  },
+  "pHUnsupportedMessageKeys": {
+    "PH_MODEL_SALT_SOLUTION": "model.ph.unsupported.salt",
+    "PH_MODEL_NOT_STRONG_ACID_BASE": "model.ph.unsupported.notStrongAcidBase",
+    "PH_MODEL_PRECIPITATION_COUPLED": "model.ph.unsupported.precipitationCoupled",
+    "PH_MODEL_NO_MODELED_REACTION": "model.ph.unsupported.noModeledReaction"
+  },
+  "quantityDisplay": {
+    "description": "Golden display strings for the quantity precision layer, written by hand so neither language half can satisfy this file by reproducing its own rounding default. Several cases are chosen because the language defaults disagree there: 0.125 at two places, 7.005 and 2.675 at two places, and 0.00005 at four places are rounded half away from zero, not half to even and not off the binary expansion. Rounding exists only in these projections; the unrounded value is what every later calculation reads.",
+    "roundingMode": "half_away_from_zero",
+    "decimalSeparator": ".",
+    "quantityPrecision": {
+      "concentration_molL": 2,
+      "volume_mL": 1,
+      "volume_L": 4,
+      "amount_mol": 4,
+      "extent_mol": 4,
+      "pH": 2
+    },
+    "quantityUnits": {
+      "concentration_molL": "M",
+      "volume_mL": "mL",
+      "volume_L": "L",
+      "amount_mol": "mol",
+      "extent_mol": "mol",
+      "pH": null
+    },
+    "cases": [
+      { "quantity": "concentration_molL", "value": 1, "text": "1.00", "labeled": "1.00 M" },
+      { "quantity": "concentration_molL", "value": 2, "text": "2.00", "labeled": "2.00 M" },
+      { "quantity": "concentration_molL", "value": 0.125, "text": "0.13", "labeled": "0.13 M" },
+      { "quantity": "volume_mL", "value": 50, "text": "50.0", "labeled": "50.0 mL" },
+      { "quantity": "volume_mL", "value": 12.25, "text": "12.3", "labeled": "12.3 mL" },
+      { "quantity": "volume_mL", "value": 99.95, "text": "100.0", "labeled": "100.0 mL" },
+      { "quantity": "volume_L", "value": 0.05, "text": "0.0500", "labeled": "0.0500 L" },
+      { "quantity": "volume_L", "value": 0.1, "text": "0.1000", "labeled": "0.1000 L" },
+      { "quantity": "amount_mol", "value": 0.05, "text": "0.0500", "labeled": "0.0500 mol" },
+      { "quantity": "amount_mol", "value": 0.012345, "text": "0.0123", "labeled": "0.0123 mol" },
+      { "quantity": "amount_mol", "value": 0.012355, "text": "0.0124", "labeled": "0.0124 mol" },
+      { "quantity": "amount_mol", "value": 0.00005, "text": "0.0001", "labeled": "0.0001 mol" },
+      { "quantity": "amount_mol", "value": -0.00001, "text": "0.0000", "labeled": "0.0000 mol" },
+      { "quantity": "amount_mol", "value": 1e-9, "text": "0.0000", "labeled": "0.0000 mol" },
+      { "quantity": "extent_mol", "value": 0, "text": "0.0000", "labeled": "0.0000 mol" },
+      { "quantity": "extent_mol", "value": 0.025, "text": "0.0250", "labeled": "0.0250 mol" },
+      { "quantity": "pH", "value": 13, "text": "13.00", "labeled": "13.00" },
+      { "quantity": "pH", "value": 7.005, "text": "7.01", "labeled": "7.01" },
+      { "quantity": "pH", "value": 2.675, "text": "2.68", "labeled": "2.68" },
+      { "quantity": "pH", "value": -0.004, "text": "0.00", "labeled": "0.00" }
+    ]
+  }
+}

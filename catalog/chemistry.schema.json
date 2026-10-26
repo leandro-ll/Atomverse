@@ -1,0 +1,364 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://atomverse.local/schema/chemistry.schema.json",
+  "title": "Atomverse canonical chemistry catalog v2",
+  "description": "Structural contract for catalog/chemistry.catalog.json v2.0.0. Enforces generated schema 2.0.0, constrained identifiers, numerical tolerances, positive integer coefficients and dissociation multiplicities, and closed outcome categories.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "catalogVersion",
+    "elements",
+    "generator",
+    "ions",
+    "model",
+    "outcomeCategories",
+    "presentation",
+    "reactions",
+    "schemaVersion",
+    "solubilityRules",
+    "sources",
+    "substances",
+    "toolkit"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "2.0.0" },
+    "catalogVersion": { "const": "2.0.0" },
+    "generator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["algorithmVersion", "name"],
+      "properties": {
+        "algorithmVersion": { "type": "string" },
+        "name": { "type": "string" }
+      }
+    },
+    "toolkit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "version"],
+      "properties": {
+        "name": { "type": "string" },
+        "version": { "type": "string" }
+      }
+    },
+    "model": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["neutralPh", "nonGoals", "pKw", "temperatureC", "tolerances"],
+      "properties": {
+        "neutralPh": { "type": "number" },
+        "nonGoals": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "pKw": { "type": "number" },
+        "temperatureC": { "type": "number" },
+        "tolerances": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["charge", "element", "massPpm"],
+          "properties": {
+            "charge": { "type": "number" },
+            "element": { "type": "number" },
+            "massPpm": { "type": "number" }
+          }
+        }
+      }
+    },
+    "outcomeCategories": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "precipitate_forms",
+          "below_saturation",
+          "no_modeled_reaction",
+          "neutralization",
+          "unsupported"
+        ]
+      }
+    },
+    "elements": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["indonesianName", "knownOxidationStates"],
+        "properties": {
+          "indonesianName": { "type": "string" },
+          "knownOxidationStates": {
+            "type": "array",
+            "items": { "type": "integer" }
+          }
+        }
+      }
+    },
+    "ions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "aqueousSupported",
+          "charge",
+          "displayColor",
+          "element",
+          "formulaToken",
+          "id",
+          "kind",
+          "nameFragment",
+          "provenance"
+        ],
+        "properties": {
+          "acidBaseRole": { "type": ["string", "null"] },
+          "aqueousSupported": { "type": "boolean" },
+          "charge": { "type": "integer" },
+          "displayColor": { "type": "string", "pattern": "^#[0-9a-fA-F]{6}$" },
+          "element": { "type": ["string", "null"] },
+          "formulaToken": { "type": "string" },
+          "id": { "$ref": "#/$defs/ionId" },
+          "kind": { "type": "string", "enum": ["cation", "anion"] },
+          "nameFragment": { "type": "string" },
+          "polyatomic": { "type": "boolean" },
+          "provenance": { "$ref": "#/$defs/provenance" }
+        }
+      }
+    },
+    "solubilityRules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["exceptions", "id", "match", "order", "solubilityClass"],
+        "properties": {
+          "exceptions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["solubilityClass", "substanceId"],
+              "properties": {
+                "solubilityClass": { "type": "string", "enum": ["soluble", "insoluble", "slightly_soluble"] },
+                "substanceId": { "$ref": "#/$defs/substanceId" }
+              }
+            }
+          },
+          "id": { "$ref": "#/$defs/ruleId" },
+          "match": { "type": "object" },
+          "note": { "type": ["string", "null"] },
+          "order": { "type": "integer" },
+          "solubilityClass": { "type": "string", "enum": ["soluble", "insoluble", "slightly_soluble"] }
+        }
+      }
+    },
+    "substances": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "anionCount",
+          "anionId",
+          "cationCount",
+          "cationId",
+          "composition",
+          "displayColor",
+          "dissociation",
+          "formulaToken",
+          "id",
+          "indonesianName",
+          "ksp",
+          "molarMassGPerMol",
+          "nameProvenance",
+          "netCharge",
+          "notation",
+          "presentationGroupId",
+          "referenceValidation",
+          "selectable",
+          "solubilityClass",
+          "solubilityRuleId"
+        ],
+        "properties": {
+          "anionCount": { "type": "integer", "minimum": 1 },
+          "anionId": { "$ref": "#/$defs/ionId" },
+          "cationCount": { "type": "integer", "minimum": 1 },
+          "cationId": { "$ref": "#/$defs/ionId" },
+          "composition": { "type": "object" },
+          "displayColor": { "type": "string", "pattern": "^#[0-9a-fA-F]{6}$" },
+          "dissociation": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["charge", "ionId", "multiplicity"],
+              "properties": {
+                "charge": { "type": "integer" },
+                "ionId": { "$ref": "#/$defs/ionId" },
+                "multiplicity": { "type": "integer", "minimum": 1 }
+              }
+            }
+          },
+          "formulaToken": { "type": "string" },
+          "id": { "$ref": "#/$defs/substanceId" },
+          "indonesianName": { "type": "string" },
+          "ksp": {
+            "type": ["object", "null"],
+            "additionalProperties": false,
+            "required": ["sourceId", "temperatureC", "value"],
+            "properties": {
+              "sourceId": { "$ref": "#/$defs/sourceId" },
+              "temperatureC": { "type": "number" },
+              "value": { "type": "string" }
+            }
+          },
+          "molarMassGPerMol": { "type": "number", "minimum": 0 },
+          "nameProvenance": { "type": "string", "enum": ["compositional", "override"] },
+          "netCharge": { "type": "integer", "const": 0 },
+          "notation": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["html", "latex", "unicode"],
+            "properties": {
+              "html": { "type": "string" },
+              "latex": { "type": "string" },
+              "unicode": { "type": "string" }
+            }
+          },
+          "presentationGroupId": { "$ref": "#/$defs/groupId" },
+          "referenceValidation": { "type": "object" },
+          "selectable": { "type": "boolean" },
+          "solubilityClass": { "type": "string", "enum": ["soluble", "insoluble", "slightly_soluble"] },
+          "solubilityRuleId": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "reactions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["canonicalKey", "id", "reactantIds"],
+        "properties": {
+          "candidateSolidId": { "type": ["string", "null"] },
+          "canonicalKey": { "type": "string" },
+          "conservation": { "type": "object" },
+          "energyLabel": { "type": ["string", "null"] },
+          "explanationId": { "type": "string" },
+          "id": { "$ref": "#/$defs/reactionId" },
+          "kspRef": { "type": ["object", "null"] },
+          "molecularEquation": { "type": "string" },
+          "molecularEquationLatex": { "type": "string" },
+          "netIonicEquation": { "type": "string" },
+          "netIonicEquationLatex": { "type": "string" },
+          "outcome": { "type": "string" },
+          "outcomeCategories": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "phases": { "type": "object" },
+          "products": { "type": "object" },
+          "reactantIds": {
+            "type": "array",
+            "items": { "$ref": "#/$defs/substanceId" }
+          },
+          "reactants": { "type": "object" },
+          "reactionClass": { "type": "string" },
+          "reasonCode": { "type": "string" },
+          "spectatorIonIds": {
+            "type": "array",
+            "items": { "$ref": "#/$defs/ionId" }
+          }
+        }
+      }
+    },
+    "presentation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["explanations", "nomenclatureOverrides", "reagentGroups", "substanceColors"],
+      "properties": {
+        "explanations": { "type": "object" },
+        "nomenclatureOverrides": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "reason", "substanceId"],
+            "properties": {
+              "name": { "type": "string" },
+              "reason": { "type": "string" },
+              "substanceId": { "$ref": "#/$defs/substanceId" }
+            }
+          }
+        },
+        "reagentGroups": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "label", "labelId", "match", "order"],
+            "properties": {
+              "id": { "$ref": "#/$defs/groupId" },
+              "label": { "type": "string" },
+              "labelId": { "type": "string" },
+              "match": { "type": "object" },
+              "order": { "type": "integer" }
+            }
+          }
+        },
+        "substanceColors": { "type": "object" }
+      }
+    },
+    "sources": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["citation", "id"],
+        "properties": {
+          "citation": { "type": "string" },
+          "id": { "$ref": "#/$defs/sourceId" }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "identifier": {
+      "type": "string",
+      "pattern": "^(sub|ion|rxn|rule|grp|src)\\.[a-z0-9_]+$"
+    },
+    "substanceId": {
+      "type": "string",
+      "pattern": "^sub\\.[a-z0-9_]+$"
+    },
+    "ionId": {
+      "type": "string",
+      "pattern": "^ion\\.[a-z0-9_]+$"
+    },
+    "reactionId": {
+      "type": "string",
+      "pattern": "^rxn\\.[a-z0-9_]+$"
+    },
+    "ruleId": {
+      "type": "string",
+      "pattern": "^rule\\.[a-z0-9_]+$"
+    },
+    "groupId": {
+      "type": "string",
+      "pattern": "^grp\\.[a-z0-9_]+$"
+    },
+    "sourceId": {
+      "type": "string",
+      "pattern": "^src\\.[a-z0-9_]+$"
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["origin", "reviewedOn", "reviewer"],
+      "properties": {
+        "origin": { "type": "string", "enum": ["hand", "crc_handbook_97th", "ai_draft"] },
+        "reviewedOn": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+        "reviewer": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

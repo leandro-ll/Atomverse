@@ -1,0 +1,4 @@
+# Ensure generated chemistry catalog and seed files use LF endings on all platforms
+catalog/** text eol=lf
+js/generated/** text eol=lf
+backend/app/generated/** text eol=lf

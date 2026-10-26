@@ -1,0 +1,318 @@
+{
+  "catalogVersion": "2.0.0",
+  "description": "Shared parity vectors across the library with inputs only (no expected values). Used to assert parity between JS and Python evaluators.",
+  "vectors": [
+    {
+      "id": "vec.ksp.agcl.high",
+      "category": "ksp_precipitating",
+      "description": "AgNO3 + NaCl at default quantities (Q >> Ksp, precipitate forms)",
+      "input": {
+        "reagentAId": "sub.agno3",
+        "reagentBId": "sub.nacl",
+        "concentrationA_M": 0.1,
+        "concentrationB_M": 0.1,
+        "volumeA_mL": 50.0,
+        "volumeB_mL": 50.0
+      }
+    },
+    {
+      "id": "vec.ksp.pbcl2.high",
+      "category": "ksp_precipitating",
+      "description": "Pb(NO3)2 + NaCl at default quantities (Q > Ksp, precipitate forms)",
+      "input": {
+        "reagentAId": "sub.pb_no3_2",
+        "reagentBId": "sub.nacl",
+        "concentrationA_M": 0.1,
+        "concentrationB_M": 0.1,
+        "volumeA_mL": 50.0,
+        "volumeB_mL": 50.0
+      }
+    },
+    {
+      "id": "vec.ksp.baso4.high",
+      "category": "ksp_precipitating",
+      "description": "BaCl2 + Na2SO4 at default quantities (Q >> Ksp, precipitate forms)",
+      "input": {
+        "reagentAId": "sub.bacl2",
+        "reagentBId": "sub.na2so4",
+        "concentrationA_M": 0.1,
+        "concentrationB_M": 0.1,
+        "volumeA_mL": 50.0,
+        "volumeB_mL": 50.0
+      }
+    },
+    {
+      "id": "vec.ksp.agi.high",
+      "category": "ksp_precipitating",
+      "description": "AgNO3 + KI at default quantities (Q >> Ksp, precipitate forms)",
+      "input": {
+        "reagentAId": "sub.agno3",
+        "reagentBId": "sub.ki",
+        "concentrationA_M": 0.1,
+        "concentrationB_M": 0.1,
+        "volumeA_mL": 50.0,
+        "volumeB_mL": 50.0
+      }
+    },
+    {
+      "id": "vec.ksp.pbi2.high",
+      "category": "ksp_precipitating",
+      "description": "Pb(NO3)2 + KI at default quantities (Q >> Ksp, precipitate forms)",
+      "input": {
+        "reagentAId": "sub.pb_no3_2",
+        "reagentBId": "sub.ki",
+        "concentrationA_M": 0.1,
+        "concentrationB_M": 0.1,
+        "volumeA_mL": 50.0,
+        "volumeB_mL": 50.0
+      }
+    },
+    {
+      "id": "vec.ksp.cu_oh_2.high",
+      "category": "ksp_precipitating",
+      "description": "CuCl2 + NaOH at default quantities (Q >> Ksp, precipitate forms)",
+      "input": {
+        "reagentAId": "sub.cucl2",
+        "reagentBId": "sub.naoh",
+        "concentrationA_M": 0.1,
+        "concentrationB_M": 0.1,
+        "volumeA_mL": 50.0,
+        "volumeB_mL": 50.0
+      }
+    },
+    {
+      "id": "vec.ksp.fe_oh_3.high",
+      "category": "ksp_precipitating",
+      "description": "FeCl3 + NaOH at default quantities (Q >> Ksp, precipitate forms)",
+      "input": {
+        "reagentAId": "sub.fecl3",
+        "reagentBId": "sub.naoh",
+        "concentrationA_M": 0.1,
+        "concentrationB_M": 0.1,
+        "volumeA_mL": 50.0,
+        "volumeB_mL": 50.0
+      }
+    },
+    {
+      "id": "vec.ksp.caco3.high",
+      "category": "ksp_precipitating",
+      "description": "Ca(NO3)2 + Na2CO3 at default quantities (Q >> Ksp, precipitate forms)",
+      "input": {
+        "reagentAId": "sub.ca_no3_2",
+        "reagentBId": "sub.na2co3",
+        "concentrationA_M": 0.1,
+        "concentrationB_M": 0.1,
+        "volumeA_mL": 50.0,
+        "volumeB_mL": 50.0
+      }
+    },
+    {
+      "id": "vec.ksp.agcl.dilute",
+      "category": "ksp_below_saturation",
+      "description": "AgNO3 + NaCl at dilute quantities (Q < Ksp, below saturation)",
+      "input": {
+        "reagentAId": "sub.agno3",
+        "reagentBId": "sub.nacl",
+        "concentrationA_M": 0.000001,
+        "concentrationB_M": 0.000001,
+        "volumeA_mL": 50.0,
+        "volumeB_mL": 50.0
+      }
+    },
+    {
+      "id": "vec.ksp.pbcl2.dilute",
+      "category": "ksp_below_saturation",
+      "description": "Pb(NO3)2 + NaCl at dilute quantities (Q < Ksp, below saturation)",
+      "input": {
+        "reagentAId": "sub.pb_no3_2",
+        "reagentBId": "sub.nacl",
+        "concentrationA_M": 0.002,
+        "concentrationB_M": 0.002,
+        "volumeA_mL": 50.0,
+        "volumeB_mL": 50.0
+      }
+    },
+    {
+      "id": "vec.ksp.baso4.dilute",
+      "category": "ksp_below_saturation",
+      "description": "BaCl2 + Na2SO4 at dilute quantities (Q < Ksp, below saturation)",
+      "input": {
+        "reagentAId": "sub.bacl2",
+        "reagentBId": "sub.na2so4",
+        "concentrationA_M": 0.000001,
+        "concentrationB_M": 0.000001,
+        "volumeA_mL": 50.0,
+        "volumeB_mL": 50.0
+      }
+    },
+    {
+      "id": "vec.ksp.agi.dilute",
+      "category": "ksp_below_saturation",
+      "description": "AgNO3 + KI at ultra-dilute quantities (Q < Ksp, below saturation)",
+      "input": {
+        "reagentAId": "sub.agno3",
+        "reagentBId": "sub.ki",
+        "concentrationA_M": 0.000000001,
+        "concentrationB_M": 0.000000001,
+        "volumeA_mL": 50.0,
+        "volumeB_mL": 50.0
+      }
+    },
+    {
+      "id": "vec.ksp.pbi2.dilute",
+      "category": "ksp_below_saturation",
+      "description": "Pb(NO3)2 + KI at dilute quantities (Q < Ksp, below saturation)",
+      "input": {
+        "reagentAId": "sub.pb_no3_2",
+        "reagentBId": "sub.ki",
+        "concentrationA_M": 0.000001,
+        "concentrationB_M": 0.000001,
+        "volumeA_mL": 50.0,
+        "volumeB_mL": 50.0
+      }
+    },
+    {
+      "id": "vec.ksp.caso4.dilute",
+      "category": "ksp_below_saturation",
+      "description": "Ca(NO3)2 + Na2SO4 at dilute quantities (Q < Ksp, below saturation)",
+      "input": {
+        "reagentAId": "sub.ca_no3_2",
+        "reagentBId": "sub.na2so4",
+        "concentrationA_M": 0.0001,
+        "concentrationB_M": 0.0001,
+        "volumeA_mL": 50.0,
+        "volumeB_mL": 50.0
+      }
+    },
+    {
+      "id": "vec.no_rxn.nacl_kno3",
+      "category": "no_modeled_reaction",
+      "description": "NaCl + KNO3 (all cross-swap products soluble)",
+      "input": {
+        "reagentAId": "sub.nacl",
+        "reagentBId": "sub.kno3",
+        "concentrationA_M": 0.1,
+        "concentrationB_M": 0.1,
+        "volumeA_mL": 50.0,
+        "volumeB_mL": 50.0
+      }
+    },
+    {
+      "id": "vec.no_rxn.agno3_ba_no3_2",
+      "category": "no_modeled_reaction",
+      "description": "AgNO3 + Ba(NO3)2 (common anion, all products soluble)",
+      "input": {
+        "reagentAId": "sub.agno3",
+        "reagentBId": "sub.ba_no3_2",
+        "concentrationA_M": 0.1,
+        "concentrationB_M": 0.1,
+        "volumeA_mL": 50.0,
+        "volumeB_mL": 50.0
+      }
+    },
+    {
+      "id": "vec.no_rxn.bacl2_cucl2",
+      "category": "no_modeled_reaction",
+      "description": "BaCl2 + CuCl2 (common anion, all products soluble)",
+      "input": {
+        "reagentAId": "sub.bacl2",
+        "reagentBId": "sub.cucl2",
+        "concentrationA_M": 0.1,
+        "concentrationB_M": 0.1,
+        "volumeA_mL": 50.0,
+        "volumeB_mL": 50.0
+      }
+    },
+    {
+      "id": "vec.no_rxn.same_reagent",
+      "category": "no_modeled_reaction",
+      "description": "NaCl + NaCl (same reagent)",
+      "input": {
+        "reagentAId": "sub.nacl",
+        "reagentBId": "sub.nacl",
+        "concentrationA_M": 0.1,
+        "concentrationB_M": 0.1,
+        "volumeA_mL": 50.0,
+        "volumeB_mL": 50.0
+      }
+    },
+    {
+      "id": "vec.neutralization.equimolar",
+      "category": "neutralization",
+      "description": "HCl + NaOH equimolar (pH = 7.0 neutral point)",
+      "input": {
+        "reagentAId": "sub.hcl",
+        "reagentBId": "sub.naoh",
+        "concentrationA_M": 0.1,
+        "concentrationB_M": 0.1,
+        "volumeA_mL": 50.0,
+        "volumeB_mL": 50.0
+      }
+    },
+    {
+      "id": "vec.neutralization.excess_acid",
+      "category": "neutralization",
+      "description": "HCl + NaOH with excess acid (acidic pH)",
+      "input": {
+        "reagentAId": "sub.hcl",
+        "reagentBId": "sub.naoh",
+        "concentrationA_M": 0.2,
+        "concentrationB_M": 0.1,
+        "volumeA_mL": 50.0,
+        "volumeB_mL": 50.0
+      }
+    },
+    {
+      "id": "vec.neutralization.excess_base",
+      "category": "neutralization",
+      "description": "HCl + NaOH with excess base (basic pH)",
+      "input": {
+        "reagentAId": "sub.hcl",
+        "reagentBId": "sub.naoh",
+        "concentrationA_M": 0.1,
+        "concentrationB_M": 0.2,
+        "volumeA_mL": 50.0,
+        "volumeB_mL": 50.0
+      }
+    },
+    {
+      "id": "vec.unsupported.gas_co3",
+      "category": "unsupported",
+      "description": "HCl + Na2CO3 (gas evolution unsupported)",
+      "input": {
+        "reagentAId": "sub.hcl",
+        "reagentBId": "sub.na2co3",
+        "concentrationA_M": 0.1,
+        "concentrationB_M": 0.1,
+        "volumeA_mL": 50.0,
+        "volumeB_mL": 50.0
+      }
+    },
+    {
+      "id": "vec.unsupported.gas_s",
+      "category": "unsupported",
+      "description": "HCl + Na2S (gas evolution unsupported)",
+      "input": {
+        "reagentAId": "sub.hcl",
+        "reagentBId": "sub.na2s",
+        "concentrationA_M": 0.1,
+        "concentrationB_M": 0.1,
+        "volumeA_mL": 50.0,
+        "volumeB_mL": 50.0
+      }
+    },
+    {
+      "id": "vec.unsupported.redox",
+      "category": "unsupported",
+      "description": "BaI2 + Cu(NO3)2 (redox unsupported)",
+      "input": {
+        "reagentAId": "sub.bai2",
+        "reagentBId": "sub.cu_no3_2",
+        "concentrationA_M": 0.1,
+        "concentrationB_M": 0.1,
+        "volumeA_mL": 50.0,
+        "volumeB_mL": 50.0
+      }
+    }
+  ]
+}

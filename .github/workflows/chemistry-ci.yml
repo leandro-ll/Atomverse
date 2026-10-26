@@ -1,0 +1,191 @@
+name: Chemistry Pipeline CI
+
+on:
+  push:
+    paths:
+      - 'catalog/**'
+      - 'scripts/catalog/**'
+      - 'js/**'
+      - 'backend/**'
+      - '.github/workflows/chemistry-ci.yml'
+  pull_request:
+    paths:
+      - 'catalog/**'
+      - 'scripts/catalog/**'
+      - 'js/**'
+      - 'backend/**'
+      - '.github/workflows/chemistry-ci.yml'
+
+concurrency:
+  group: chemistry-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # Task 22.1: Chemistry pipeline - runs drift check first before any tests
+  chemistry-pipeline:
+    name: Chemistry Pipeline & Drift Guard
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install build dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r backend/requirements-build.lock
+
+      - name: 1. Validate Seed Files
+        run: python scripts/catalog/validate_seed.py
+
+      - name: 2. Drift Check & 4-Way Digest Parity
+        run: python scripts/catalog/check_drift.py
+
+      - name: 3. Catalog Validation & Conservation
+        run: |
+          pytest tests/catalog/test_conservation.py \
+                 tests/catalog/test_conservation_failure.py \
+                 tests/catalog/test_substance_neutrality.py \
+                 tests/catalog/test_grid_coverage.py -ra
+
+      - name: 4. Six Frozen Canonical Fixtures
+        run: |
+          pytest tests/chemistry/test_frozen_reactions.py \
+                 tests/chemistry/test_frozen_mutation.py -ra
+
+  # Task 22.2: Seam checks - build toolchain isolation & clean distribution
+  seam-checks:
+    name: Build-Time Toolchain & Seam Isolation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          npm ci
+          pip install pytest
+
+      - name: 1. ChemPy Pin & Lock Isolation
+        run: pytest backend/tests/test_build_seam.py -ra
+
+      - name: 2. Backend App Import Graph
+        run: python scripts/ci/verify-import-graph.py
+
+      - name: 3. No Unicode Notation Scan
+        run: python scripts/ci/verify-no-unicode-notation.py
+
+      - name: 4. Build Bundle & Scan Dist for Forbidden Tokens & No CDN
+        run: |
+          npm run build
+          node scripts/frontend/verify-no-runtime-cdn.mjs
+
+  # Task 22.3: Determinism - double-generation with PYTHONHASHSEED unset
+  determinism:
+    name: Double-Generation Determinism (PYTHONHASHSEED Unset)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install build dependencies
+        run: |
+          pip install -r backend/requirements-build.lock
+
+      - name: Double-Generation Byte & Digest Equality
+        env:
+          PYTHONHASHSEED: ""
+        run: |
+          unset PYTHONHASHSEED
+          pytest tests/catalog/test_generation_determinism.py -ra
+
+  # Task 22.4: Gated test suites & bounded report archive
+  test-suites:
+    name: Parity, Properties & Bounded Report
+    needs: [chemistry-pipeline, seam-checks, determinism]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          npm ci
+          pip install -r backend/requirements-build.lock
+
+      - name: 1. Two-Evaluator Parity Suite
+        run: pytest tests/chemistry/test_evaluator_parity.py -ra
+
+      - name: 2. Saturation & Monotonicity Suites
+        run: |
+          pytest tests/chemistry/test_saturation_monotonicity.py \
+                 tests/chemistry/test_pbcl2_borderline.py \
+                 tests/chemistry/test_saturation_decision.py \
+                 tests/chemistry/test_saturation_citation.py -ra
+
+      - name: 3. Library-Wide Properties (>= 100 iterations)
+        run: pytest tests/catalog/ -ra
+
+      - name: 4. Network-Isolated Reference Gate
+        run: |
+          pytest tests/catalog/test_network_isolation.py \
+                 tests/catalog/test_reference_agreement.py \
+                 tests/catalog/test_reference_unverified.py \
+                 tests/catalog/test_reference_not_content.py -ra
+
+      - name: 5. Selection-Control Accessibility & Properties
+        run: |
+          npx vitest run tests/frontend/accessibility-smoke.test.js \
+                         tests/frontend/reagent-select.property.test.js
+
+      - name: 6. Inverse Enumeration & Re-Verification
+        run: |
+          pytest backend/tests/test_inverse_enumeration_property.py \
+                 backend/tests/test_inverse_reverification.py \
+                 backend/tests/test_inverse_infeasible.py -ra
+
+      - name: 7. Tutor Fallback & Non-Authority
+        run: |
+          pytest backend/tests/test_local_tutor_composition.py \
+                 backend/tests/test_local_tutor_out_of_scope.py \
+                 backend/tests/test_provider_non_authority.py -ra
+
+      - name: 8. Generate Bounded CI Report
+        run: python scripts/ci/run_chemistry_pipeline.py --report-only
+
+      - name: 9. Archive Bounded Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: chemistry-ci-report
+          path: reports/chemistry-ci-report.json
+          if-no-files-found: error

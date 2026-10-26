@@ -1,0 +1,264 @@
+{
+  "schemaVersion": "1.0.0",
+  "elements": {
+    "Ag": { "indonesianName": "Perak", "knownOxidationStates": [1] },
+    "Ba": { "indonesianName": "Barium", "knownOxidationStates": [2] },
+    "Br": { "indonesianName": "Brom", "knownOxidationStates": [-1] },
+    "C": { "indonesianName": "Karbon", "knownOxidationStates": [4] },
+    "Ca": { "indonesianName": "Kalsium", "knownOxidationStates": [2] },
+    "Cl": { "indonesianName": "Klor", "knownOxidationStates": [-1] },
+    "Cu": { "indonesianName": "Tembaga", "knownOxidationStates": [1, 2] },
+    "Fe": { "indonesianName": "Besi", "knownOxidationStates": [2, 3] },
+    "H": { "indonesianName": "Hidrogen", "knownOxidationStates": [1] },
+    "I": { "indonesianName": "Iod", "knownOxidationStates": [-1] },
+    "K": { "indonesianName": "Kalium", "knownOxidationStates": [1] },
+    "Mg": { "indonesianName": "Magnesium", "knownOxidationStates": [2] },
+    "N": { "indonesianName": "Nitrogen", "knownOxidationStates": [5] },
+    "Na": { "indonesianName": "Natrium", "knownOxidationStates": [1] },
+    "O": { "indonesianName": "Oksigen", "knownOxidationStates": [-2] },
+    "P": { "indonesianName": "Fosfor", "knownOxidationStates": [5] },
+    "Pb": { "indonesianName": "Timbal", "knownOxidationStates": [2, 4] },
+    "S": { "indonesianName": "Belerang", "knownOxidationStates": [-2] },
+    "Zn": { "indonesianName": "Seng", "knownOxidationStates": [2] }
+  },
+  "cations": [
+    {
+      "id": "ion.ag_1p",
+      "formulaToken": "Ag+",
+      "charge": 1,
+      "element": "Ag",
+      "nameFragment": "Perak",
+      "aqueousSupported": true,
+      "displayColor": "#94a3b8",
+      "provenance": { "origin": "hand", "reviewer": "chem-lead", "reviewedOn": "2025-06-01" }
+    },
+    {
+      "id": "ion.ba_2p",
+      "formulaToken": "Ba+2",
+      "charge": 2,
+      "element": "Ba",
+      "nameFragment": "Barium",
+      "aqueousSupported": true,
+      "displayColor": "#38bdf8",
+      "provenance": { "origin": "hand", "reviewer": "chem-lead", "reviewedOn": "2025-06-01" }
+    },
+    {
+      "id": "ion.ca_2p",
+      "formulaToken": "Ca+2",
+      "charge": 2,
+      "element": "Ca",
+      "nameFragment": "Kalsium",
+      "aqueousSupported": true,
+      "displayColor": "#06b6d4",
+      "provenance": { "origin": "hand", "reviewer": "chem-lead", "reviewedOn": "2025-06-01" }
+    },
+    {
+      "id": "ion.cu_2p",
+      "formulaToken": "Cu+2",
+      "charge": 2,
+      "element": "Cu",
+      "nameFragment": "Tembaga",
+      "aqueousSupported": true,
+      "displayColor": "#0284c7",
+      "provenance": { "origin": "hand", "reviewer": "chem-lead", "reviewedOn": "2025-06-01" }
+    },
+    {
+      "id": "ion.fe_3p",
+      "formulaToken": "Fe+3",
+      "charge": 3,
+      "element": "Fe",
+      "nameFragment": "Besi",
+      "aqueousSupported": true,
+      "displayColor": "#b45309",
+      "provenance": { "origin": "hand", "reviewer": "chem-lead", "reviewedOn": "2025-06-01" }
+    },
+    {
+      "id": "ion.h_1p",
+      "formulaToken": "H+",
+      "charge": 1,
+      "element": "H",
+      "nameFragment": "Hidrogen",
+      "aqueousSupported": true,
+      "acidBaseRole": "strong_acid_cation",
+      "displayColor": "#ef4444",
+      "provenance": { "origin": "hand", "reviewer": "chem-lead", "reviewedOn": "2025-06-01" }
+    },
+    {
+      "id": "ion.k_1p",
+      "formulaToken": "K+",
+      "charge": 1,
+      "element": "K",
+      "nameFragment": "Kalium",
+      "aqueousSupported": true,
+      "displayColor": "#8b5cf6",
+      "provenance": { "origin": "hand", "reviewer": "chem-lead", "reviewedOn": "2025-06-01" }
+    },
+    {
+      "id": "ion.mg_2p",
+      "formulaToken": "Mg+2",
+      "charge": 2,
+      "element": "Mg",
+      "nameFragment": "Magnesium",
+      "aqueousSupported": true,
+      "displayColor": "#10b981",
+      "provenance": { "origin": "hand", "reviewer": "chem-lead", "reviewedOn": "2025-06-01" }
+    },
+    {
+      "id": "ion.na_1p",
+      "formulaToken": "Na+",
+      "charge": 1,
+      "element": "Na",
+      "nameFragment": "Natrium",
+      "aqueousSupported": true,
+      "displayColor": "#a855f7",
+      "provenance": { "origin": "hand", "reviewer": "chem-lead", "reviewedOn": "2025-06-01" }
+    },
+    {
+      "id": "ion.pb_2p",
+      "formulaToken": "Pb+2",
+      "charge": 2,
+      "element": "Pb",
+      "nameFragment": "Timbal",
+      "aqueousSupported": true,
+      "displayColor": "#64748b",
+      "provenance": { "origin": "hand", "reviewer": "chem-lead", "reviewedOn": "2025-06-01" }
+    },
+    {
+      "id": "ion.zn_2p",
+      "formulaToken": "Zn+2",
+      "charge": 2,
+      "element": "Zn",
+      "nameFragment": "Seng",
+      "aqueousSupported": true,
+      "displayColor": "#6b7280",
+      "provenance": { "origin": "hand", "reviewer": "chem-lead", "reviewedOn": "2025-06-01" }
+    },
+    {
+      "id": "ion.nh4_1p",
+      "formulaToken": "NH4+",
+      "charge": 1,
+      "nameFragment": "Amonium",
+      "polyatomic": true,
+      "aqueousSupported": true,
+      "displayColor": "#6366f1",
+      "provenance": { "origin": "hand", "reviewer": "chem-lead", "reviewedOn": "2025-06-01" }
+    }
+  ],
+  "anions": [
+    {
+      "id": "ion.ch3coo_1m",
+      "formulaToken": "CH3COO-",
+      "charge": -1,
+      "nameFragment": "asetat",
+      "polyatomic": true,
+      "aqueousSupported": true,
+      "displayColor": "#06b6d4",
+      "provenance": { "origin": "hand", "reviewer": "chem-lead", "reviewedOn": "2025-06-01" }
+    },
+    {
+      "id": "ion.hco3_1m",
+      "formulaToken": "HCO3-",
+      "charge": -1,
+      "nameFragment": "bikarbonat",
+      "polyatomic": true,
+      "aqueousSupported": true,
+      "displayColor": "#10b981",
+      "provenance": { "origin": "hand", "reviewer": "chem-lead", "reviewedOn": "2025-06-01" }
+    },
+    {
+      "id": "ion.br_1m",
+      "formulaToken": "Br-",
+      "charge": -1,
+      "element": "Br",
+      "nameFragment": "bromida",
+      "polyatomic": false,
+      "aqueousSupported": true,
+      "displayColor": "#d97706",
+      "provenance": { "origin": "hand", "reviewer": "chem-lead", "reviewedOn": "2025-06-01" }
+    },
+    {
+      "id": "ion.cl_1m",
+      "formulaToken": "Cl-",
+      "charge": -1,
+      "element": "Cl",
+      "nameFragment": "klorida",
+      "polyatomic": false,
+      "aqueousSupported": true,
+      "displayColor": "#22c55e",
+      "provenance": { "origin": "hand", "reviewer": "chem-lead", "reviewedOn": "2025-06-01" }
+    },
+    {
+      "id": "ion.co3_2m",
+      "formulaToken": "CO3-2",
+      "charge": -2,
+      "nameFragment": "karbonat",
+      "polyatomic": true,
+      "aqueousSupported": true,
+      "displayColor": "#a3e635",
+      "provenance": { "origin": "hand", "reviewer": "chem-lead", "reviewedOn": "2025-06-01" }
+    },
+    {
+      "id": "ion.i_1m",
+      "formulaToken": "I-",
+      "charge": -1,
+      "element": "I",
+      "nameFragment": "iodida",
+      "polyatomic": false,
+      "aqueousSupported": true,
+      "displayColor": "#854d0e",
+      "provenance": { "origin": "hand", "reviewer": "chem-lead", "reviewedOn": "2025-06-01" }
+    },
+    {
+      "id": "ion.no3_1m",
+      "formulaToken": "NO3-",
+      "charge": -1,
+      "nameFragment": "nitrat",
+      "polyatomic": true,
+      "aqueousSupported": true,
+      "displayColor": "#f97316",
+      "provenance": { "origin": "hand", "reviewer": "chem-lead", "reviewedOn": "2025-06-01" }
+    },
+    {
+      "id": "ion.oh_1m",
+      "formulaToken": "OH-",
+      "charge": -1,
+      "nameFragment": "hidroksida",
+      "polyatomic": true,
+      "aqueousSupported": true,
+      "acidBaseRole": "strong_base_anion",
+      "displayColor": "#facc15",
+      "provenance": { "origin": "hand", "reviewer": "chem-lead", "reviewedOn": "2025-06-01" }
+    },
+    {
+      "id": "ion.po4_3m",
+      "formulaToken": "PO4-3",
+      "charge": -3,
+      "nameFragment": "fosfat",
+      "polyatomic": true,
+      "aqueousSupported": true,
+      "displayColor": "#c084fc",
+      "provenance": { "origin": "hand", "reviewer": "chem-lead", "reviewedOn": "2025-06-01" }
+    },
+    {
+      "id": "ion.s_2m",
+      "formulaToken": "S-2",
+      "charge": -2,
+      "element": "S",
+      "nameFragment": "sulfida",
+      "polyatomic": false,
+      "aqueousSupported": true,
+      "displayColor": "#eab308",
+      "provenance": { "origin": "hand", "reviewer": "chem-lead", "reviewedOn": "2025-06-01" }
+    },
+    {
+      "id": "ion.so4_2m",
+      "formulaToken": "SO4-2",
+      "charge": -2,
+      "nameFragment": "sulfat",
+      "polyatomic": true,
+      "aqueousSupported": true,
+      "displayColor": "#ec4899",
+      "provenance": { "origin": "hand", "reviewer": "chem-lead", "reviewedOn": "2025-06-01" }
+    }
+  ]
+}

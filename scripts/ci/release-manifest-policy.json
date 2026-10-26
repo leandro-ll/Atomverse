@@ -1,0 +1,180 @@
+{
+  "policyVersion": "1.0.0",
+  "description": "Initial allow/deny policy for the Atomverse release manifest. Deny rules are evaluated before allow rules and unmatched paths fail closed as unclassified.",
+  "payloadRoot": "dist",
+  "defaultDecision": "unclassified",
+  "deny": [
+    {
+      "id": "secret-material",
+      "category": "secrets",
+      "patterns": [
+        "**/.env",
+        "**/.env.*",
+        "**/*.env",
+        "**/secrets.json",
+        "**/credentials.json",
+        "**/*.pem",
+        "**/*.key",
+        "**/*.p12",
+        "**/id_rsa*"
+      ],
+      "reason": "Credential material is server-side only and must never enter a release payload."
+    },
+    {
+      "id": "python-bytecode",
+      "category": "bytecode",
+      "patterns": ["**/__pycache__/**", "**/*.pyc", "**/*.pyo", "**/*.pyd"],
+      "reason": "Generated Python bytecode is untracked build output, not a release asset."
+    },
+    {
+      "id": "tool-caches",
+      "category": "caches",
+      "patterns": [
+        "**/node_modules/**",
+        "**/.ruff_cache/**",
+        "**/.pytest_cache/**",
+        "**/.mypy_cache/**",
+        "**/coverage/**",
+        "**/.venv/**",
+        "**/venv/**",
+        "**/.vite/**"
+      ],
+      "except": ["**/.vite/manifest.json"],
+      "reason": "Dependency and tool caches are reproducible locally and inflate or poison the payload.",
+      "exceptReason": "The Vite build manifest is release metadata listing emitted asset names only."
+    },
+    {
+      "id": "local-metadata",
+      "category": "local-metadata",
+      "patterns": [
+        ".vercel/**",
+        "**/.vercel/**",
+        ".git/**",
+        "**/.git/**",
+        ".kiro/**",
+        "**/.kiro/**",
+        ".vscode/**",
+        ".idea/**",
+        "**/.DS_Store",
+        "**/Thumbs.db"
+      ],
+      "reason": "Deployment, editor, spec, and version-control metadata is local-only."
+    },
+    {
+      "id": "semantic-review-output",
+      "category": "semantic-review",
+      "patterns": ["semantic-review/**", "**/semantic-review/**"],
+      "reason": "Review tooling output is a working artifact and is never shipped."
+    },
+    {
+      "id": "logs-and-diagnostics",
+      "category": "logs",
+      "patterns": ["**/*.log", "**/npm-debug.log*", "**/diagnostics/**"],
+      "reason": "Logs and diagnostic exports can carry request content and must stay out of payloads."
+    },
+    {
+      "id": "source-maps",
+      "category": "source-maps",
+      "patterns": ["**/*.map"],
+      "reason": "Source maps expose unminified sources and are excluded until an owner approves publishing them."
+    },
+    {
+      "id": "unapproved-media",
+      "category": "unapproved-media",
+      "patterns": ["**/*.mp3", "**/*.wav", "**/*.m4a", "**/*.ogg", "**/*.mp4", "**/*.mov"],
+      "reason": "The existing audio assets remain unapproved for deployment and stay untracked and excluded."
+    },
+    {
+      "id": "backend-source",
+      "category": "non-frontend-source",
+      "patterns": ["backend/**", "scripts/**", "tests/**", "docs/**", "*.lock", "uv.lock"],
+      "reason": "Backend, tooling, and test sources deploy through their own pipeline, not the frontend payload."
+    }
+  ],
+  "allow": [
+    {
+      "id": "entry-document",
+      "category": "runtime-document",
+      "patterns": ["index.html"],
+      "reason": "Single-page entry document."
+    },
+    {
+      "id": "bundled-code",
+      "category": "runtime-code",
+      "patterns": ["assets/*.js", "assets/*.css", "js/*.js", "css/*.css"],
+      "reason": "Locked, bundled application code and precompiled stylesheets."
+    },
+    {
+      "id": "bundled-fonts",
+      "category": "runtime-font",
+      "patterns": ["assets/*.woff", "assets/*.woff2", "assets/*.ttf", "assets/*.otf"],
+      "reason": "Self-hosted reviewed font files required by the dark theme and math rendering."
+    },
+    {
+      "id": "bundled-images",
+      "category": "runtime-image",
+      "patterns": ["assets/*.png", "assets/*.jpg", "assets/*.jpeg", "assets/*.svg", "assets/*.webp", "assets/*.ico"],
+      "reason": "Reviewed static imagery such as the Atomverse logo."
+    },
+    {
+      "id": "build-manifest",
+      "category": "release-metadata",
+      "patterns": [".vite/manifest.json"],
+      "reason": "Emitted asset manifest used by release verification; contains asset names only."
+    }
+  ],
+  "requirements": [
+    {
+      "id": "entry-document",
+      "pattern": "index.html",
+      "minimumCount": 1,
+      "reason": "The payload must contain the application entry document."
+    },
+    {
+      "id": "stylesheet-bundle",
+      "pattern": "assets/*.css",
+      "minimumCount": 1,
+      "reason": "Precompiled CSS replaces the retired runtime Tailwind CDN script."
+    },
+    {
+      "id": "script-bundle",
+      "pattern": "assets/*.js",
+      "minimumCount": 1,
+      "reason": "Bundled vendor and application entry code must ship with the payload."
+    },
+    {
+      "id": "legacy-modules",
+      "pattern": "js/*.js",
+      "minimumCount": 6,
+      "reason": "The six preserved page modules remain required runtime assets during migration."
+    },
+    {
+      "id": "theme-fonts",
+      "pattern": "assets/*.woff2",
+      "minimumCount": 1,
+      "reason": "Self-hosted fonts must ship so text stays readable without network fetches."
+    },
+    {
+      "id": "brand-image",
+      "pattern": "assets/logo-*.png",
+      "minimumCount": 1,
+      "reason": "The logo is part of the preserved visual identity."
+    }
+  ],
+  "localExclusionTargets": [
+    { "path": ".env", "category": "secrets" },
+    { "path": ".env.local", "category": "secrets" },
+    { "path": "backend/.env", "category": "secrets" },
+    { "path": ".vercel/project.json", "category": "local-metadata" },
+    { "path": ".vercel/README.txt", "category": "local-metadata" },
+    { "path": ".kiro/specs/codebase-audit-fixes/requirements.md", "category": "local-metadata" },
+    { "path": "backend/__pycache__/main.cpython-311.pyc", "category": "bytecode" },
+    { "path": "backend/.ruff_cache/CACHEDIR.TAG", "category": "caches" },
+    { "path": "node_modules/vite/package.json", "category": "caches" },
+    { "path": "semantic-review/review.md", "category": "semantic-review" },
+    { "path": "npm-debug.log", "category": "logs" },
+    { "path": "assets/Ai.mp3", "category": "unapproved-media" },
+    { "path": "assets/demo part 1.mp3", "category": "unapproved-media" },
+    { "path": "assets/index-abc123.js.map", "category": "source-maps" }
+  ]
+}

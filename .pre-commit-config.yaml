@@ -1,0 +1,24 @@
+repos:
+  - repo: local
+    hooks:
+      - id: verify-no-runtime-cdn-and-build-tokens
+        name: verify-no-runtime-cdn-and-build-tokens
+        entry: node scripts/frontend/verify-no-runtime-cdn.mjs
+        language: system
+        files: ^(dist/|scripts/frontend/|index\.html)
+        pass_filenames: false
+
+      - id: verify-backend-import-graph
+        name: verify-backend-import-graph
+        entry: python scripts/ci/verify-import-graph.py
+        language: system
+        files: ^backend/app/.*\.py$
+        pass_filenames: false
+
+      - id: verify-no-unicode-notation
+        name: verify-no-unicode-notation
+        entry: python scripts/ci/verify-no-unicode-notation.py
+        language: system
+        files: ^(js/|backend/app/).*
+        pass_filenames: false
+

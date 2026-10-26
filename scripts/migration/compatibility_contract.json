@@ -1,0 +1,37 @@
+{
+  "contractVersion": 1,
+  "api": {
+    "routes": [
+      {"method": "GET", "path": "/api/health"},
+      {"method": "POST", "path": "/api/chat"},
+      {"method": "POST", "path": "/api/inverse-experiment"}
+    ],
+    "models": {
+      "ChatRequest": ["message", "lab_state"],
+      "InverseRequest": ["goal", "constraints"],
+      "InverseResponse": ["confidence_score", "recommended_reaction", "configuration", "predicted_outcome", "explanation"],
+      "PredictedOutcome": ["color", "precipitate", "gas", "ph_final"],
+      "ReactionConfiguration": ["reactant_a", "conc_a", "vol_a", "reactant_b", "conc_b", "vol_b", "temp", "pressure"]
+    }
+  },
+  "dom": {
+    "moduleTabs": [
+      {"dataTab": "lab", "controls": "tab-lab", "label": "Lab Reaksi"},
+      {"dataTab": "inverse", "controls": "tab-inverse", "label": "Eksperimen Invers"},
+      {"dataTab": "env", "controls": "tab-env", "label": "Literasi Lingkungan"}
+    ],
+    "requiredElementIds": [
+      "tab-lab", "tab-inverse", "tab-env", "select-a", "select-b",
+      "m-a-slider", "v-a-slider", "m-b-slider", "v-b-slider",
+      "temp-slider", "press-select", "btn-reset", "btn-run",
+      "btn-macro", "btn-submicro", "sim-status", "macro-view",
+      "submicro-view", "submicro-canvas", "right-panel", "resize-handle",
+      "chat-window", "chat-input", "btn-send", "inv-output", "env-grid",
+      "bond-detail-modal", "modal-title", "modal-content"
+    ],
+    "scriptOrder": [
+      "js/config.js", "js/chemistry-engine.js", "js/visualization.js",
+      "js/ai-tutor.js", "js/inverse-experiment.js", "js/main.js"
+    ]
+  }
+}

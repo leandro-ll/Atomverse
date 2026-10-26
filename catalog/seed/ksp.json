@@ -1,0 +1,481 @@
+{
+  "schemaVersion": "1.0.0",
+  "entries": [
+    {
+      "substanceId": "sub.ag2co3",
+      "value": "8.46e-12",
+      "temperatureC": 25,
+      "ionPowers": { "ion.ag_1p": 2, "ion.co3_2m": 1 },
+      "source": {
+        "id": "src.crc97",
+        "citation": "CRC Handbook of Chemistry and Physics, 97th ed., Table 'Solubility Product Constants'",
+        "retrievedOn": "2025-06-01",
+        "transcribedBy": "chem-lead",
+        "checkedBy": "chem-reviewer"
+      },
+      "provenance": { "origin": "hand", "reviewer": "chem-lead", "reviewedOn": "2025-06-01" }
+    },
+    {
+      "substanceId": "sub.ag2s",
+      "value": "6.3e-50",
+      "temperatureC": 25,
+      "ionPowers": { "ion.ag_1p": 2, "ion.s_2m": 1 },
+      "source": {
+        "id": "src.crc97",
+        "citation": "CRC Handbook of Chemistry and Physics, 97th ed., Table 'Solubility Product Constants'",
+        "retrievedOn": "2025-06-01",
+        "transcribedBy": "chem-lead",
+        "checkedBy": "chem-reviewer"
+      },
+      "provenance": { "origin": "hand", "reviewer": "chem-lead", "reviewedOn": "2025-06-01" }
+    },
+    {
+      "substanceId": "sub.ag2so4",
+      "value": "1.2e-5",
+      "temperatureC": 25,
+      "ionPowers": { "ion.ag_1p": 2, "ion.so4_2m": 1 },
+      "source": {
+        "id": "src.crc97",
+        "citation": "CRC Handbook of Chemistry and Physics, 97th ed., Table 'Solubility Product Constants'",
+        "retrievedOn": "2025-06-01",
+        "transcribedBy": "chem-lead",
+        "checkedBy": "chem-reviewer"
+      },
+      "provenance": { "origin": "hand", "reviewer": "chem-lead", "reviewedOn": "2025-06-01" }
+    },
+    {
+      "substanceId": "sub.ag3po4",
+      "value": "8.89e-17",
+      "temperatureC": 25,
+      "ionPowers": { "ion.ag_1p": 3, "ion.po4_3m": 1 },
+      "source": {
+        "id": "src.crc97",
+        "citation": "CRC Handbook of Chemistry and Physics, 97th ed., Table 'Solubility Product Constants'",
+        "retrievedOn": "2025-06-01",
+        "transcribedBy": "chem-lead",
+        "checkedBy": "chem-reviewer"
+      },
+      "provenance": { "origin": "hand", "reviewer": "chem-lead", "reviewedOn": "2025-06-01" }
+    },
+    {
+      "substanceId": "sub.agbr",
+      "value": "5.35e-13",
+      "temperatureC": 25,
+      "ionPowers": { "ion.ag_1p": 1, "ion.br_1m": 1 },
+      "source": {
+        "id": "src.crc97",
+        "citation": "CRC Handbook of Chemistry and Physics, 97th ed., Table 'Solubility Product Constants'",
+        "retrievedOn": "2025-06-01",
+        "transcribedBy": "chem-lead",
+        "checkedBy": "chem-reviewer"
+      },
+      "provenance": { "origin": "hand", "reviewer": "chem-lead", "reviewedOn": "2025-06-01" }
+    },
+    {
+      "substanceId": "sub.agcl",
+      "value": "1.77e-10",
+      "temperatureC": 25,
+      "ionPowers": { "ion.ag_1p": 1, "ion.cl_1m": 1 },
+      "source": {
+        "id": "src.crc97",
+        "citation": "CRC Handbook of Chemistry and Physics, 97th ed., Table 'Solubility Product Constants'",
+        "retrievedOn": "2025-06-01",
+        "transcribedBy": "chem-lead",
+        "checkedBy": "chem-reviewer"
+      },
+      "provenance": { "origin": "hand", "reviewer": "chem-lead", "reviewedOn": "2025-06-01" }
+    },
+    {
+      "substanceId": "sub.agi",
+      "value": "8.52e-17",
+      "temperatureC": 25,
+      "ionPowers": { "ion.ag_1p": 1, "ion.i_1m": 1 },
+      "source": {
+        "id": "src.crc97",
+        "citation": "CRC Handbook of Chemistry and Physics, 97th ed., Table 'Solubility Product Constants'",
+        "retrievedOn": "2025-06-01",
+        "transcribedBy": "chem-lead",
+        "checkedBy": "chem-reviewer"
+      },
+      "provenance": { "origin": "hand", "reviewer": "chem-lead", "reviewedOn": "2025-06-01" }
+    },
+    {
+      "substanceId": "sub.baco3",
+      "value": "2.58e-9",
+      "temperatureC": 25,
+      "ionPowers": { "ion.ba_2p": 1, "ion.co3_2m": 1 },
+      "source": {
+        "id": "src.crc97",
+        "citation": "CRC Handbook of Chemistry and Physics, 97th ed., Table 'Solubility Product Constants'",
+        "retrievedOn": "2025-06-01",
+        "transcribedBy": "chem-lead",
+        "checkedBy": "chem-reviewer"
+      },
+      "provenance": { "origin": "hand", "reviewer": "chem-lead", "reviewedOn": "2025-06-01" }
+    },
+    {
+      "substanceId": "sub.ba3_po4_2",
+      "value": "3.4e-23",
+      "temperatureC": 25,
+      "ionPowers": { "ion.ba_2p": 3, "ion.po4_3m": 2 },
+      "source": {
+        "id": "src.crc97",
+        "citation": "CRC Handbook of Chemistry and Physics, 97th ed., Table 'Solubility Product Constants'",
+        "retrievedOn": "2025-06-01",
+        "transcribedBy": "chem-lead",
+        "checkedBy": "chem-reviewer"
+      },
+      "provenance": { "origin": "hand", "reviewer": "chem-lead", "reviewedOn": "2025-06-01" }
+    },
+    {
+      "substanceId": "sub.baso4",
+      "value": "1.08e-10",
+      "temperatureC": 25,
+      "ionPowers": { "ion.ba_2p": 1, "ion.so4_2m": 1 },
+      "source": {
+        "id": "src.crc97",
+        "citation": "CRC Handbook of Chemistry and Physics, 97th ed., Table 'Solubility Product Constants'",
+        "retrievedOn": "2025-06-01",
+        "transcribedBy": "chem-lead",
+        "checkedBy": "chem-reviewer"
+      },
+      "provenance": { "origin": "hand", "reviewer": "chem-lead", "reviewedOn": "2025-06-01" }
+    },
+    {
+      "substanceId": "sub.ca_oh_2",
+      "value": "5.02e-6",
+      "temperatureC": 25,
+      "ionPowers": { "ion.ca_2p": 1, "ion.oh_1m": 2 },
+      "source": {
+        "id": "src.crc97",
+        "citation": "CRC Handbook of Chemistry and Physics, 97th ed., Table 'Solubility Product Constants'",
+        "retrievedOn": "2025-06-01",
+        "transcribedBy": "chem-lead",
+        "checkedBy": "chem-reviewer"
+      },
+      "provenance": { "origin": "hand", "reviewer": "chem-lead", "reviewedOn": "2025-06-01" }
+    },
+    {
+      "substanceId": "sub.ca3_po4_2",
+      "value": "2.07e-33",
+      "temperatureC": 25,
+      "ionPowers": { "ion.ca_2p": 3, "ion.po4_3m": 2 },
+      "source": {
+        "id": "src.crc97",
+        "citation": "CRC Handbook of Chemistry and Physics, 97th ed., Table 'Solubility Product Constants'",
+        "retrievedOn": "2025-06-01",
+        "transcribedBy": "chem-lead",
+        "checkedBy": "chem-reviewer"
+      },
+      "provenance": { "origin": "hand", "reviewer": "chem-lead", "reviewedOn": "2025-06-01" }
+    },
+    {
+      "substanceId": "sub.caco3",
+      "value": "3.36e-9",
+      "temperatureC": 25,
+      "ionPowers": { "ion.ca_2p": 1, "ion.co3_2m": 1 },
+      "source": {
+        "id": "src.crc97",
+        "citation": "CRC Handbook of Chemistry and Physics, 97th ed., Table 'Solubility Product Constants'",
+        "retrievedOn": "2025-06-01",
+        "transcribedBy": "chem-lead",
+        "checkedBy": "chem-reviewer"
+      },
+      "provenance": { "origin": "hand", "reviewer": "chem-lead", "reviewedOn": "2025-06-01" }
+    },
+    {
+      "substanceId": "sub.caso4",
+      "value": "4.93e-5",
+      "temperatureC": 25,
+      "ionPowers": { "ion.ca_2p": 1, "ion.so4_2m": 1 },
+      "source": {
+        "id": "src.crc97",
+        "citation": "CRC Handbook of Chemistry and Physics, 97th ed., Table 'Solubility Product Constants'",
+        "retrievedOn": "2025-06-01",
+        "transcribedBy": "chem-lead",
+        "checkedBy": "chem-reviewer"
+      },
+      "provenance": { "origin": "hand", "reviewer": "chem-lead", "reviewedOn": "2025-06-01" }
+    },
+    {
+      "substanceId": "sub.cu_oh_2",
+      "value": "2.2e-20",
+      "temperatureC": 25,
+      "ionPowers": { "ion.cu_2p": 1, "ion.oh_1m": 2 },
+      "source": {
+        "id": "src.crc97",
+        "citation": "CRC Handbook of Chemistry and Physics, 97th ed., Table 'Solubility Product Constants'",
+        "retrievedOn": "2025-06-01",
+        "transcribedBy": "chem-lead",
+        "checkedBy": "chem-reviewer"
+      },
+      "provenance": { "origin": "hand", "reviewer": "chem-lead", "reviewedOn": "2025-06-01" }
+    },
+    {
+      "substanceId": "sub.cu3_po4_2",
+      "value": "1.4e-37",
+      "temperatureC": 25,
+      "ionPowers": { "ion.cu_2p": 3, "ion.po4_3m": 2 },
+      "source": {
+        "id": "src.crc97",
+        "citation": "CRC Handbook of Chemistry and Physics, 97th ed., Table 'Solubility Product Constants'",
+        "retrievedOn": "2025-06-01",
+        "transcribedBy": "chem-lead",
+        "checkedBy": "chem-reviewer"
+      },
+      "provenance": { "origin": "hand", "reviewer": "chem-lead", "reviewedOn": "2025-06-01" }
+    },
+    {
+      "substanceId": "sub.cuco3",
+      "value": "1.4e-10",
+      "temperatureC": 25,
+      "ionPowers": { "ion.cu_2p": 1, "ion.co3_2m": 1 },
+      "source": {
+        "id": "src.crc97",
+        "citation": "CRC Handbook of Chemistry and Physics, 97th ed., Table 'Solubility Product Constants'",
+        "retrievedOn": "2025-06-01",
+        "transcribedBy": "chem-lead",
+        "checkedBy": "chem-reviewer"
+      },
+      "provenance": { "origin": "hand", "reviewer": "chem-lead", "reviewedOn": "2025-06-01" }
+    },
+    {
+      "substanceId": "sub.cus",
+      "value": "6.3e-36",
+      "temperatureC": 25,
+      "ionPowers": { "ion.cu_2p": 1, "ion.s_2m": 1 },
+      "source": {
+        "id": "src.crc97",
+        "citation": "CRC Handbook of Chemistry and Physics, 97th ed., Table 'Solubility Product Constants'",
+        "retrievedOn": "2025-06-01",
+        "transcribedBy": "chem-lead",
+        "checkedBy": "chem-reviewer"
+      },
+      "provenance": { "origin": "hand", "reviewer": "chem-lead", "reviewedOn": "2025-06-01" }
+    },
+    {
+      "substanceId": "sub.fe_oh_3",
+      "value": "2.79e-39",
+      "temperatureC": 25,
+      "ionPowers": { "ion.fe_3p": 1, "ion.oh_1m": 3 },
+      "source": {
+        "id": "src.crc97",
+        "citation": "CRC Handbook of Chemistry and Physics, 97th ed., Table 'Solubility Product Constants'",
+        "retrievedOn": "2025-06-01",
+        "transcribedBy": "chem-lead",
+        "checkedBy": "chem-reviewer"
+      },
+      "provenance": { "origin": "hand", "reviewer": "chem-lead", "reviewedOn": "2025-06-01" }
+    },
+    {
+      "substanceId": "sub.fepo4",
+      "value": "9.91e-16",
+      "temperatureC": 25,
+      "ionPowers": { "ion.fe_3p": 1, "ion.po4_3m": 1 },
+      "source": {
+        "id": "src.crc97",
+        "citation": "CRC Handbook of Chemistry and Physics, 97th ed., Table 'Solubility Product Constants'",
+        "retrievedOn": "2025-06-01",
+        "transcribedBy": "chem-lead",
+        "checkedBy": "chem-reviewer"
+      },
+      "provenance": { "origin": "hand", "reviewer": "chem-lead", "reviewedOn": "2025-06-01" }
+    },
+    {
+      "substanceId": "sub.mg_oh_2",
+      "value": "5.61e-12",
+      "temperatureC": 25,
+      "ionPowers": { "ion.mg_2p": 1, "ion.oh_1m": 2 },
+      "source": {
+        "id": "src.crc97",
+        "citation": "CRC Handbook of Chemistry and Physics, 97th ed., Table 'Solubility Product Constants'",
+        "retrievedOn": "2025-06-01",
+        "transcribedBy": "chem-lead",
+        "checkedBy": "chem-reviewer"
+      },
+      "provenance": { "origin": "hand", "reviewer": "chem-lead", "reviewedOn": "2025-06-01" }
+    },
+    {
+      "substanceId": "sub.mg3_po4_2",
+      "value": "1.04e-24",
+      "temperatureC": 25,
+      "ionPowers": { "ion.mg_2p": 3, "ion.po4_3m": 2 },
+      "source": {
+        "id": "src.crc97",
+        "citation": "CRC Handbook of Chemistry and Physics, 97th ed., Table 'Solubility Product Constants'",
+        "retrievedOn": "2025-06-01",
+        "transcribedBy": "chem-lead",
+        "checkedBy": "chem-reviewer"
+      },
+      "provenance": { "origin": "hand", "reviewer": "chem-lead", "reviewedOn": "2025-06-01" }
+    },
+    {
+      "substanceId": "sub.mgco3",
+      "value": "3.5e-8",
+      "temperatureC": 25,
+      "ionPowers": { "ion.mg_2p": 1, "ion.co3_2m": 1 },
+      "source": {
+        "id": "src.crc97",
+        "citation": "CRC Handbook of Chemistry and Physics, 97th ed., Table 'Solubility Product Constants'",
+        "retrievedOn": "2025-06-01",
+        "transcribedBy": "chem-lead",
+        "checkedBy": "chem-reviewer"
+      },
+      "provenance": { "origin": "hand", "reviewer": "chem-lead", "reviewedOn": "2025-06-01" }
+    },
+    {
+      "substanceId": "sub.pb3_po4_2",
+      "value": "8.0e-43",
+      "temperatureC": 25,
+      "ionPowers": { "ion.pb_2p": 3, "ion.po4_3m": 2 },
+      "source": {
+        "id": "src.crc97",
+        "citation": "CRC Handbook of Chemistry and Physics, 97th ed., Table 'Solubility Product Constants'",
+        "retrievedOn": "2025-06-01",
+        "transcribedBy": "chem-lead",
+        "checkedBy": "chem-reviewer"
+      },
+      "provenance": { "origin": "hand", "reviewer": "chem-lead", "reviewedOn": "2025-06-01" }
+    },
+    {
+      "substanceId": "sub.pbbr2",
+      "value": "6.6e-6",
+      "temperatureC": 25,
+      "ionPowers": { "ion.pb_2p": 1, "ion.br_1m": 2 },
+      "source": {
+        "id": "src.crc97",
+        "citation": "CRC Handbook of Chemistry and Physics, 97th ed., Table 'Solubility Product Constants'",
+        "retrievedOn": "2025-06-01",
+        "transcribedBy": "chem-lead",
+        "checkedBy": "chem-reviewer"
+      },
+      "provenance": { "origin": "hand", "reviewer": "chem-lead", "reviewedOn": "2025-06-01" }
+    },
+    {
+      "substanceId": "sub.pbcl2",
+      "value": "1.7e-5",
+      "temperatureC": 25,
+      "ionPowers": { "ion.pb_2p": 1, "ion.cl_1m": 2 },
+      "source": {
+        "id": "src.crc97",
+        "citation": "CRC Handbook of Chemistry and Physics, 97th ed., Table 'Solubility Product Constants'",
+        "retrievedOn": "2025-06-01",
+        "transcribedBy": "chem-lead",
+        "checkedBy": "chem-reviewer"
+      },
+      "provenance": { "origin": "hand", "reviewer": "chem-lead", "reviewedOn": "2025-06-01" }
+    },
+    {
+      "substanceId": "sub.pbco3",
+      "value": "7.4e-14",
+      "temperatureC": 25,
+      "ionPowers": { "ion.pb_2p": 1, "ion.co3_2m": 1 },
+      "source": {
+        "id": "src.crc97",
+        "citation": "CRC Handbook of Chemistry and Physics, 97th ed., Table 'Solubility Product Constants'",
+        "retrievedOn": "2025-06-01",
+        "transcribedBy": "chem-lead",
+        "checkedBy": "chem-reviewer"
+      },
+      "provenance": { "origin": "hand", "reviewer": "chem-lead", "reviewedOn": "2025-06-01" }
+    },
+    {
+      "substanceId": "sub.pbi2",
+      "value": "9.8e-9",
+      "temperatureC": 25,
+      "ionPowers": { "ion.pb_2p": 1, "ion.i_1m": 2 },
+      "source": {
+        "id": "src.crc97",
+        "citation": "CRC Handbook of Chemistry and Physics, 97th ed., Table 'Solubility Product Constants'",
+        "retrievedOn": "2025-06-01",
+        "transcribedBy": "chem-lead",
+        "checkedBy": "chem-reviewer"
+      },
+      "provenance": { "origin": "hand", "reviewer": "chem-lead", "reviewedOn": "2025-06-01" }
+    },
+    {
+      "substanceId": "sub.pbs",
+      "value": "8.0e-28",
+      "temperatureC": 25,
+      "ionPowers": { "ion.pb_2p": 1, "ion.s_2m": 1 },
+      "source": {
+        "id": "src.crc97",
+        "citation": "CRC Handbook of Chemistry and Physics, 97th ed., Table 'Solubility Product Constants'",
+        "retrievedOn": "2025-06-01",
+        "transcribedBy": "chem-lead",
+        "checkedBy": "chem-reviewer"
+      },
+      "provenance": { "origin": "hand", "reviewer": "chem-lead", "reviewedOn": "2025-06-01" }
+    },
+    {
+      "substanceId": "sub.pbso4",
+      "value": "2.53e-8",
+      "temperatureC": 25,
+      "ionPowers": { "ion.pb_2p": 1, "ion.so4_2m": 1 },
+      "source": {
+        "id": "src.crc97",
+        "citation": "CRC Handbook of Chemistry and Physics, 97th ed., Table 'Solubility Product Constants'",
+        "retrievedOn": "2025-06-01",
+        "transcribedBy": "chem-lead",
+        "checkedBy": "chem-reviewer"
+      },
+      "provenance": { "origin": "hand", "reviewer": "chem-lead", "reviewedOn": "2025-06-01" }
+    },
+    {
+      "substanceId": "sub.zn_oh_2",
+      "value": "3.0e-17",
+      "temperatureC": 25,
+      "ionPowers": { "ion.zn_2p": 1, "ion.oh_1m": 2 },
+      "source": {
+        "id": "src.crc97",
+        "citation": "CRC Handbook of Chemistry and Physics, 97th ed., Table 'Solubility Product Constants'",
+        "retrievedOn": "2025-06-01",
+        "transcribedBy": "chem-lead",
+        "checkedBy": "chem-reviewer"
+      },
+      "provenance": { "origin": "hand", "reviewer": "chem-lead", "reviewedOn": "2025-06-01" }
+    },
+    {
+      "substanceId": "sub.zn3_po4_2",
+      "value": "9.0e-33",
+      "temperatureC": 25,
+      "ionPowers": { "ion.zn_2p": 3, "ion.po4_3m": 2 },
+      "source": {
+        "id": "src.crc97",
+        "citation": "CRC Handbook of Chemistry and Physics, 97th ed., Table 'Solubility Product Constants'",
+        "retrievedOn": "2025-06-01",
+        "transcribedBy": "chem-lead",
+        "checkedBy": "chem-reviewer"
+      },
+      "provenance": { "origin": "hand", "reviewer": "chem-lead", "reviewedOn": "2025-06-01" }
+    },
+    {
+      "substanceId": "sub.znco3",
+      "value": "1.46e-10",
+      "temperatureC": 25,
+      "ionPowers": { "ion.zn_2p": 1, "ion.co3_2m": 1 },
+      "source": {
+        "id": "src.crc97",
+        "citation": "CRC Handbook of Chemistry and Physics, 97th ed., Table 'Solubility Product Constants'",
+        "retrievedOn": "2025-06-01",
+        "transcribedBy": "chem-lead",
+        "checkedBy": "chem-reviewer"
+      },
+      "provenance": { "origin": "hand", "reviewer": "chem-lead", "reviewedOn": "2025-06-01" }
+    },
+    {
+      "substanceId": "sub.zns",
+      "value": "2.0e-25",
+      "temperatureC": 25,
+      "ionPowers": { "ion.zn_2p": 1, "ion.s_2m": 1 },
+      "source": {
+        "id": "src.crc97",
+        "citation": "CRC Handbook of Chemistry and Physics, 97th ed., Table 'Solubility Product Constants'",
+        "retrievedOn": "2025-06-01",
+        "transcribedBy": "chem-lead",
+        "checkedBy": "chem-reviewer"
+      },
+      "provenance": { "origin": "hand", "reviewer": "chem-lead", "reviewedOn": "2025-06-01" }
+    }
+  ]
+}
