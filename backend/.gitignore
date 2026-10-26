@@ -1,9 +1,18 @@
 # Environment variables
 .env
-backend/.env
+.env*
 
-# Node modules (kalau ada)
-node_modules/
+# Python virtual environments
+.venv/
+venv/
+env/
+
+# Python caches & bytecode
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.ruff_cache/
 
 # OS files
 .DS_Store
@@ -11,4 +20,4 @@ Thumbs.db
 
 # IDE
 .vscode/
-.idea/
+.idea/
