@@ -429,7 +429,7 @@
         // LAYER 1: TRY BACKEND API (GEMINI / FASTAPI), THEN VERIFY AGAINST LAB DATABASE
         if (apiUrl) {
             const abortController = new AbortController();
-            const timeoutId = window.setTimeout(() => abortController.abort(), 6500);
+            const timeoutId = window.setTimeout(() => abortController.abort(), 15000);
 
             try {
                 const response = await fetch(apiUrl, {
