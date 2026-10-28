@@ -47,7 +47,7 @@ async function checkChatConnection() {
         const response = await fetch(healthUrl, { signal: controller.signal });
         if (!response.ok) throw new Error(`Health check ${response.status}`);
         const health = await response.json();
-        const isGeminiActive = health.chat_mode === 'active';
+        const isGeminiActive = ['active', 'configured'].includes(health.chat_mode);
         setChatConnectionStatus(isGeminiActive ? 'AI Online' : 'Local Engine', isGeminiActive ? 'online' : 'fallback');
     } catch (error) {
         console.error('Chat health check failed:', error);
