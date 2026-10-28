@@ -12,6 +12,19 @@
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <script>
+        (function() {
+            try {
+                var savedMode = localStorage.getItem('atomverse_theme_mode') || 'system';
+                var isDark = savedMode === 'dark' || (savedMode === 'system' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+                var effective = isDark ? 'dark' : 'light';
+                document.documentElement.classList.remove('light', 'dark');
+                document.documentElement.classList.add(effective);
+                document.documentElement.setAttribute('data-theme', effective);
+                document.documentElement.setAttribute('data-theme-mode', savedMode);
+            } catch (e) {}
+        })();
+    </script>
 </head>
 <body class="h-dvh overflow-hidden flex flex-col">
 
@@ -30,13 +43,19 @@
             <button type="button" class="tab-btn h-full flex items-center px-2 text-xs font-semibold border-b-2 border-transparent text-muted-custom transition-colors" data-tab="inverse" role="tab" aria-controls="tab-inverse" aria-selected="false">Inverse Experiment</button>
             <button type="button" class="tab-btn h-full flex items-center px-2 text-xs font-semibold border-b-2 border-transparent text-muted-custom transition-colors" data-tab="env" role="tab" aria-controls="tab-env" aria-selected="false">Environmental Literacy</button>
         </nav>
-        <div class="flex items-center gap-2.5 shrink-0">
-            <button id="btn-help-tutorial" onclick="window.startAtomverseTutorial && window.startAtomverseTutorial()" title="Start Guided Tour" class="w-7 h-7 rounded-full surface-alt border border-[var(--border-color)] hover:border-[var(--primary)] hover:text-[var(--primary)] flex items-center justify-center text-xs font-bold transition-all cursor-pointer" aria-label="Guided Tour">
+        <div class="flex items-center gap-2 shrink-0">
+            <button id="btn-theme-toggle" type="button" onclick="window.cycleAtomverseTheme && window.cycleAtomverseTheme()" title="Theme: System / Light / Dark" class="h-8 px-2.5 rounded-full surface-alt border border-[var(--border-color)] hover:border-[var(--primary)] flex items-center gap-1.5 text-xs font-semibold transition-all cursor-pointer" aria-label="Toggle Theme">
+                <span id="theme-toggle-icon" class="flex items-center" style="color: var(--primary);" aria-hidden="true">
+                    <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+                </span>
+                <span id="theme-toggle-label" class="text-[11px] font-semibold">Auto</span>
+            </button>
+            <button id="btn-help-tutorial" onclick="window.startAtomverseTutorial && window.startAtomverseTutorial()" title="Start Guided Tour" class="w-8 h-8 rounded-full surface-alt border border-[var(--border-color)] hover:border-[var(--primary)] hover:text-[var(--primary)] flex items-center justify-center text-xs font-bold transition-all cursor-pointer" aria-label="Guided Tour">
                 ?
             </button>
             <button id="btn-student-profile" onclick="window.openStudentProfileModal && window.openStudentProfileModal()" title="Student Profile & Achievements" class="h-8 px-3 rounded-full surface-alt border border-[var(--border-color)] hover:border-[var(--primary)] flex items-center gap-2 cursor-pointer transition-all" aria-label="Student Profile">
                 <span class="w-4 h-4 rounded-full bg-cyan-100 text-cyan-700 flex items-center justify-center text-[10px] font-bold">🧪</span>
-                <span class="text-xs font-semibold text-slate-700 hidden sm:inline">Student</span>
+                <span class="text-xs font-semibold hidden sm:inline" style="color: var(--text-main);">Student</span>
                 <span class="text-[9px] bg-cyan-600 text-white font-bold px-1.5 py-0.5 rounded-full">Lv.1</span>
             </button>
         </div>
@@ -45,10 +64,23 @@
     <main class="flex-1 overflow-hidden relative">
         
         <!-- MODULE 01 · REACTION LAB -->
-        <div id="tab-lab" class="tab-content absolute inset-0 flex">
+        <div id="tab-lab" data-mobile-drawer="stage" class="tab-content absolute inset-0 flex">
             
+            <!-- MOBILE SHEET SCRIM BACKDROP (< 1024px) -->
+            <div id="mobile-sheet-scrim" onclick="window.setMobileLabDrawer && window.setMobileLabDrawer('stage')" class="mobile-sheet-scrim" aria-hidden="true"></div>
+
             <!-- LEFT CONTROL PANEL -->
-            <aside class="w-72 surface border-r flex flex-col overflow-y-auto shrink-0 z-10 text-xs">
+            <aside id="left-panel" class="w-72 surface border-r flex flex-col overflow-y-auto shrink-0 z-10 text-xs">
+                <!-- Mobile Sheet Drag Handle & Header (< 1024px) -->
+                <div class="mobile-sheet-header">
+                    <div class="mobile-sheet-handle" aria-hidden="true"></div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold uppercase tracking-wider font-heading" style="color: var(--primary);">Reagent &amp; Environment Controls</span>
+                        <button type="button" onclick="window.setMobileLabDrawer && window.setMobileLabDrawer('stage')" class="px-2.5 py-1 rounded-lg surface-alt border border-[var(--border-color)] text-xs font-semibold cursor-pointer" aria-label="Close Controls">
+                            Done ✕
+                        </button>
+                    </div>
+                </div>
                 <div class="p-5 space-y-5">
                     
                     <!-- SOLUTION A -->
@@ -288,6 +320,21 @@
                         </div>
                     </div>
 
+                    <!-- MOBILE STAGE QUICK ACTION BAR (< 1024px) -->
+                    <div id="mobile-stage-actions" class="mobile-stage-actions">
+                        <button type="button" id="mobile-reagent-pill" onclick="window.setMobileLabDrawer && window.setMobileLabDrawer('controls')" class="px-3 py-2 rounded-xl surface border border-[var(--border-color)] text-xs font-semibold flex items-center gap-1.5 shrink-0 cursor-pointer" title="Configure Solutions & Environment">
+                            <span id="mobile-reagent-pill-text" class="mono font-bold" style="color: var(--primary);">AgNO3 + NaCl</span>
+                            <svg class="w-3.5 h-3.5" style="color: var(--text-muted);" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+                        </button>
+                        <button type="button" id="mobile-btn-run" onclick="document.getElementById('btn-run')?.click()" class="flex-1 py-2 px-3 rounded-xl btn-primary text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer">
+                            <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/></svg>
+                            <span>Run</span>
+                        </button>
+                        <button type="button" id="mobile-btn-reset" onclick="document.getElementById('btn-reset')?.click()" class="px-3 py-2 rounded-xl btn-secondary text-xs font-bold cursor-pointer">
+                            Reset
+                        </button>
+                    </div>
+
                 </div>
             </section>
 
@@ -296,12 +343,20 @@
 
             <!-- RIGHT PANEL: AI ADAPTIVE TUTOR -->
             <aside id="right-panel" class="w-80 min-w-[280px] max-w-[500px] surface border-l flex flex-col overflow-hidden shrink-0 z-10">
+                <div class="mobile-sheet-handle-wrap" aria-hidden="true">
+                    <div class="mobile-sheet-handle"></div>
+                </div>
                 <div class="p-4 border-b border-[var(--border-color)] flex items-center justify-between shrink-0">
                     <div class="flex items-center gap-2">
                         <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
                         <h2 class="text-xs font-bold uppercase tracking-wider font-heading" style="color: var(--primary);">AI Tutor</h2>
                     </div>
-                    <span id="chat-connection-status" class="chat-connection-status text-[10px]" data-mode="online">Online</span>
+                    <div class="flex items-center gap-2">
+                        <span id="chat-connection-status" class="chat-connection-status text-[10px]" data-mode="online">Online</span>
+                        <button type="button" onclick="window.setMobileLabDrawer && window.setMobileLabDrawer('stage')" class="mobile-sheet-close-btn px-2 py-0.5 rounded-lg surface-alt border border-[var(--border-color)] text-xs font-semibold cursor-pointer" aria-label="Close AI Tutor">
+                            ✕
+                        </button>
+                    </div>
                 </div>
                 
                 <!-- CHAT MESSAGES WINDOW -->
@@ -320,6 +375,22 @@
                     <button id="btn-send" class="px-4 rounded-lg text-xs font-bold text-white transition-colors font-heading" style="background-color: var(--primary);">Send</button>
                 </div>
             </aside>
+
+            <!-- BOTTOM MOBILE LAB DOCK (< 1024px) -->
+            <nav id="mobile-lab-dock" class="mobile-lab-dock surface border-t" aria-label="Reaction Lab Mobile Navigation">
+                <button type="button" id="mobile-dock-controls" onclick="window.setMobileLabDrawer && window.setMobileLabDrawer('controls')" class="mobile-dock-btn" aria-label="Open Reagent Controls">
+                    <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+                    <span>Controls</span>
+                </button>
+                <button type="button" id="mobile-dock-stage" onclick="window.setMobileLabDrawer && window.setMobileLabDrawer('stage')" class="mobile-dock-btn active" aria-label="Show Simulation Stage">
+                    <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="M10 2v7.31l-4.89 8.15A2 2 0 006.82 20.5h10.36a2 2 0 001.71-3.04L14 9.31V2"/><path d="M8.5 2h7"/><path d="M7 16h10"/></svg>
+                    <span>Stage</span>
+                </button>
+                <button type="button" id="mobile-dock-tutor" onclick="window.setMobileLabDrawer && window.setMobileLabDrawer('tutor')" class="mobile-dock-btn" aria-label="Open AI Tutor">
+                    <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+                    <span>AI Tutor</span>
+                </button>
+            </nav>
         </div>
 
         <!-- MODULE 02 · INVERSE EXPERIMENT -->
@@ -338,7 +409,7 @@
                         <div>
                             <div class="flex items-center justify-between mb-3">
                                 <h3 class="text-xs font-bold uppercase tracking-wider font-heading" style="color: var(--secondary);">1. Define Target Goal</h3>
-                                <span class="text-[10px] px-2 py-0.5 rounded-full font-bold bg-teal-50 text-[var(--primary)] border border-teal-200">Natural Language</span>
+                                <span class="text-[10px] px-2 py-0.5 rounded-full font-bold bg-[var(--primary-soft)] text-[var(--primary)] border border-[var(--border-color)]">Natural Language</span>
                             </div>
                             
                             <!-- TYPED QUERY BOX -->
@@ -349,7 +420,7 @@
                                 <div class="relative">
                                     <textarea id="inv-input" rows="3" 
                                         placeholder="e.g. Form a yellow PbI2 precipitate, or produce CO2 gas..." 
-                                        class="w-full rounded-lg p-2.5 text-xs outline-none border border-[var(--border-color)] bg-white focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] transition-all resize-none font-body leading-relaxed"></textarea>
+                                        class="w-full rounded-lg p-2.5 text-xs outline-none border border-[var(--border-color)] surface-alt focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] transition-all resize-none font-body leading-relaxed"></textarea>
                                     <button type="button" id="inv-clear-btn" class="hidden absolute top-2 right-2 text-gray-400 hover:text-gray-600 text-xs p-1" title="Clear text">✕</button>
                                 </div>
                                 <button type="button" id="inv-submit-btn" class="w-full py-2.5 text-xs font-bold rounded-lg btn-primary flex items-center justify-center gap-2 shadow-sm transition-all font-heading">
@@ -362,19 +433,19 @@
                             <div class="border-t border-[var(--border-color)] pt-3">
                                 <div class="text-[10px] uppercase font-bold text-muted-custom mb-2 font-heading">Quick Inspiration Prompts</div>
                                 <div class="flex flex-wrap gap-1.5" id="inv-chips-container">
-                                    <button type="button" class="inv-chip text-[11px] px-2.5 py-1 rounded-full border border-[var(--border-color)] bg-[var(--bg-surface-alt)] hover:border-[var(--primary)] hover:bg-white transition-all text-left font-medium" data-prompt="Form a yellow precipitate (PbI2)">
+                                    <button type="button" class="inv-chip text-[11px] px-2.5 py-1 rounded-full border border-[var(--border-color)] bg-[var(--bg-surface-alt)] hover:border-[var(--primary)] hover:bg-[var(--bg-surface)] transition-all text-left font-medium" data-prompt="Form a yellow precipitate (PbI2)">
                                         🟡 Yellow Precipitate
                                     </button>
-                                    <button type="button" class="inv-chip text-[11px] px-2.5 py-1 rounded-full border border-[var(--border-color)] bg-[var(--bg-surface-alt)] hover:border-[var(--primary)] hover:bg-white transition-all text-left font-medium" data-prompt="Form a white precipitate of Silver Chloride (AgCl)">
+                                    <button type="button" class="inv-chip text-[11px] px-2.5 py-1 rounded-full border border-[var(--border-color)] bg-[var(--bg-surface-alt)] hover:border-[var(--primary)] hover:bg-[var(--bg-surface)] transition-all text-left font-medium" data-prompt="Form a white precipitate of Silver Chloride (AgCl)">
                                         ⚪ White Precipitate
                                     </button>
-                                    <button type="button" class="inv-chip text-[11px] px-2.5 py-1 rounded-full border border-[var(--border-color)] bg-[var(--bg-surface-alt)] hover:border-[var(--primary)] hover:bg-white transition-all text-left font-medium" data-prompt="Produce effervescent carbon dioxide (CO2) gas">
+                                    <button type="button" class="inv-chip text-[11px] px-2.5 py-1 rounded-full border border-[var(--border-color)] bg-[var(--bg-surface-alt)] hover:border-[var(--primary)] hover:bg-[var(--bg-surface)] transition-all text-left font-medium" data-prompt="Produce effervescent carbon dioxide (CO2) gas">
                                         💨 CO₂ Gas Evolution
                                     </button>
-                                    <button type="button" class="inv-chip text-[11px] px-2.5 py-1 rounded-full border border-[var(--border-color)] bg-[var(--bg-surface-alt)] hover:border-[var(--primary)] hover:bg-white transition-all text-left font-medium" data-prompt="Neutralize acid and base to reach neutral pH 7.0">
+                                    <button type="button" class="inv-chip text-[11px] px-2.5 py-1 rounded-full border border-[var(--border-color)] bg-[var(--bg-surface-alt)] hover:border-[var(--primary)] hover:bg-[var(--bg-surface)] transition-all text-left font-medium" data-prompt="Neutralize acid and base to reach neutral pH 7.0">
                                         ⚖️ Neutral pH (7.0)
                                     </button>
-                                    <button type="button" class="inv-chip text-[11px] px-2.5 py-1 rounded-full border border-[var(--border-color)] bg-[var(--bg-surface-alt)] hover:border-[var(--primary)] hover:bg-white transition-all text-left font-medium" data-prompt="Form white chalk precipitate (CaCO3)">
+                                    <button type="button" class="inv-chip text-[11px] px-2.5 py-1 rounded-full border border-[var(--border-color)] bg-[var(--bg-surface-alt)] hover:border-[var(--primary)] hover:bg-[var(--bg-surface)] transition-all text-left font-medium" data-prompt="Form white chalk precipitate (CaCO3)">
                                         🧱 Chalk (CaCO₃)
                                     </button>
                                 </div>

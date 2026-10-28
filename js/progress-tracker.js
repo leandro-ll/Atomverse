@@ -199,13 +199,13 @@
 
         const toast = document.createElement('div');
         toast.style.cssText = `
-            background: #ffffff;
-            color: #0f172a;
-            border: 1px solid #e2e8f0;
+            background: var(--bg-surface);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
             border-left: 4px solid ${type === 'xp' ? '#0891b2' : (type === 'badge' ? '#f59e0b' : '#10b981')};
             padding: 10px 16px;
             border-radius: 10px;
-            box-shadow: 0 10px 20px -3px rgba(0,0,0,0.15);
+            box-shadow: 0 10px 20px -3px rgba(0,0,0,0.25);
             font-size: 12px;
             font-weight: 600;
             font-family: 'Poppins', sans-serif;
@@ -232,7 +232,7 @@
         if (pillBtn) {
             pillBtn.innerHTML = `
                 <span class="w-4 h-4 rounded-full bg-cyan-100 text-cyan-700 flex items-center justify-center text-[10px] font-bold">${data.profile.avatar}</span>
-                <span class="text-xs font-semibold text-slate-700 hidden sm:inline">${data.profile.name}</span>
+                <span class="text-xs font-semibold hidden sm:inline" style="color: var(--text-main);">${data.profile.name}</span>
                 <span class="text-[9px] bg-cyan-600 text-white font-bold px-1.5 py-0.5 rounded-full">Lv.${data.profile.level}</span>
             `;
         }
@@ -270,57 +270,57 @@
         const xpProgress = Math.round((currentLvlXp / 150) * 100);
 
         modalEl.innerHTML = `
-            <div style="background:#ffffff; color:#0f172a; width:680px; max-width:100%; max-height:90vh; border-radius:18px; border:1px solid #e2e8f0; box-shadow:0 25px 50px -12px rgba(0,0,0,0.25); display:flex; flex-direction:column; overflow:hidden;">
+            <div style="background:var(--bg-surface); color:var(--text-main); width:680px; max-width:100%; max-height:90dvh; border-radius:18px; border:1px solid var(--border-color); box-shadow:0 25px 50px -12px rgba(0,0,0,0.45); display:flex; flex-direction:column; overflow:hidden;">
                 
                 <!-- HEADER -->
-                <div style="padding:20px 24px; background:#f8fafc; border-bottom:1px solid #e2e8f0; display:flex; justify-content:space-between; align-items:center;">
-                    <div style="display:flex; align-items:center; gap:14px;">
-                        <div style="width:48px; height:48px; border-radius:999px; background:#e0f2fe; color:#0369a1; display:flex; align-items:center; justify-content:center; font-size:22px; border:2px solid #38bdf8;">
+                <div style="padding:16px 20px; background:var(--bg-surface-alt); border-bottom:1px solid var(--border-color); display:flex; justify-content:space-between; align-items:center;">
+                    <div style="display:flex; align-items:center; gap:12px;">
+                        <div style="width:44px; height:44px; border-radius:999px; background:var(--primary-soft); color:var(--primary); display:flex; align-items:center; justify-content:center; font-size:20px; border:2px solid var(--primary);">
                             ${data.profile.avatar}
                         </div>
                         <div>
-                            <div style="display:flex; align-items:center; gap:8px;">
-                                <h2 style="font-family:'Montserrat',sans-serif; font-size:16px; font-weight:700; color:#0f172a;">${data.profile.name}</h2>
+                            <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                                <h2 style="font-family:'Montserrat',sans-serif; font-size:15px; font-weight:700; color:var(--text-main);">${data.profile.name}</h2>
                                 <span style="background:#0891b2; color:#ffffff; font-size:10px; font-weight:700; padding:2px 8px; border-radius:999px;">Level ${data.profile.level}</span>
                             </div>
-                            <span style="font-size:12px; color:#64748b;">${data.profile.grade} • Total XP: ${data.profile.xp}</span>
+                            <span style="font-size:12px; color:var(--text-muted);">${data.profile.grade} • Total XP: ${data.profile.xp}</span>
                         </div>
                     </div>
-                    <button id="modal-close-btn" style="background:#f1f5f9; border:none; border-radius:8px; width:32px; height:32px; font-size:14px; color:#64748b; cursor:pointer;">✕</button>
+                    <button id="modal-close-btn" style="background:var(--bg-surface); border:1px solid var(--border-color); border-radius:8px; width:34px; height:34px; font-size:14px; color:var(--text-muted); cursor:pointer;">✕</button>
                 </div>
 
                 <!-- XP BAR -->
-                <div style="padding:10px 24px; background:#f1f5f9; border-bottom:1px solid #e2e8f0; font-size:11px; display:flex; align-items:center; gap:12px;">
-                    <span style="color:#64748b; font-weight:600;">Level ${data.profile.level} Progress:</span>
-                    <div style="flex:1; height:8px; background:#e2e8f0; border-radius:999px; overflow:hidden;">
-                        <div style="width:${xpProgress}%; height:100%; background:#0891b2; transition:width 300ms ease;"></div>
+                <div style="padding:10px 20px; background:var(--bg-surface); border-bottom:1px solid var(--border-color); font-size:11px; display:flex; align-items:center; gap:12px;">
+                    <span style="color:var(--text-muted); font-weight:600;">Level ${data.profile.level} Progress:</span>
+                    <div style="flex:1; height:8px; background:var(--bg-surface-alt); border-radius:999px; overflow:hidden;">
+                        <div style="width:${xpProgress}%; height:100%; background:var(--primary); transition:width 300ms ease;"></div>
                     </div>
-                    <span style="font-weight:700; color:#0891b2;">${currentLvlXp} / 150 XP</span>
+                    <span style="font-weight:700; color:var(--primary);">${currentLvlXp} / 150 XP</span>
                 </div>
 
                 <!-- TABS -->
-                <div style="display:flex; border-bottom:1px solid #e2e8f0; background:#ffffff; padding:0 24px;">
-                    <button class="pm-tab active" data-tab="tab-badges" style="padding:12px 16px; border:none; background:none; font-size:12px; font-weight:700; color:#0891b2; border-bottom:2px solid #0891b2; cursor:pointer;">Badges (${Object.keys(data.unlockedBadges).length}/${ALL_BADGES.length})</button>
-                    <button class="pm-tab" data-tab="tab-quests" style="padding:12px 16px; border:none; background:none; font-size:12px; font-weight:600; color:#64748b; border-bottom:2px solid transparent; cursor:pointer;">Quests (${doneQuests}/${totalQuests})</button>
-                    <button class="pm-tab" data-tab="tab-history" style="padding:12px 16px; border:none; background:none; font-size:12px; font-weight:600; color:#64748b; border-bottom:2px solid transparent; cursor:pointer;">Lab Journal (${data.history.length})</button>
+                <div style="display:flex; border-bottom:1px solid var(--border-color); background:var(--bg-surface); padding:0 16px; overflow-x:auto;">
+                    <button class="pm-tab active" data-tab="tab-badges" style="padding:12px 14px; border:none; background:none; font-size:12px; font-weight:700; color:var(--primary); border-bottom:2px solid var(--primary); cursor:pointer; white-space:nowrap;">Badges (${Object.keys(data.unlockedBadges).length}/${ALL_BADGES.length})</button>
+                    <button class="pm-tab" data-tab="tab-quests" style="padding:12px 14px; border:none; background:none; font-size:12px; font-weight:600; color:var(--text-muted); border-bottom:2px solid transparent; cursor:pointer; white-space:nowrap;">Quests (${doneQuests}/${totalQuests})</button>
+                    <button class="pm-tab" data-tab="tab-history" style="padding:12px 14px; border:none; background:none; font-size:12px; font-weight:600; color:var(--text-muted); border-bottom:2px solid transparent; cursor:pointer; white-space:nowrap;">Lab Journal (${data.history.length})</button>
                 </div>
 
                 <!-- CONTENT AREA -->
-                <div style="padding:20px 24px; overflow-y:auto; flex:1;">
+                <div style="padding:16px 20px; overflow-y:auto; flex:1;">
                     
                     <!-- TAB 1: BADGES -->
-                    <div id="tab-badges" class="pm-tab-pane" style="display:grid; grid-template-columns:repeat(2, 1fr); gap:12px;">
+                    <div id="tab-badges" class="pm-tab-pane" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:12px;">
                         ${ALL_BADGES.map(badge => {
                             const isUnlocked = !!data.unlockedBadges[badge.id];
                             return `
-                                <div style="display:flex; gap:12px; padding:12px; border-radius:12px; border:1px solid ${isUnlocked ? '#bbf7d0' : '#e2e8f0'}; background:${isUnlocked ? '#f0fdf4' : '#f8fafc'}; opacity:${isUnlocked ? '1' : '0.55'};">
+                                <div style="display:flex; gap:12px; padding:12px; border-radius:12px; border:1px solid ${isUnlocked ? 'var(--primary)' : 'var(--border-color)'}; background:var(--bg-surface-alt); opacity:${isUnlocked ? '1' : '0.55'};">
                                     <div style="font-size:26px; line-height:1; filter:${isUnlocked ? 'none' : 'grayscale(1)'};">${badge.icon}</div>
                                     <div>
                                         <div style="display:flex; align-items:center; gap:6px;">
-                                            <h4 style="font-size:12px; font-weight:700; color:#0f172a;">${badge.name}</h4>
-                                            ${isUnlocked ? '<span style="font-size:9px; color:#16a34a; font-weight:bold;">✓ Unlocked</span>' : ''}
+                                            <h4 style="font-size:12px; font-weight:700; color:var(--text-main);">${badge.name}</h4>
+                                            ${isUnlocked ? '<span style="font-size:9px; color:var(--success); font-weight:bold;">✓ Unlocked</span>' : ''}
                                         </div>
-                                        <p style="font-size:11px; color:#64748b; margin-top:2px;">${badge.desc}</p>
+                                        <p style="font-size:11px; color:var(--text-muted); margin-top:2px;">${badge.desc}</p>
                                     </div>
                                 </div>
                             `;
@@ -329,22 +329,22 @@
 
                     <!-- TAB 2: QUESTS -->
                     <div id="tab-quests" class="pm-tab-pane" style="display:none; flex-direction:column; gap:10px;">
-                        <div style="margin-bottom:6px; display:flex; justify-content:space-between; font-size:12px; color:#475569;">
+                        <div style="margin-bottom:6px; display:flex; justify-content:space-between; font-size:12px; color:var(--text-muted);">
                             <span>Mission Completion: <b>${questPercent}%</b></span>
                             <span>${doneQuests} of ${totalQuests} quests completed</span>
                         </div>
                         ${ALL_QUESTS.map(quest => {
                             const isDone = !!data.completedQuests[quest.id];
                             return `
-                                <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 14px; border-radius:10px; border:1px solid ${isDone ? '#e2e8f0' : '#cbd5e1'}; background:${isDone ? '#f8fafc' : '#ffffff'};">
+                                <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; padding:12px 14px; border-radius:10px; border:1px solid var(--border-color); background:var(--bg-surface-alt);">
                                     <div style="display:flex; align-items:center; gap:10px;">
                                         <span style="font-size:20px;">${quest.icon}</span>
                                         <div>
-                                            <h4 style="font-size:12px; font-weight:700; color:${isDone ? '#64748b' : '#0f172a'}; text-decoration:${isDone ? 'line-through' : 'none'};">${quest.title}</h4>
-                                            <p style="font-size:11px; color:#64748b;">${quest.desc}</p>
+                                            <h4 style="font-size:12px; font-weight:700; color:${isDone ? 'var(--text-muted)' : 'var(--text-main)'}; text-decoration:${isDone ? 'line-through' : 'none'};">${quest.title}</h4>
+                                            <p style="font-size:11px; color:var(--text-muted);">${quest.desc}</p>
                                         </div>
                                     </div>
-                                    <span style="font-size:11px; font-weight:700; padding:3px 8px; border-radius:6px; ${isDone ? 'background:#dcfce7; color:#15803d;' : 'background:#e0f2fe; color:#0369a1;'}">
+                                    <span style="font-size:11px; font-weight:700; padding:3px 8px; border-radius:6px; white-space:nowrap; ${isDone ? 'background:rgba(22, 163, 74, 0.15); color:var(--success);' : 'background:var(--primary-soft); color:var(--primary);'}">
                                         ${isDone ? '✓ Completed' : `+${quest.xp} XP`}
                                     </span>
                                 </div>
@@ -354,19 +354,19 @@
 
                     <!-- TAB 3: HISTORY -->
                     <div id="tab-history" class="pm-tab-pane" style="display:none;">
-                        ${data.history.length === 0 ? '<p style="text-align:center; color:#94a3b8; font-size:12px; padding:30px 0;">No experiment history yet. Run your first simulation in Reaction Lab!</p>' : `
+                        ${data.history.length === 0 ? '<p style="text-align:center; color:var(--text-muted); font-size:12px; padding:30px 0;">No experiment history yet. Run your first simulation in Reaction Lab!</p>' : `
                             <div style="display:flex; flex-direction:column; gap:8px;">
                                 ${data.history.map(item => `
-                                    <div style="padding:10px 14px; border-radius:8px; border:1px solid #e2e8f0; background:#f8fafc; font-size:11px; display:flex; justify-content:space-between; align-items:center;">
+                                    <div style="padding:10px 14px; border-radius:8px; border:1px solid var(--border-color); background:var(--bg-surface-alt); font-size:11px; display:flex; justify-content:space-between; align-items:center; gap:8px;">
                                         <div>
-                                            <div style="font-weight:700; font-family:'JetBrains Mono',monospace; color:#0891b2;">${item.equation}</div>
-                                            <div style="color:#64748b; font-size:10px; margin-top:2px;">
+                                            <div style="font-weight:700; font-family:'JetBrains Mono',monospace; color:var(--primary);">${item.equation}</div>
+                                            <div style="color:var(--text-muted); font-size:10px; margin-top:2px;">
                                                 ${item.ppt ? `Precipitate: <b>${item.ppt}</b> • ` : ''}
                                                 ${item.gas ? `Gas: <b>${item.gas}</b> • ` : ''}
                                                 pH: ${item.ph}
                                             </div>
                                         </div>
-                                        <span style="color:#94a3b8; font-size:10px; font-family:'JetBrains Mono',monospace;">${item.timestamp}</span>
+                                        <span style="color:var(--text-muted); font-size:10px; font-family:'JetBrains Mono',monospace; white-space:nowrap;">${item.timestamp}</span>
                                     </div>
                                 `).join('')}
                             </div>
@@ -385,12 +385,12 @@
             tab.onclick = () => {
                 tabs.forEach(t => {
                     t.style.fontWeight = '600';
-                    t.style.color = '#64748b';
+                    t.style.color = 'var(--text-muted)';
                     t.style.borderBottomColor = 'transparent';
                 });
                 tab.style.fontWeight = '700';
-                tab.style.color = '#0891b2';
-                tab.style.borderBottomColor = '#0891b2';
+                tab.style.color = 'var(--primary)';
+                tab.style.borderBottomColor = 'var(--primary)';
 
                 const targetTabId = tab.getAttribute('data-tab');
                 modalEl.querySelectorAll('.pm-tab-pane').forEach(p => p.style.display = 'none');

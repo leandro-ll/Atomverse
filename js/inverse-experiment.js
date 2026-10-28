@@ -164,6 +164,9 @@
         // 1. Switch to Reaction Lab tab
         const labTabBtn = document.querySelector('.tab-btn[data-tab="lab"]');
         if (labTabBtn) labTabBtn.click();
+        if (typeof window.setMobileLabDrawer === 'function') {
+            window.setMobileLabDrawer('stage');
+        }
 
         // 2. Set global state
         if (window.state) {
@@ -302,7 +305,7 @@
 
         const chipsHtml = suggestions.map(item => `
             <button type="button"
-                class="inv-suggestion-chip text-[11px] px-2.5 py-1 rounded-full border border-[var(--border-color)] surface hover:border-[var(--primary)] hover:bg-white transition-all text-left font-medium cursor-pointer"
+                class="inv-suggestion-chip text-[11px] px-2.5 py-1 rounded-full border border-[var(--border-color)] surface hover:border-[var(--primary)] hover:bg-[var(--bg-surface-alt)] transition-all text-left font-medium cursor-pointer"
                 data-prompt="${escapeHtml(item.prompt)}">
                 ${escapeHtml(item.label)}
             </button>

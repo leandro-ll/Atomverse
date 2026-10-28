@@ -94,6 +94,67 @@ function updateMacroColors() {
     if (els.liquidB) els.liquidB.setAttribute('fill', chemicalColors[state.reagentB] || '#e2e8f0');
     if (els.labelA) els.labelA.textContent = state.reagentA;
     if (els.labelB) els.labelB.textContent = state.reagentB;
+    const mobilePillText = document.getElementById('mobile-reagent-pill-text');
+    if (mobilePillText) mobilePillText.textContent = `${state.reagentA} + ${state.reagentB}`;
+}
+
+function setMobileLabDrawer(view = 'stage') {
+    const labTab = document.getElementById('tab-lab');
+    if (labTab) {
+        labTab.setAttribute('data-mobile-drawer', view);
+    }
+    ['controls', 'stage', 'tutor'].forEach(key => {
+        const btn = document.getElementById(`mobile-dock-${key}`);
+        if (btn) btn.classList.toggle('active', key === view);
+    });
+    if (view === 'stage' && els.submicroView && !els.submicroView.classList.contains('hidden')) {
+        scheduleCanvasResize(state.particles.length === 0);
+    }
+}
+window.setMobileLabDrawer = setMobileLabDrawer;
+
+const THEME_ICONS = {
+    system: '<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>',
+    light: '<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>',
+    dark: '<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>'
+};
+const THEME_LABELS = { system: 'Auto', light: 'Light', dark: 'Dark' };
+
+function applyThemeMode(mode) {
+    const normalized = ['system', 'light', 'dark'].includes(mode) ? mode : 'system';
+    try { localStorage.setItem('atomverse_theme_mode', normalized); } catch (e) {}
+    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const effective = normalized === 'dark' || (normalized === 'system' && prefersDark) ? 'dark' : 'light';
+    const root = document.documentElement;
+    root.classList.remove('light', 'dark');
+    root.classList.add(effective);
+    root.setAttribute('data-theme', effective);
+    root.setAttribute('data-theme-mode', normalized);
+
+    const iconEl = document.getElementById('theme-toggle-icon');
+    const labelEl = document.getElementById('theme-toggle-label');
+    if (iconEl) iconEl.innerHTML = THEME_ICONS[normalized];
+    if (labelEl) labelEl.textContent = THEME_LABELS[normalized];
+    if (typeof initCanvas === 'function') initCanvas();
+}
+
+function cycleAtomverseTheme() {
+    const current = document.documentElement.getAttribute('data-theme-mode') || 'system';
+    const order = ['system', 'light', 'dark'];
+    const next = order[(order.indexOf(current) + 1) % order.length];
+    applyThemeMode(next);
+}
+window.cycleAtomverseTheme = cycleAtomverseTheme;
+
+if (window.matchMedia) {
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleOsThemeChange = () => {
+        const currentMode = document.documentElement.getAttribute('data-theme-mode') || 'system';
+        if (currentMode === 'system') applyThemeMode('system');
+    };
+    if (typeof mediaQuery.addEventListener === 'function') {
+        mediaQuery.addEventListener('change', handleOsThemeChange);
+    }
 }
 
 const SIMULATION_DURATION_MS = 2200;
@@ -111,8 +172,10 @@ function setSimulationControlsDisabled(disabled) {
         .forEach(control => { control.disabled = disabled; });
     const pressureSelect = document.getElementById('press-select');
     const runButton = document.getElementById('btn-run');
+    const mobileRunButton = document.getElementById('mobile-btn-run');
     if (pressureSelect) pressureSelect.disabled = disabled;
     if (runButton) runButton.disabled = disabled;
+    if (mobileRunButton) mobileRunButton.disabled = disabled;
 }
 
 function finishSimulation(runId) {
@@ -245,6 +308,7 @@ function finishSimulation(runId) {
 function runSimulation() {
     if (state.isPouring || state.isReacted) return;
 
+    setMobileLabDrawer('stage');
     clearSimulationTimers();
     const runId = ++simulationRunId;
     state.isPouring = true;
@@ -539,9 +603,9 @@ function renderEnvironmentalCards() {
             </div>
             <p class="text-xs mono mb-2 font-medium" style="color: var(--primary);">${material.chemical}</p>
             <div class="space-y-1 text-xs text-muted-custom mb-3">
-                <div><span class="font-semibold text-slate-700">Degradation:</span> ${material.degradation}</div>
-                <div><span class="font-semibold text-slate-700">Stability:</span> ${material.stability}</div>
-                <div><span class="font-semibold text-slate-700">Impact:</span> ${material.impact}</div>
+                <div><span class="font-semibold" style="color: var(--text-main);">Degradation:</span> ${material.degradation}</div>
+                <div><span class="font-semibold" style="color: var(--text-main);">Stability:</span> ${material.stability}</div>
+                <div><span class="font-semibold" style="color: var(--text-main);">Impact:</span> ${material.impact}</div>
             </div>
             <div class="mt-auto pt-3 border-t border-[var(--border-color)]">
                 <button class="text-xs font-bold font-heading flex items-center gap-1.5" style="color: var(--primary);">
@@ -595,7 +659,7 @@ function openBondDetail(materialId) {
             ${material.bondDetail.diagram ? `
             <div class="p-3 rounded-lg bg-[var(--bg-surface-alt)] border border-[var(--border-color)]">
                 <div class="text-[10px] font-bold uppercase tracking-wider mb-1.5" style="color: var(--primary);">Molecular Representation</div>
-                <div class="font-mono text-xs text-center p-2 rounded bg-white border border-[var(--border-color)] overflow-x-auto">
+                <div class="font-mono text-xs text-center p-2 rounded surface border border-[var(--border-color)] overflow-x-auto">
                     <code style="color: var(--text-main); font-weight: 700;">${material.bondDetail.diagram}</code>
                 </div>
             </div>` : ''}
@@ -663,6 +727,11 @@ function scheduleCanvasResize(regenerateParticles = false) {
 
 window.addEventListener('resize', () => scheduleCanvasResize(false), { passive: true });
 window.addEventListener('DOMContentLoaded', () => {
+    try {
+        applyThemeMode(localStorage.getItem('atomverse_theme_mode') || 'system');
+    } catch (e) {
+        applyThemeMode('system');
+    }
     if (typeof initCanvas === 'function') initCanvas();
     updateMacroColors();
     if (typeof animateParticles === 'function') animateParticles();

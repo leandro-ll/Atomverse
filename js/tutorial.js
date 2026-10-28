@@ -70,7 +70,7 @@
             content: 'Select chemical solutions from the left control panel. Choose from precipitation salts, everyday carbonates like Baking Soda (NaHCO₃), or acids and bases.',
             actionHint: 'Try picking a reagent from the dropdown, or click Next.',
             position: 'right',
-            beforeStep: () => switchTab('lab'),
+            beforeStep: () => { switchTab('lab'); if (window.innerWidth < 1024 && window.setMobileLabDrawer) window.setMobileLabDrawer('controls'); },
             listen: {
                 targetId: 'select-a',
                 event: 'change',
@@ -88,7 +88,7 @@
             content: 'Fine-tune Concentration (Molarity), Solution Volume (mL), and Ambient Temperature. Temperature directly governs particle kinetic velocity and collision rates.',
             actionHint: 'Try dragging the concentration slider, or click Next.',
             position: 'right',
-            beforeStep: () => switchTab('lab'),
+            beforeStep: () => { switchTab('lab'); if (window.innerWidth < 1024 && window.setMobileLabDrawer) window.setMobileLabDrawer('controls'); },
             listen: {
                 targetId: 'm-a-slider',
                 event: 'input',
@@ -106,7 +106,7 @@
             content: 'Click "Run Simulation" to initiate the experiment! Watch the molecular reaction analysis and observe color transitions, precipitate settling, or effervescent bubbling.',
             actionHint: 'Click "Run Simulation" to start the reaction!',
             position: 'right',
-            beforeStep: () => switchTab('lab'),
+            beforeStep: () => { switchTab('lab'); if (window.innerWidth < 1024 && window.setMobileLabDrawer) window.setMobileLabDrawer('controls'); },
             listen: {
                 targetId: 'btn-run',
                 event: 'click',
@@ -124,7 +124,7 @@
             content: 'Seamlessly switch between Macroscopic (beakers) and Submicroscopic (particle dynamics) views to observe ion collisions, crystal lattices, and gas bubble nucleation.',
             actionHint: 'Click "Submicroscopic" to view atomic particles in motion.',
             position: 'bottom',
-            beforeStep: () => switchTab('lab'),
+            beforeStep: () => { switchTab('lab'); if (window.setMobileLabDrawer) window.setMobileLabDrawer('stage'); },
             listen: {
                 targetId: 'btn-submicro',
                 event: 'click',
@@ -142,7 +142,7 @@
             content: 'Observe real-time measurements: final color, precipitate compound, pH, temperature, and gas evolution badges. You can also chat with the AI Tutor on the right!',
             actionHint: 'Review your experiment results, then click Next.',
             position: 'top',
-            beforeStep: () => switchTab('lab')
+            beforeStep: () => { switchTab('lab'); if (window.setMobileLabDrawer) window.setMobileLabDrawer('stage'); }
         },
         {
             id: 'inverse-intro',
@@ -238,7 +238,7 @@
             content: 'Your synthesized chemicals from the Inverse Experiment are now pre-loaded into Solution A and Solution B! You can test your target outcome right here in the reaction flask.',
             actionHint: 'Click "Run Simulation" to see your inverse recipe in action, or click Next.',
             position: 'right',
-            beforeStep: () => switchTab('lab'),
+            beforeStep: () => { switchTab('lab'); if (window.innerWidth < 1024 && window.setMobileLabDrawer) window.setMobileLabDrawer('controls'); },
             listen: {
                 targetId: 'btn-run',
                 event: 'click',
@@ -256,7 +256,7 @@
             content: 'You have mastered both forward simulation and inverse experimentation in Atomverse! Track your achievements, badges, and experiment history anytime in your Student Profile.',
             actionHint: 'Click Finish to claim your Onboarding Explorer badge!',
             position: 'bottom',
-            beforeStep: () => switchTab('lab')
+            beforeStep: () => { switchTab('lab'); if (window.setMobileLabDrawer) window.setMobileLabDrawer('stage'); }
         }
     ];
 
@@ -349,12 +349,12 @@
             z-index: 10002;
             width: 360px;
             max-width: calc(100vw - 32px);
-            background: #ffffff;
-            color: #0f172a;
-            border: 1px solid #cbd5e1;
+            background: var(--bg-surface);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
             border-radius: 16px;
-            padding: 22px;
-            box-shadow: 0 25px 45px -10px rgba(0, 0, 0, 0.35);
+            padding: 20px;
+            box-shadow: 0 25px 45px -10px rgba(0, 0, 0, 0.45);
             font-family: 'Poppins', sans-serif;
             pointer-events: auto;
             transition: all 220ms cubic-bezier(0.16, 1, 0.3, 1);
@@ -581,25 +581,25 @@
                 ${progressPills}
             </div>
 
-            <h3 style="font-family:'Montserrat',sans-serif; font-size:15px; font-weight:700; color:#0f172a; margin-bottom:8px; line-height:1.35;">
+            <h3 style="font-family:'Montserrat',sans-serif; font-size:15px; font-weight:700; color:var(--text-main); margin-bottom:8px; line-height:1.35;">
                 ${step.title}
             </h3>
 
-            <p style="font-size:12px; color:#475569; line-height:1.6; margin-bottom:12px;">
+            <p style="font-size:12px; color:var(--text-muted); line-height:1.6; margin-bottom:12px;">
                 ${step.content}
             </p>
 
             ${step.actionHint ? `
-                <div style="display:flex; align-items:center; gap:6px; background:#f0fdfa; border:1px solid #99f6e4; color:#0f766e; padding:6px 12px; border-radius:10px; font-size:11px; font-weight:600; margin-bottom:16px; line-height:1.4;">
+                <div style="display:flex; align-items:center; gap:6px; background:var(--primary-soft); border:1px solid var(--primary); color:var(--primary); padding:6px 12px; border-radius:10px; font-size:11px; font-weight:600; margin-bottom:16px; line-height:1.4;">
                     <span style="font-size:13px;">💡</span>
                     <span>${step.actionHint}</span>
                 </div>
             ` : ''}
 
-            <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid #f1f5f9; pt:12px; margin-top:4px;">
-                <button id="tut-skip" style="background:none; border:none; color:#64748b; font-size:12px; font-weight:600; cursor:pointer; padding:6px 0;">Skip</button>
+            <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--border-color); padding-top:10px; margin-top:4px;">
+                <button id="tut-skip" style="background:none; border:none; color:var(--text-muted); font-size:12px; font-weight:600; cursor:pointer; padding:6px 0;">Skip</button>
                 <div style="display:flex; gap:8px;">
-                    ${!isFirst ? '<button id="tut-prev" style="background:#f1f5f9; border:1px solid #e2e8f0; color:#334155; padding:7px 14px; border-radius:8px; font-size:12px; font-weight:600; cursor:pointer;">Back</button>' : ''}
+                    ${!isFirst ? '<button id="tut-prev" style="background:var(--bg-surface-alt); border:1px solid var(--border-color); color:var(--text-main); padding:7px 14px; border-radius:8px; font-size:12px; font-weight:600; cursor:pointer;">Back</button>' : ''}
                     <button id="tut-next" style="background:#0891b2; border:none; color:#ffffff; padding:7px 18px; border-radius:8px; font-size:12px; font-weight:700; cursor:pointer; box-shadow:0 3px 10px rgba(8,145,178,0.35); font-family:'Montserrat',sans-serif;">
                         ${isLast ? 'Finish! 🎉' : 'Next →'}
                     </button>
