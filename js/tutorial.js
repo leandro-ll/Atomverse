@@ -146,22 +146,32 @@
         },
         {
             id: 'inverse-intro',
-            targetId: 'inv-chips-container',
+            targetId: 'inv-goal-card',
             tab: 'inverse',
             title: '6. Inverse Experimentation Engine',
-            content: 'Welcome to Inverse Chemistry! Instead of mixing chemicals and guessing what forms, define your desired outcome, and the AI algorithm computes the optimal reactant pair for you.',
-            actionHint: 'Click an inspiration prompt chip (e.g. 🟡 Yellow Precipitate or 💨 CO₂ Gas).',
-            position: 'bottom',
+            content: 'Welcome to Inverse Chemistry! Instead of mixing chemicals and guessing what forms, type your desired outcome or pick an inspiration chip, and the AI algorithm computes the optimal reactant pair for you.',
+            actionHint: 'Type your own goal (then click Compute) or click an inspiration prompt chip.',
+            position: 'right',
             beforeStep: () => switchTab('inverse'),
-            listen: {
-                targetId: 'inv-chips-container',
-                event: 'click',
-                selector: '.inv-chip',
-                onAction: (advance) => {
-                    showActionToast('Goal selected! 🎯');
-                    setTimeout(advance, 700);
+            listen: [
+                {
+                    targetId: 'inv-chips-container',
+                    event: 'click',
+                    selector: '.inv-chip',
+                    onAction: (advance) => {
+                        showActionToast('Goal selected! 🎯');
+                        setTimeout(advance, 850);
+                    }
+                },
+                {
+                    targetId: 'inv-submit-btn',
+                    event: 'click',
+                    onAction: (advance) => {
+                        showActionToast('Computing configuration... ⚙️');
+                        setTimeout(advance, 1100);
+                    }
                 }
-            }
+            ]
         },
         {
             id: 'inverse-compute',
@@ -170,7 +180,11 @@
             title: '7. Compute Synthesis Plan',
             content: 'Now click "Compute Configuration". The smart solver evaluates solubility rules, Ksp equilibria, and thermodynamics to formulate the optimal synthesis recipe.',
             actionHint: 'Click "Compute Configuration" to calculate optimal reactants.',
-            position: 'bottom',
+            position: 'right',
+            shouldSkip: () => {
+                const output = document.getElementById('inv-output');
+                return Boolean(output && output.querySelector('button[onclick*="applyInverseToLab"]'));
+            },
             beforeStep: () => {
                 switchTab('inverse');
                 const input = document.getElementById('inv-input');
@@ -218,12 +232,12 @@
         },
         {
             id: 'lab-loaded',
-            targetId: 'macro-view',
+            targetId: 'btn-run',
             tab: 'lab',
             title: '9. Recipe Pre-Loaded in Lab!',
             content: 'Your synthesized chemicals from the Inverse Experiment are now pre-loaded into Solution A and Solution B! You can test your target outcome right here in the reaction flask.',
             actionHint: 'Click "Run Simulation" to see your inverse recipe in action, or click Next.',
-            position: 'top',
+            position: 'right',
             beforeStep: () => switchTab('lab'),
             listen: {
                 targetId: 'btn-run',
@@ -401,9 +415,7 @@
     function attachStepListeners(step) {
         if (!step.listen) return;
 
-        const target = document.getElementById(step.listen.targetId);
-        if (!target) return;
-
+        const listeners = Array.isArray(step.listen) ? step.listen : [step.listen];
         let hasFired = false;
         const advanceOnce = () => {
             if (hasFired) return;
@@ -411,20 +423,118 @@
             nextStep();
         };
 
-        const handler = (e) => {
-            if (step.listen.selector) {
-                const match = e.target.closest(step.listen.selector);
-                if (!match) return;
+        listeners.forEach(spec => {
+            if (!spec || !spec.targetId) return;
+            const target = document.getElementById(spec.targetId);
+            if (!target) return;
+
+            const handler = (e) => {
+                if (spec.selector) {
+                    const match = e.target.closest(spec.selector);
+                    if (!match) return;
+                }
+                if (spec.onAction) {
+                    spec.onAction(advanceOnce);
+                } else {
+                    advanceOnce();
+                }
+            };
+
+            target.addEventListener(spec.event, handler);
+            activeCleanupFns.push(() => target.removeEventListener(spec.event, handler));
+        });
+    }
+
+    function computePopoverPlacement(cutout, popWidth, popHeight, preferredSide) {
+        const W = window.innerWidth;
+        const H = window.innerHeight;
+        const margin = 16;
+        const gap = 16;
+        const clampX = (x) => Math.max(margin, Math.min(W - popWidth - margin, x));
+        const clampY = (y) => Math.max(margin, Math.min(H - popHeight - margin, y));
+
+        const order = [preferredSide || 'right', 'right', 'left', 'bottom', 'top']
+            .filter((side, idx, arr) => arr.indexOf(side) === idx);
+
+        const candidateFor = (side) => {
+            if (side === 'right') {
+                return {
+                    side,
+                    x: cutout.x + cutout.w + gap,
+                    y: clampY(cutout.y),
+                    space: W - (cutout.x + cutout.w)
+                };
             }
-            if (step.listen.onAction) {
-                step.listen.onAction(advanceOnce);
-            } else {
-                advanceOnce();
+            if (side === 'left') {
+                return {
+                    side,
+                    x: cutout.x - popWidth - gap,
+                    y: clampY(cutout.y),
+                    space: cutout.x
+                };
             }
+            if (side === 'bottom') {
+                return {
+                    side,
+                    x: clampX(cutout.x),
+                    y: cutout.y + cutout.h + gap,
+                    space: H - (cutout.y + cutout.h)
+                };
+            }
+            return {
+                side: 'top',
+                x: clampX(cutout.x),
+                y: cutout.y - popHeight - gap,
+                space: cutout.y
+            };
         };
 
-        target.addEventListener(step.listen.event, handler);
-        activeCleanupFns.push(() => target.removeEventListener(step.listen.event, handler));
+        const overlapsCutout = (x, y) => !(
+            x + popWidth <= cutout.x ||
+            x >= cutout.x + cutout.w ||
+            y + popHeight <= cutout.y ||
+            y >= cutout.y + cutout.h
+        );
+
+        const fitsViewport = (x, y) => (
+            x >= margin &&
+            y >= margin &&
+            x + popWidth <= W - margin &&
+            y + popHeight <= H - margin
+        );
+
+        const candidates = order.map(candidateFor);
+        for (const c of candidates) {
+            if (fitsViewport(c.x, c.y) && !overlapsCutout(c.x, c.y)) {
+                return { x: c.x, y: c.y };
+            }
+        }
+
+        // Fallback: pick the side with the most available room and clamp to viewport
+        const best = candidates.slice().sort((a, b) => b.space - a.space)[0] || candidates[0];
+        return { x: clampX(best.x), y: clampY(best.y) };
+    }
+
+    function positionSpotlightElements(target, step, path, ring) {
+        const rect = target.getBoundingClientRect();
+        const pad = 8;
+        const radius = 10;
+
+        const cutout = computeCutoutPath(rect, pad, radius);
+        path.setAttribute('d', cutout.d);
+
+        ring.setAttribute('x', cutout.x);
+        ring.setAttribute('y', cutout.y);
+        ring.setAttribute('width', cutout.w);
+        ring.setAttribute('height', cutout.h);
+
+        const popRect = popoverEl.getBoundingClientRect();
+        const popWidth = popRect.width || 360;
+        const popHeight = popRect.height || 260;
+        const pos = computePopoverPlacement(cutout, popWidth, popHeight, step.position);
+
+        popoverEl.style.left = `${pos.x}px`;
+        popoverEl.style.top = `${pos.y}px`;
     }
 
     function updateSpotlight() {
@@ -447,48 +557,9 @@
         currentTargetEl.classList.add('tut-active-target');
 
         target.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        const rect = target.getBoundingClientRect();
-        const pad = 8;
-        const radius = 10;
-
-        const cutout = computeCutoutPath(rect, pad, radius);
-        path.setAttribute('d', cutout.d);
-
-        ring.setAttribute('x', cutout.x);
-        ring.setAttribute('y', cutout.y);
-        ring.setAttribute('width', cutout.w);
-        ring.setAttribute('height', cutout.h);
 
         // Attach hybrid interaction listener
         attachStepListeners(step);
-
-        // Position popover
-        const popWidth = 360;
-        const popHeight = 280;
-        let popX = cutout.x + cutout.w + 16;
-        let popY = cutout.y;
-
-        if (step.position === 'bottom' || popX + popWidth > window.innerWidth) {
-            popX = Math.max(16, Math.min(window.innerWidth - popWidth - 16, cutout.x));
-            popY = cutout.y + cutout.h + 16;
-        }
-
-        if (step.position === 'top') {
-            popX = Math.max(16, Math.min(window.innerWidth - popWidth - 16, cutout.x));
-            popY = Math.max(16, cutout.y - popHeight - 16);
-        }
-
-        if (step.position === 'left' || popX + popWidth > window.innerWidth) {
-            popX = Math.max(16, cutout.x - popWidth - 16);
-            popY = cutout.y;
-        }
-
-        if (popY + popHeight > window.innerHeight) {
-            popY = Math.max(16, window.innerHeight - popHeight - 20);
-        }
-
-        popoverEl.style.left = `${popX}px`;
-        popoverEl.style.top = `${popY}px`;
 
         const isLast = currentStepIndex === tourSteps.length - 1;
         const isFirst = currentStepIndex === 0;
@@ -541,21 +612,37 @@
         document.getElementById('tut-next').onclick = isLast ? endTutorial : nextStep;
         const prevBtn = document.getElementById('tut-prev');
         if (prevBtn) prevBtn.onclick = prevStep;
+
+        positionSpotlightElements(target, step, path, ring);
+        requestAnimationFrame(() => {
+            if (currentTargetEl === target) {
+                positionSpotlightElements(target, step, path, ring);
+            }
+        });
     }
 
     function nextStep() {
-        if (currentStepIndex < tourSteps.length - 1) {
+        while (currentStepIndex < tourSteps.length - 1) {
             currentStepIndex++;
+            const candidate = tourSteps[currentStepIndex];
+            if (candidate && typeof candidate.shouldSkip === 'function' && candidate.shouldSkip()) {
+                continue;
+            }
             setTimeout(updateSpotlight, 60);
-        } else {
-            endTutorial();
+            return;
         }
+        endTutorial();
     }
 
     function prevStep() {
-        if (currentStepIndex > 0) {
+        while (currentStepIndex > 0) {
             currentStepIndex--;
+            const candidate = tourSteps[currentStepIndex];
+            if (candidate && typeof candidate.shouldSkip === 'function' && candidate.shouldSkip()) {
+                continue;
+            }
             setTimeout(updateSpotlight, 60);
+            return;
         }
     }
 
@@ -584,10 +671,8 @@
     window.startAtomverseTutorial = startTutorial;
 
     document.addEventListener('DOMContentLoaded', () => {
-        // Auto-launch for new users
-        if (!localStorage.getItem(STORAGE_KEY)) {
-            setTimeout(startTutorial, 700);
-        }
+        // Always auto-launch tutorial when the website loads
+        setTimeout(startTutorial, 700);
     });
 
 })();
